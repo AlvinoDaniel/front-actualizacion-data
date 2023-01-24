@@ -16,25 +16,37 @@
           <p class="text-h4" v-text="message" />
         </v-card-text>
         <v-card-actions class="d-flex justify-center pt-0 pb-5">
+          <template v-if="!update">
+            <v-btn
+              color="red"
+              tile
+              class="px-4"
+              dark
+              despress
+              @click="goBack"
+            >
+              Salir
+            </v-btn>
+            <v-btn
+              color="info"
+              tile
+              despress
+              class="px-2"
+              @click="confirm"
+            >
+              Si, Registrar
+            </v-btn>
+          </template>
           <v-btn
-            color="red"
-            tile
-            class="px-4"
-            dark
-            despress
-            @click="goBack"
-          >
-            Salir
-          </v-btn>
-          <v-btn
-            color="info"
-            tile
-            despress
-            class="px-2"
-            @click="confirm"
-          >
-            Si, Registrar
-          </v-btn>
+            v-else
+              color="info"
+              tile
+              despress
+              class="px-2"
+              @click="goBack"
+            >
+              aceptar
+            </v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -48,6 +60,10 @@
       title: String,
       message: String,
       value: Boolean,
+      update:{
+        type: Boolean,
+        default: false
+      }
     },
     data() {
       return {

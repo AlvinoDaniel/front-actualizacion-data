@@ -14,7 +14,7 @@
               <v-icon left @click="$router.go(-1)">
                 mdi-arrow-left
               </v-icon>
-              Crear Usuario
+              {{ !!id ? 'Actualizar' : 'Crear' }} Usuario
             </h4>
             <div
               class="d-flex"
@@ -27,7 +27,7 @@
                 @click="saveUser"
                 >
                 <v-icon left>mdi-account-plus-outline</v-icon>
-                Registrar
+                {{ !!id ? 'ACTUALIZAR' : 'REGISTRAR' }}
               </v-btn>
             </div>
           </v-col>
@@ -70,6 +70,7 @@
                   v-model="dataPersonal"
                   :items="personal"
                   :search-input.sync="cedulaSearch"
+                  :disabled="!!id"
                   item-text="cedula_identidad"
                   label="Cédula de Identidad"
                   placeholder="Buscar"
@@ -113,6 +114,7 @@
                 <v-select
                   v-model="info.grado_instruccion"
                   :items="dataGeneral.niveles.data"
+                  :loading="dataGeneral.niveles.loader"
                   item-text="descripcion"
                   item-value="id"
                   label="Grado de Instrucción"
@@ -144,6 +146,7 @@
                 <v-select
                   v-model="info.nucleo"
                   :items="dataGeneral.nucleos.data"
+                  :loading="dataGeneral.nucleos.loader"
                   item-text="nombre"
                   item-value="codigo_concatenado"
                   label="Nucleo"
@@ -160,6 +163,7 @@
                   item-text="nombre"
                   item-value="id"
                   :items="dataGeneral.departamentos.data"
+                  :loading="dataGeneral.departamentos.loader"
                   :disabled="dataGeneral.departamentos.data.length === 0"
                   label="Departamento"
                   class="input-redactar"
@@ -202,7 +206,7 @@
           </v-row>
           <v-row>
             <v-col cols="12" sm="6">
-              <validation-provider name="Contraseña" vid="info.password" rules="required" v-slot="{ errors }">
+              <validation-provider name="Contraseña" vid="info.password" :rules="{required: !this.id}" v-slot="{ errors }">
                 <v-text-field
                   v-model="info.password"
                   type="password"
@@ -218,6 +222,7 @@
                 <v-select
                   v-model="info.rol"
                   :items="dataGeneral.roles.data"
+                  :loading="dataGeneral.roles.loader"
                   item-text="name"
                   item-value="name"
                   label="Rol"
@@ -279,8 +284,9 @@
     </validation-observer>
     <modal-success
       v-model="success"
-      title="Usuario Registrado"
-      message="¿Desea registrar otro usuario o Salir?"
+      :title="!!id ? 'Usuario Actualizado' : 'Usuario Registrado'"
+      :message="!!id ? '' : '¿Desea registrar otro usuario o Salir?'"
+      :update="!!id"
       @confirm="resetData"
     />
   </v-container>
@@ -387,7 +393,7 @@ export default {
     async getUser () {
       this.loading = true
       try {
-        const {personal, ...usuario} = await getUser({ id: this.id })
+        const {personal, roles, ...usuario} = await getUser({ id: this.id })
         this.info = {
           cedula_identidad: personal.cedula_identidad,
           nombres_apellidos: personal.nombres_apellidos,
@@ -395,13 +401,16 @@ export default {
           cargo_jefe: personal.descripcion_cargo,
           nucleo: personal.cod_nucleo,
           departamento_id: personal.departamento_id,
-          grado_instruccion: personal.grado_instruccion,
+          grado_instruccion: personal.grado_instruccion ? parseInt(personal.grado_instruccion) : null ,
           email: usuario.email,
           usuario: usuario.usuario,
           password: '',
-          rol: '',
+          rol: roles[0].name,
         }
-        this.cedulaSearch = personal.cedula_identidad
+        // this.cedulaSearch = personal.cedula_identidad
+        this.dataPersonal = {...personal}
+        this.personal.push({nombres: personal.nombres_apellidos, ...personal})
+        this.getDepartamentos()
       } catch (error) {
         console.log(error)
       } finally {
@@ -442,12 +451,11 @@ export default {
       } catch (error) {
         console.log(error)
       } finally {
-        this.dataGeneral.niveles.loader = true
+        this.dataGeneral.niveles.loader = false
       }
     },
 
     verificate () {
-      console.log(typeof this.dataPersonal)
       if(typeof this.dataPersonal === 'object' && this.cedulaSearch === ''){
         this.dataPersonal = null
       }
@@ -491,7 +499,7 @@ export default {
         this.loading = true
         try {
           const { message } = this.id
-            ? await saveUser({ datos, id: this.id })
+            ? await updateUser({ datos, id: this.id, personal: this.dataPersonal?.id })
             : await saveUser({ datos })
 
           this.success = true

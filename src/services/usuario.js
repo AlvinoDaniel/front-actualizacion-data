@@ -30,9 +30,9 @@ export const saveUser = async ({ datos }) => {
   }
 }
 
-export const updateUser = async ({ datos, id }) => {
+export const updateUser = async ({ datos, id, personal }) => {
   try {
-    const { data } = await api.post(`usersf`, datos)
+    const { data } = await api.post(`users/${id}/personal/${personal}`, datos)
     return data.data
   } catch (error) {
     console.log({error})
