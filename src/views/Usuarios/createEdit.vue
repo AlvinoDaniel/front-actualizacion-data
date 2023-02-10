@@ -346,9 +346,7 @@ export default {
   computed: {
     id: get('route/params@id'),
     roleJefe () {
-      const rol_name = this.dataGeneral.roles.data.find(item => item.id === this.info.rol)
-
-      return this.info?.rol && this.info.rol === 'jefe'
+      return this.info?.rol && this.info.rol.includes('jefe')
     }
   },
   created () {
@@ -483,6 +481,7 @@ export default {
     },
 
     async saveUser () {
+
       const valid = await this.$refs.USER_FORM.validate()
       if (valid) {
         this.errors.length = 0
@@ -490,6 +489,13 @@ export default {
         for (const key in this.info) {
           if (Object.hasOwnProperty.call(this.info, key)) {
             datos.append(key, this.info[key])
+            // if(typeof this.info[key] === 'object'){
+            //   this.info[key].forEach(element => {
+            //     datos.append('${}' , this.info[key])
+            //   });
+            // } else {
+            // }
+
           }
         }
 
