@@ -227,6 +227,7 @@
                   item-value="name"
                   label="Rol"
                   class="input-redactar"
+                  multiple
                   :error-messages="errors[0]"
                 >
                   <template v-slot:item="data">
