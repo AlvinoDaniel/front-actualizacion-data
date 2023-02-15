@@ -263,7 +263,7 @@
                 <v-icon small color="blue-grey" class="mr-1 mt-n1">mdi-grease-pencil</v-icon>
                 Firma y Sello
               </span>
-              <validation-provider name="Firma" vid="firma" rules="required" v-slot="{ errors }">
+              <validation-provider name="Firma" vid="firma" :rules="{required: !id}" v-slot="{ errors }">
                 <VueFileAgent
                   v-model="firma"
                   ref="FileImageFirma"
@@ -404,7 +404,7 @@ export default {
           email: usuario.email,
           usuario: usuario.usuario,
           password: '',
-          rol: roles[0].name,
+          rol: roles.map(rol => rol?.name),
         }
         // this.cedulaSearch = personal.cedula_identidad
         this.dataPersonal = {...personal}
@@ -488,18 +488,17 @@ export default {
         const datos = new FormData()
         for (const key in this.info) {
           if (Object.hasOwnProperty.call(this.info, key)) {
-            datos.append(key, this.info[key])
-            // if(typeof this.info[key] === 'object'){
-            //   this.info[key].forEach(element => {
-            //     datos.append('${}' , this.info[key])
-            //   });
-            // } else {
-            // }
-
+            if (typeof this.info[key] === 'object') {
+              this.info[key].forEach(element => {
+                datos.append(`${key}[]`, element)
+              });
+            } else {
+              datos.append(key, this.info[key])
+            }
           }
         }
 
-        if (this.roleJefe) {
+        if (this.roleJefe && this.firma) {
           datos.append('firma', this.firma.file)
         }
 
