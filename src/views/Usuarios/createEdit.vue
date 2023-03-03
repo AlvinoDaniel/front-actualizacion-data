@@ -422,7 +422,12 @@ export default {
       this.dataGeneral.nucleos.loader = true
       try {
         const { nucleos } = await getNucleoList()
-        this.dataGeneral.nucleos.data = nucleos
+        this.dataGeneral.nucleos.data = nucleos.map(item => {
+          return {
+            ...item,
+            codigo_concatenado: parseInt(item.codigo_concatenado),
+          }
+        })
       } catch (error) {
         console.log(error)
       } finally {
@@ -488,7 +493,8 @@ export default {
         const datos = new FormData()
         for (const key in this.info) {
           if (Object.hasOwnProperty.call(this.info, key)) {
-            if (typeof this.info[key] === 'object') {
+            if (this.info[key] !== null && typeof this.info[key] === 'object') {
+              console.log(key)
               this.info[key].forEach(element => {
                 datos.append(`${key}[]`, element)
               });

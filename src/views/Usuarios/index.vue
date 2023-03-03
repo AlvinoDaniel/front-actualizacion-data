@@ -138,7 +138,7 @@ export default {
       { text: 'Email', value: 'email', align: '' },
       { text: 'Personal', value: 'personal', align: '' },
       { text: 'Estatus', value: 'status', width: '120px', align: 'me' },
-      { text: 'Acciones', value: 'iconos', align: ' px-0', width: '100px' },
+      // { text: 'Acciones', value: 'iconos', align: ' px-0', width: '100px' },
     ],
     users: [],
     colorTipo: {
