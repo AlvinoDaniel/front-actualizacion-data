@@ -7,6 +7,10 @@ module.exports = {
     disableHostCheck: true,
   },
 
+  publicPath: process.env.NODE_ENV === 'production'
+    ? '/siscorudo-dev/admin'
+    : '/',
+
   transpileDependencies: ['vuetify', /ckeditor5-[^/\\]+[/\\]src[/\\].+\.js$/],
 
   lintOnSave: process.env.NODE_ENV !== 'production' ? 'warning' : false,
