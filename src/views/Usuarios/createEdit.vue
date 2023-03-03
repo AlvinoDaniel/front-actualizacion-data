@@ -400,7 +400,7 @@ export default {
           cargo_jefe: personal.descripcion_cargo,
           nucleo: personal.cod_nucleo,
           departamento_id: personal.departamento_id,
-          grado_instruccion: personal.grado_instruccion ? parseInt(personal.grado_instruccion) : null ,
+          grado_instruccion: personal.nivel ? parseInt(personal.nivel.id) : null,
           email: usuario.email,
           usuario: usuario.usuario,
           password: '',
