@@ -257,26 +257,33 @@
             </v-col>
             <v-col
               cols="12"
-              class="pb-0 pt-1"
+              class="pb-0 pt-1 d-flex gap-4"
             >
-              <span class="v-label v-label mb-1">
-                <v-icon small color="blue-grey" class="mr-1 mt-n1">mdi-grease-pencil</v-icon>
-                Firma y Sello
-              </span>
-              <validation-provider name="Firma" vid="firma" :rules="{required: !id}" v-slot="{ errors }">
-                <VueFileAgent
-                  v-model="firma"
-                  ref="FileImageFirma"
-                  help-text="Suba la imagen en formato PNG"
-                  :deletable="true"
-                  class="py-2 input-imagen"
-                  :accept="'.png'"
-                  :theme="'list'"
-                  :error-text="{type: 'Formato no válido.'}"
-                  @beforedelete="fileDeleted($event)"
-                />
-                  <div class="v-text-field__details"><div class="v-messages theme--light error--text" role="alert"><div class="v-messages__wrapper"><div class="v-messages__message" v-text="errors[0]" /></div></div></div>
-              </validation-provider>
+              <div v-if="id && dataPersonal.firma_base_url">
+                <v-avatar size="140" tile class="bordered rounded-lg pa-2 grey lighten-4">
+                  <v-img :src="firma.urlResized || dataPersonal.firma_base_url" contain height="140" width="140" />
+                </v-avatar>
+              </div>
+              <div style="width:100%">
+                <span class="v-label v-label mb-1">
+                  <v-icon small color="blue-grey" class="mr-1 mt-n1">mdi-grease-pencil</v-icon>
+                  Firma y Sello
+                </span>
+                <validation-provider name="Firma" vid="firma" :rules="{required: !id}" v-slot="{ errors }">
+                  <VueFileAgent
+                    v-model="firma"
+                    ref="FileImageFirma"
+                    help-text="Suba la imagen en formato PNG"
+                    :deletable="true"
+                    class="py-2 input-imagen"
+                    :accept="'.png'"
+                    :theme="'list'"
+                    :error-text="{type: 'Formato no válido.'}"
+                    @beforedelete="fileDeleted($event)"
+                  />
+                    <div class="v-text-field__details"><div class="v-messages theme--light error--text" role="alert"><div class="v-messages__wrapper"><div class="v-messages__message" v-text="errors[0]" /></div></div></div>
+                </validation-provider>
+              </div>
             </v-col>
           </v-row>
 
@@ -325,6 +332,7 @@ export default {
   data: () => ({
     info: {...infoDefault},
     firma: '',
+    base_url_firma: '',
     dataPersonal: null,
     cedulaSearch: '',
     dataGeneral:{
@@ -482,6 +490,7 @@ export default {
     },
 
     fileDeleted(record) {
+      console.log(this.firma)
       this.$refs.FileImageFirma.deleteFileRecord(record)
     },
 
@@ -600,5 +609,12 @@ export default {
 
   .invalid .ck.ck-editor__main>.ck-editor__editable:not(.ck-focused)
     border-color: #ff5252 !important
+  
+  .gap-4 
+    gap: 26px
+  .bordered
+    border-color: #607d8b !important
+    border-width: 1px
+    border-style: solid
 
 </style>
