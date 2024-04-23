@@ -61,6 +61,28 @@ const createRouter = () => new Router({
           ),
         },
         {
+          name: 'Departamentos',
+          path: '/departamentos',
+          meta:{
+            auth: true,
+          },
+          component: () => import(
+            /* webpackChunkName: "views-[request]" */
+            '@/views/Departamentos/index'
+          ),
+        },
+        {
+          name: 'Núcleos',
+          path: '/nucleos',
+          meta:{
+            auth: true,
+          },
+          component: () => import(
+            /* webpackChunkName: "views-[request]" */
+            '@/views/Nucleos/index'
+          ),
+        },
+        {
           name: 'Error-permission',
           path: '/403',
           meta:{

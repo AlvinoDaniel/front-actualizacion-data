@@ -1,29 +1,18 @@
 <template>
   <v-container
-    id="recibidos-bandeja"
+    id="nucleos"
     fluid
     tag="section"
     class="pa-0"
   >
     <loader-app v-if="updating" />
     <v-row class="ma-0">
-      <v-col cols="12"  md="5" class="pt-1 d-flex align-center">
+      <v-col cols="12" sm="7" md="5" class="pt-1 d-flex align-center">
         <h3 class="blue-grey--text">
-          <v-icon color="blue-grey" left>mdi-account-group-outline</v-icon> Usuarios
+          <v-icon color="blue-grey" left>mdi-home-assistant</v-icon> Núcleos
         </h3>
-        <!-- <v-tabs>
-          <v-tab :ripple="false" @click="assignFilter('')"><strong>Todos</strong>({{data.length}})</v-tab>
-          <v-tab :ripple="false" @click="assignFilter('oficio')">
-            <v-icon color="info">mdi-circle-medium</v-icon>
-           <strong>Oficio</strong>({{cantOficios}})
-          </v-tab>
-          <v-tab :ripple="false" @click="assignFilter('circular')">
-            <v-icon color="tertiary">mdi-circle-medium</v-icon>
-           <strong>Circular</strong>({{cantCopias}})
-          </v-tab>
-        </v-tabs> -->
       </v-col>
-      <v-col cols="12" md="7" class="pt-1 d-flex align-center justify-end">
+      <v-col cols="12" sm="5" md="7" class="pt-1 d-flex align-center justify-end">
         <search-expand v-model="filterData" />
         <v-tooltip bottom>
           <template v-slot:activator="{ on, attrs }">
@@ -33,9 +22,8 @@
               color="blue-grey"
               v-bind="attrs"
               v-on="on"
-              :to="{path: '/usuarios/gestionar'}"
-              >
-              <!-- @click="getBandejaRecibidos(true)" -->
+              @click="modalShow = true"
+            >
               <v-icon>mdi-plus</v-icon>
             </v-btn>
           </template>
@@ -49,7 +37,7 @@
               color="blue-grey"
               v-bind="attrs"
               v-on="on"
-              @click="getBandejaRecibidos(true)"
+              @click="getNucleos()"
             >
               <v-icon>mdi-refresh</v-icon>
             </v-btn>
@@ -68,7 +56,7 @@
     </v-row>
     <v-row>
       <v-col cols="12" class="py-0">
-          <!--
+          <!-- :search="search"
           :loading="loadingData" -->
         <v-data-table
           sort-by="fecha_enviado"
@@ -77,13 +65,12 @@
           no-data-text="No hay Documentos Recibidos"
           :search="filterData"
           :headers="headers"
-          :items="users"
+          :items="itemsData"
           :loading="loading"
           :sort-desc="true"
           :page.sync="page"
           @page-count="pageCount = $event"
           @pagination="infoPagination = $event"
-          @click:row="editUser"
         >
           <template v-slot:item.iconos="{ item }">
             <div class="d-flex justify-center align-center ml-3">
@@ -93,8 +80,21 @@
                     icon
                     v-bind="attrs"
                     v-on="on"
+                    @click.stop="edit(item)"
                     >
-                    <!-- @click.stop="deleteDoc(item)" -->
+                    <v-icon size="19" class="mx-2" color="blue-grey">mdi-pencil-outline</v-icon>
+                  </v-btn>
+                </template>
+                <span>Editar Departamento</span>
+              </v-tooltip>
+              <v-tooltip bottom>
+                <template v-slot:activator="{ on, attrs }">
+                  <v-btn
+                    icon
+                    v-bind="attrs"
+                    v-on="on"
+                    @click="deleteDepartmento(item)"
+                    >
                     <v-icon size="19" class="mx-2" color="blue-grey">mdi-trash-can-outline</v-icon>
                   </v-btn>
                 </template>
@@ -102,52 +102,56 @@
               </v-tooltip>
             </div>
           </template>
-           <template v-slot:item.nombres_apellidos="{ item }">
+           <template v-slot:item.nombre="{ item }">
             <span
-              v-if="item.nombres_apellidos"
+              v-if="item.nombre"
               class="font-weight-bold"
-               v-text="item.nombres_apellidos"
+               v-text="item.nombre"
             />
            </template>
-          <template v-slot:item.status="{ item }">
-            <div class="d-flex align-center">
-              <v-icon :color="colorTipo[item.status]">mdi-circle-medium</v-icon>
-              <span
-                class="font-weight-bold text-uppercase"
-                :class="{'tertiary--text': item.status === 0, 'icono--text': item.status === 1,}"
-                v-text="item.status === 1 ? 'ACTIVO' : 'INACTIVO'"
-              />
-            </div>
-          </template>
+           <template v-slot:item.direccion="{ item }">
+            <span
+              class="text-truncate"
+              style="width: 30%; max-width: 30%;"
+            >{{item.direccion}}</span>
+           </template>
         </v-data-table>
       </v-col>
       <v-col cols="12" class="pt-0">
         <v-divider></v-divider>
       </v-col>
     </v-row>
+
+    <create-and-edit
+      v-model="modalShow"
+      :action="isCreate ? 'crear' : 'edit'"
+      :data="dataSelect"
+      @procesado="getNucleos"
+    />
   </v-container>
 </template>
 <script>
 
-import { getAllUsers } from '@/services/usuario'
+import { getNucleoList, deleteNucleo } from '@/services/nucleo'
 import { Base64 } from 'js-base64';
 export default {
-  name: 'Usuarios',
+  name: 'Nucleos',
+  components: {
+    CreateAndEdit: () => import(
+      /* webpackChunkName: "modal-success" */
+      './components/CreateAndEdit.vue'
+    ),
+  },
   data: () => ({
     loading: false,
     updating: false,
     headers: [
-      { text: 'Usuario', value: 'usuario' },
-      { text: 'Email', value: 'email', align: '' },
-      { text: 'Personal', value: 'nombres_apellidos', align: '' },
-      { text: 'Estatus', value: 'status', width: '120px', align: 'me' },
-      // { text: 'Acciones', value: 'iconos', align: ' px-0', width: '100px' },
+      { text: 'COD.', value: 'codigo_concatenado', width: '100px' },
+      { text: 'Nombre', value: 'nombre', align: '' },
+      { text: 'Dirección', value: 'direccion', align: ' at' },
+      { text: '', value: 'iconos', align: ' px-0', width: '100px' },
     ],
-    users: [],
-    colorTipo: {
-      0: 'tertiary',
-      1: 'icono'
-    },
+    nucleos: [],
     filterData: '',
     page: 1,
     pageCount: 0,
@@ -155,7 +159,10 @@ export default {
       pageStart: 0,
       pageStop: 0,
       itemsLength:0,
-    }
+    },
+    modalShow: false,
+    isCreate: true,
+    dataSelect: null
   }),
   computed: {
     paginationText () {
@@ -163,53 +170,73 @@ export default {
       return this.infoPagination
         ? `${this.infoPagination.pageStart + 1} - ${this.infoPagination.pageStop} de ${this.infoPagination.itemsLength}`
         : ''
-
+    },
+    itemsData() {
+      return this.nucleos.length > 0
+        ? this.nucleos.map(item => ({
+          ...item,
+          jefe_nombre: item?.jefe?.nombres_apellidos,
+          nucleo_nombre: item?.nucleo?.nombre,
+        }))
+        : []
     }
+
   },
   created () {
-    this.getUsers()
+    this.getNucleos()
   },
   methods: {
 
-    async getUsers (actualizar=false) {
-      if(actualizar) this.updating = true
+    async getNucleos () {
       this.loading = true
       try {
-        const { usuarios = [] } = await getAllUsers()
-        this.users = usuarios.length > 0
-          ?  usuarios.map(item => ({
-              ...item,
-              nombres_apellidos: item?.personal?.nombres_apellidos
-            }))
-          : []
+        const { nucleos } = await getNucleoList()
+        this.nucleos = nucleos
       } catch (error) {
         console.log(error)
       } finally {
         this.loading = false
-        if(actualizar) this.updating = false
       }
     },
-    editUser (row) {
-      // this.$router.push({ path: `/documento/${ row.id }`, query: {tab: 'recibido'} })
-      this.$router.push({ name: 'Gestionar Usuario', params: { id: row.id } })
+
+
+    edit(row) {
+      this.dataSelect = row
+      this.isCreate = false
+      this.modalShow = true
     },
+    async deleteDepartmento(row){
+      const result = await this.$root.$confirm(
+        '¿Está Seguro?',
+        `Desea eliminar el núcleo ${row?.nombre}`
+      );
+
+      if(result){
+        this.updating = true
+        try {
+          const { message } = await deleteNucleo({id: row?.id})
+          this.getNucleos()
+          this.$root.$showAlert(message, 'success');
+        } catch (error) {
+          console.log(error)
+            this.$root.$showAlert(
+              'Lo sentimos, hubo un error al intentar realizar esta acción en el Servidor.',
+              'error'
+            );
+        } finally {
+          this.updating = false
+        }
+      }
+    }
   },
 }
 </script>
 <style>
 .at {
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: flex;
-    -webkit-box-flex: 1 1 auto;
-    -webkit-flex: 1 1 auto;
-    flex: 1 1 auto;
-    min-width: 0;
-    -webkit-flex-wrap: wrap;
-    flex-wrap: wrap;
-    overflow: visible;
+    width: 40rem;
+    max-width: 40rem;
     white-space: nowrap;
-    vertical-align: middle;
-    align-items: center;
+    overflow: hidden;
+    text-overflow: ellipsis !important;
 }
 </style>

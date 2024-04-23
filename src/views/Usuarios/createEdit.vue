@@ -273,10 +273,10 @@
                   <VueFileAgent
                     v-model="firma"
                     ref="FileImageFirma"
-                    help-text="Suba la imagen en formato PNG"
+                    help-text="Suba la imagen en formato PNG ó JPG"
                     :deletable="true"
                     class="py-2 input-imagen"
-                    :accept="'.png'"
+                    :accept="'.png, .jpg, .jpeg'"
                     :theme="'list'"
                     :error-text="{type: 'Formato no válido.'}"
                     @beforedelete="fileDeleted($event)"
@@ -609,8 +609,8 @@ export default {
 
   .invalid .ck.ck-editor__main>.ck-editor__editable:not(.ck-focused)
     border-color: #ff5252 !important
-  
-  .gap-4 
+
+  .gap-4
     gap: 26px
   .bordered
     border-color: #607d8b !important

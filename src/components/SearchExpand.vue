@@ -14,7 +14,7 @@
   >
     <template v-slot:prepend-inner>
       <v-icon  @click="searchClose = false" color="secondary" size="22" v-if="expand">mdi-magnify</v-icon>
-      <v-icon color="secondary" size="22" v-else>mdi-magnify</v-icon>
+      <v-icon color="secondary" size="22" style="padding-top: 2px;" v-else>mdi-magnify</v-icon>
     </template>
   </v-text-field>
 </template>

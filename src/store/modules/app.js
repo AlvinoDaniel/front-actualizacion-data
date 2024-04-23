@@ -21,20 +21,20 @@ const state = {
     {
       title: 'Departamentos',
       icon: 'mdi-home-city-outline',
-      to: '/enviados',
+      to: '/departamentos',
     },
-    {
-      title: 'Personal',
-      meta: {
-        badge: null,
-      },
-      icon: 'mdi-account-cog-outline',
-      to: '/por-corregir',
-    },
+    // {
+    //   title: 'Personal',
+    //   meta: {
+    //     badge: null,
+    //   },
+    //   icon: 'mdi-account-cog-outline',
+    //   to: '/por-corregir',
+    // },
     {
       title: 'Nucleos',
       icon: 'mdi-home-assistant',
-      to: '/borradores',
+      to: '/nucleos',
     },
 
   ],
