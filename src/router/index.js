@@ -82,6 +82,17 @@ const createRouter = () => new Router({
             '@/views/Nucleos/index'
           ),
         },
+         {
+          name: 'Gestión de Tablas',
+          path: '/gestion-tablas',
+          meta:{
+            auth: true,
+          },
+          component: () => import(
+            /* webpackChunkName: "views-[request]" */
+            '@/views/Tablas/index'
+          ),
+        },
         {
           name: 'Error-permission',
           path: '/403',

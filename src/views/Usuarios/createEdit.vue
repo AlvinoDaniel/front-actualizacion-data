@@ -102,7 +102,7 @@
                   v-model="info.nombres_apellidos"
                   class="input-redactar"
                   label="Nombre Completo"
-                  disabled
+                  :disabled="!dataPersonal"
                   :error-messages="errors[0]"
                 >
 
@@ -315,7 +315,7 @@
       nucleo: '',
       departamento_id: '',
       grado_instruccion: '',
-      personal_id: '',
+      personal_id: null,
       email: '',
       usuario: '',
       password: '',

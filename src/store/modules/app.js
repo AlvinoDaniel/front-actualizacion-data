@@ -36,6 +36,11 @@ const state = {
       icon: 'mdi-home-assistant',
       to: '/nucleos',
     },
+     {
+      title: 'Gestión de Tablas',
+      icon: 'mdi-table-cog',
+      to: '/gestion-tablas',
+    },
 
   ],
   statusClient:{
