@@ -12,7 +12,7 @@
           class="font-weight-bold primary--text"
           :class="{'text-h4': $vuetify.breakpoint.smAndUp, 'text-h5': $vuetify.breakpoint.xsOnly,}"
         >
-          Gestión de Núcleo
+          Gestión de Nivel de Instrucción
         </span>
         <v-btn icon plain @click="cerrar()">
           <v-icon>mdi-close</v-icon>
@@ -31,13 +31,13 @@
         ></v-progress-circular>
       </v-overlay>
       <v-card-text>
-        <validation-observer ref="NUCLEO_FORM" tag="div">
+        <validation-observer ref="NIVEL_FORM" tag="div">
           <v-row>
             <v-col cols="12" sm="7" md="8" lg="8" class="pt-2 pb-0">
-              <label-form text="Nombre" required />
-              <validation-provider name="Nombre" vid="nombre" rules="required" v-slot="{ errors }">
+              <label-form text="Descripción" required />
+              <validation-provider name="descripcion" vid="descripcion" rules="required" v-slot="{ errors }">
                 <v-text-field
-                  v-model="nucleoInfo.nombre"
+                  v-model="nivelInfo.descripcion"
                   outlined
                   dense
                   :error-messages="errors[0]"
@@ -45,29 +45,15 @@
               </validation-provider>
             </v-col>
             <v-col cols="12" sm="5" md="4" lg="4" class="pt-2 pb-0">
-              <label-form text="Código" required/>
-              <validation-provider name="codigo" vid="codigo" rules="required|numeric|min:2|max:2" v-slot="{ errors }">
+              <label-form text="Abreviatura" required/>
+              <validation-provider name="abreviatura" vid="abreviatura" rules="required" v-slot="{ errors }">
                 <v-text-field
-                  v-model="nucleoInfo.codigo"
+                  v-model="nivelInfo.abreviatura"
                   outlined
                   dense
                   :error-messages="errors[0]"
                 />
               </validation-provider>
-            </v-col>
-          </v-row>
-          <v-row>
-            <v-col cols="12" class="py-0">
-              <label-form text="Direccion"/>
-              <validation-provider name="Direccion" vid="nucleoInfo.direccion" v-slot="{ errors }">
-                <v-textarea
-                  v-model="nucleoInfo.direccion"
-                  outlined
-                  dense
-                  rows="2"
-                  :error-messages="errors[0]"
-                />
-               </validation-provider>
             </v-col>
           </v-row>
         </validation-observer>
@@ -98,14 +84,13 @@
   </v-dialog>
 </template>
 <script>
-import { saveNucleo } from '@/services/nucleo'
+import { saveLevel } from '@/services/nivel'
 const dataDefault = () => ({
-  nombre: '',
-  codigo: '',
-  direccion: '',
+  descripcion: '',
+  abreviatura: '',
 });
 export default {
-  name:'ModalNucleo',
+  name:'ModalNivel',
   props:{
     value: Boolean,
     data:{
@@ -126,8 +111,7 @@ export default {
       show: this.value,
       loadingAction: false,
       loadNucleo: false,
-      nucleoInfo: dataDefault(),
-      nucleos: [],
+      nivelInfo: dataDefault(),
     }
   },
   watch: {
@@ -143,10 +127,10 @@ export default {
     },
     data(val) {
       if(Object.values(val).length > 0) {
-        this.nucleoInfo = {...val, codigo: val?.codigo_concatenado }
+        this.nivelInfo = {...val }
       }
       else
-        this.nucleoInfo = dataDefault();
+        this.nivelInfo = dataDefault();
     },
   },
   filters: {
@@ -157,18 +141,19 @@ export default {
   methods: {
     cerrar() {
       this.show = false;
-      this.nucleoInfo = dataDefault();
-      this.$refs.NUCLEO_FORM.reset();
+      this.nivelInfo = dataDefault();
+      this.$refs.NIVEL_FORM.reset();
+      this.$emit('reset', true);
     },
     async actionGroup() {
-      const valid = await this.$refs.NUCLEO_FORM.validate();
+      const valid = await this.$refs.NIVEL_FORM.validate();
       if(valid) {
         try {
           this.loadingAction = true;
-          const { message } = await saveNucleo({
-            info: this.nucleoInfo,
+          const { message } = await saveLevel({
+            info: this.nivelInfo,
             action: this.action,
-            id: this.nucleoInfo?.id ?? null
+            id: this.nivelInfo?.id ?? null
           })
           this.$emit('procesado', true);
           this.cerrar();
@@ -176,7 +161,7 @@ export default {
         } catch (error) {
           const { response = null } = error
           if(response?.status === 422){
-            this.$refs.NUCLEO_FORM.setErrors(response?.data?.errors);
+            this.$refs.NIVEL_FORM.setErrors(response?.data?.errors);
             return;
           }
             this.$root.$showAlert(

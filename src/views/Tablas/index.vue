@@ -8,12 +8,12 @@
       <div class="d-flex">
         <v-navigation-drawer
           class=""
-          min-width="300"
+          width="25%"
           permanent
-          style="height: calc(100vh - 50px)"
+          style="height:100%; min-height:100vh"
         >
-          <h3 class="blue-grey--text px-4 py-3">
-            <v-icon color="blue-grey" left>mdi-table-cog</v-icon> Gestión de Tablas
+          <h3 class="black--text px-4 py-3">
+            Gestión de Tablas
           </h3>
           <div class="px-4 py-2">
             <search-expand v-model="search" />

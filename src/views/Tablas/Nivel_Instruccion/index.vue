@@ -1,6 +1,6 @@
 <template>
   <v-container
-    id="nucleos"
+    id="niveles"
     fluid
     tag="section"
     class="pa-0"
@@ -9,7 +9,7 @@
     <v-row class="ma-0">
       <v-col cols="12" sm="7" md="5" class="pt-1 d-flex align-center">
         <h3 class="blue-grey--text">
-          <v-icon color="blue-grey" left>mdi-home-assistant</v-icon> Núcleos
+          Niveles de Instrucción
         </h3>
       </v-col>
       <v-col cols="12" sm="5" md="7" class="pt-1 d-flex align-center justify-end">
@@ -37,7 +37,7 @@
               color="blue-grey"
               v-bind="attrs"
               v-on="on"
-              @click="getNucleos()"
+              @click="getNiveles()"
             >
               <v-icon>mdi-refresh</v-icon>
             </v-btn>
@@ -56,8 +56,6 @@
     </v-row>
     <v-row>
       <v-col cols="12" class="py-0">
-          <!-- :search="search"
-          :loading="loadingData" -->
         <v-data-table
           sort-by="fecha_enviado"
           class="inbox"
@@ -65,7 +63,7 @@
           no-data-text="No hay Documentos Recibidos"
           :search="filterData"
           :headers="headers"
-          :items="itemsData"
+          :items="niveles"
           :loading="loading"
           :sort-desc="true"
           :page.sync="page"
@@ -85,7 +83,7 @@
                     <v-icon size="19" class="mx-2" color="blue-grey">mdi-pencil-outline</v-icon>
                   </v-btn>
                 </template>
-                <span>Editar Departamento</span>
+                <span>Editar {{ item.descripcion }} </span>
               </v-tooltip>
               <v-tooltip bottom>
                 <template v-slot:activator="{ on, attrs }">
@@ -93,27 +91,21 @@
                     icon
                     v-bind="attrs"
                     v-on="on"
-                    @click="deleteDepartmento(item)"
+                    @click="deleteNivel(item)"
                     >
                     <v-icon size="19" class="mx-2" color="blue-grey">mdi-trash-can-outline</v-icon>
                   </v-btn>
                 </template>
-                <span>Eliminar</span>
+                <span>Eliminar {{item.descripcion}}</span>
               </v-tooltip>
             </div>
           </template>
-           <template v-slot:item.nombre="{ item }">
+           <template v-slot:item.descripcion="{ item }">
             <span
-              v-if="item.nombre"
+              v-if="item.descripcion"
               class="font-weight-bold"
-               v-text="item.nombre"
+               v-text="item.descripcion"
             />
-           </template>
-           <template v-slot:item.direccion="{ item }">
-            <span
-              class="text-truncate"
-              style="width: 30%; max-width: 30%;"
-            >{{item.direccion}}</span>
            </template>
         </v-data-table>
       </v-col>
@@ -126,16 +118,17 @@
       v-model="modalShow"
       :action="isCreate ? 'crear' : 'edit'"
       :data="dataSelect"
-      @procesado="getNucleos"
+      @procesado="getNiveles"
+      @reset="isCreate = true"
     />
   </v-container>
 </template>
 <script>
 
-import { getNucleoList, deleteNucleo } from '@/services/nucleo'
+import { getLevels, deleteLevel } from '@/services/nivel'
 import { Base64 } from 'js-base64';
 export default {
-  name: 'Nucleos',
+  name: 'Nivel',
   components: {
     CreateAndEdit: () => import(
       /* webpackChunkName: "modal-success" */
@@ -146,12 +139,11 @@ export default {
     loading: false,
     updating: false,
     headers: [
-      { text: 'COD.', value: 'codigo_concatenado', width: '100px' },
-      { text: 'Nombre', value: 'nombre', align: '' },
-      { text: 'Dirección', value: 'direccion', align: ' at' },
+      { text: 'Nombre', value: 'descripcion', align: '' },
+      { text: 'Abreviatura', value: 'abreviatura' },
       { text: '', value: 'iconos', align: ' px-0', width: '100px' },
     ],
-    nucleos: [],
+    niveles: [],
     filterData: '',
     page: 1,
     pageCount: 0,
@@ -171,27 +163,17 @@ export default {
         ? `${this.infoPagination.pageStart + 1} - ${this.infoPagination.pageStop} de ${this.infoPagination.itemsLength}`
         : ''
     },
-    itemsData() {
-      return this.nucleos.length > 0
-        ? this.nucleos.map(item => ({
-          ...item,
-          jefe_nombre: item?.jefe?.nombres_apellidos,
-          nucleo_nombre: item?.nucleo?.nombre,
-        }))
-        : []
-    }
-
   },
   created () {
-    this.getNucleos()
+    this.getNiveles()
   },
   methods: {
 
-    async getNucleos () {
+    async getNiveles () {
       this.loading = true
       try {
-        const { nucleos } = await getNucleoList()
-        this.nucleos = nucleos
+        const { niveles } = await getLevels()
+        this.niveles = niveles
       } catch (error) {
         console.log(error)
       } finally {
@@ -205,7 +187,7 @@ export default {
       this.isCreate = false
       this.modalShow = true
     },
-    async deleteDepartmento(row){
+    async deleteNivel(row){
       const result = await this.$root.$confirm(
         '¿Está Seguro?',
         `Desea eliminar el núcleo ${row?.nombre}`
@@ -214,8 +196,8 @@ export default {
       if(result){
         this.updating = true
         try {
-          const { message } = await deleteNucleo({id: row?.id})
-          this.getNucleos()
+          const { message } = await deleteLevel({id: row?.id})
+          this.getNiveles()
           this.$root.$showAlert(message, 'success');
         } catch (error) {
           console.log(error)

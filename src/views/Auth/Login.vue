@@ -51,7 +51,7 @@
                     >
                       SISTEMA DE CORRESPONDENCIA
                       <div class="text-subtitle-1 text-center mb-n4 font-weight-bold">
-                        Autenticación Web
+                        Administración
                       </div>
                     </div>
                   </v-theme-provider>
