@@ -33,22 +33,11 @@
       <v-card-text>
         <validation-observer ref="DEPARTAMENT_FORM" tag="div">
           <v-row>
-            <v-col cols="12" sm="7" md="8" lg="8" class="pt-2 pb-0">
+            <v-col cols="12" class="pt-2 pb-0">
               <label-form text="Nombre" required />
               <validation-provider name="Nombre" vid="nombre" rules="required" v-slot="{ errors }">
                 <v-text-field
                   v-model="departamentInfo.nombre"
-                  outlined
-                  dense
-                  :error-messages="errors[0]"
-                />
-              </validation-provider>
-            </v-col>
-            <v-col cols="12" sm="5" md="4" lg="4" class="pt-2 pb-0">
-              <label-form text="Código" required/>
-              <validation-provider name="codigo" vid="codigo" rules="required" v-slot="{ errors }">
-                <v-text-field
-                  v-model="departamentInfo.codigo"
                   outlined
                   dense
                   :error-messages="errors[0]"
@@ -68,7 +57,29 @@
                 />
               </validation-provider>
             </v-col>
-            <v-col cols="6" md="5" class="pt-2 pb-0">
+            <v-col cols="12" sm="5" md="5" class="pt-2 pb-0">
+              <label-form text="Código" required/>
+              <validation-provider name="codigo" vid="codigo" rules="required" v-slot="{ errors }">
+                <v-text-field
+                  v-model="departamentInfo.codigo"
+                  outlined
+                  dense
+                  :error-messages="errors[0]"
+                />
+              </validation-provider>
+            </v-col>
+            <v-col cols="12" md="5" class="pt-2 pb-0">
+              <label-form text="Email"/>
+              <validation-provider name="email" vid="correo" rules="email" v-slot="{ errors }">
+                <v-text-field
+                  v-model="departamentInfo.correo"
+                  outlined
+                  dense
+                  :error-messages="errors[0]"
+                />
+              </validation-provider>
+            </v-col>
+            <v-col cols="12" md="6" class="pt-2 pb-0">
               <label-form text="Núcleo" required/>
               <validation-provider name="cod_nucleo" vid="cod_nucleo" rules="required" v-slot="{ errors }">
                 <v-select
@@ -93,15 +104,28 @@
             </v-select>
               </validation-provider>
             </v-col>
-            <v-col cols="12" md="5" class="pt-2 pb-0">
-              <label-form text="Email"/>
-              <validation-provider name="email" vid="correo" rules="email" v-slot="{ errors }">
-                <v-text-field
-                  v-model="departamentInfo.correo"
-                  outlined
-                  dense
-                  :error-messages="errors[0]"
+            <v-col cols="12" md="6" class="pt-2 pb-0">
+              <label-form text="Departamento Superior" required/>
+              <validation-provider name="Departamento Superior" vid="id_departamento_superior" rules="required" v-slot="{ errors }">
+                <v-autocomplete
+                v-model="departamentInfo.id_departamento_superior"
+                :items="allDepartaments"
+                item-text="nombre"
+                item-value="id"
+                outlined
+                dense
+                :error-messages="errors[0]"
+              >
+              <template v-slot:append>
+                <v-progress-circular
+                  v-if="loadNucleo"
+                  indeterminate
+                  :width="3"
+                  size="20"
+                  color="primary"
                 />
+              </template>
+            </v-autocomplete>
               </validation-provider>
             </v-col>
           </v-row>
@@ -155,6 +179,7 @@ const dataDefault = () => ({
   siglas: '',
   cod_nucleo: '',
   correo: '',
+  id_departamento_superior: '',
 });
 export default {
   name:'ModalDepartamento',
@@ -163,6 +188,10 @@ export default {
     data:{
       type: Object,
       default: () => ({}),
+    },
+    departments:{
+      type: Array,
+      default: () => ([]),
     },
     loading:{
       type: Boolean,
@@ -204,6 +233,13 @@ export default {
   filters: {
     fisrtLetter(val) {
       return val !== null ? val.toUpperCase().charAt(0) : ''
+    }
+  },
+  computed:{
+    allDepartaments(){
+      return this.departments.length > 0
+        ? this.departments.filter(item => item.id !== this.departamentInfo?.id)
+        : []
     }
   },
   created () {

@@ -59,10 +59,9 @@
           <!-- :search="search"
           :loading="loadingData" -->
         <v-data-table
-          sort-by="fecha_enviado"
           class="inbox"
           hide-default-footer
-          no-data-text="No hay Documentos Recibidos"
+          no-data-text="No hay Departamentos Registrados"
           :search="filterData"
           :headers="headers"
           :items="itemsData"
@@ -120,6 +119,7 @@
       v-model="modalShow"
       :action="isCreate ? 'crear' : 'edit'"
       :data="dataSelect"
+      :departments="itemsData"
       @procesado="getDepartaments"
     />
   </v-container>
@@ -144,6 +144,7 @@ export default {
       { text: 'Nombre', value: 'nombre', align: '' },
       { text: 'Siglas', value: 'siglas', align: '' },
       { text: 'Jefe', value: 'jefe_nombre', align: '' },
+      { text: 'Dpto. Superior', value: 'superior' },
       { text: 'Núcleo', value: 'nucleo_nombre' },
       { text: '', value: 'iconos', align: ' px-0', width: '100px' },
     ],
@@ -177,6 +178,7 @@ export default {
           ...item,
           jefe_nombre: item?.jefe?.nombres_apellidos,
           nucleo_nombre: item?.nucleo?.nombre,
+          superior: item?.dpto_superior !== null ? item?.dpto_superior?.nombre : ''
         }))
         : []
     }
