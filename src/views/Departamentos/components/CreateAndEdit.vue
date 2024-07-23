@@ -106,7 +106,7 @@
             </v-col>
             <v-col cols="12" md="6" class="pt-2 pb-0">
               <label-form text="Departamento Superior" required/>
-              <validation-provider name="Departamento Superior" vid="id_departamento_superior" rules="required" v-slot="{ errors }">
+              <validation-provider name="Departamento Superior" vid="id_departamento_superior" rules="" v-slot="{ errors }">
                 <v-autocomplete
                 v-model="departamentInfo.id_departamento_superior"
                 :items="allDepartaments"
@@ -114,6 +114,7 @@
                 item-value="id"
                 outlined
                 dense
+                clearable
                 :error-messages="errors[0]"
               >
               <template v-slot:append>
