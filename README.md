@@ -1,2 +1,2 @@
-# admin-siscor-udo
-Sistema administrativo de SiscorUdo
+# actualizacion-data-funcinarios
+Sistema administrativo de Funcionarios
