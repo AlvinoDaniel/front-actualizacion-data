@@ -25,8 +25,19 @@ const createRouter = () => new Router({
         /* webpackChunkName: "layout-[request]" */
         '@/layouts/default/Index'
       ),
-      redirect: { name: 'Usuarios' },
+      // redirect: { name: 'Usuarios' },
       children: [
+        {
+          name: 'Principal',
+          path: '/',
+          meta:{
+            auth: true,
+          },
+          component: () => import(
+            /* webpackChunkName: "views-[request]" */
+            '@/views/Dashboard'
+          ),
+        },
         {
           name: 'Usuarios',
           path: '/usuarios',
@@ -107,15 +118,50 @@ const createRouter = () => new Router({
       ],
     },
     {
-      name: 'Login',
-      path: '/auth/login',
+      name: 'Auth',
+      path: '/auth',
       meta:{
         auth: false,
       },
       component: () => import(
         /* webpackChunkName: "views-[request]" */
-        '@/views/Auth/Login'
+        '@/layouts/Auth/Index'
       ),
+      children: [
+        {
+          name: 'Login',
+          path: 'login',
+          meta:{
+            auth: false,
+          },
+          component: () => import(
+            /* webpackChunkName: "views-[request]" */
+            '@/views/Auth/Login'
+          ),
+        },
+        {
+          name: 'Registrar',
+          path: 'registrar',
+          meta:{
+            auth: false,
+          },
+          component: () => import(
+            /* webpackChunkName: "views-[request]" */
+            '@/views/Auth/Register'
+          ),
+        },
+        // {
+        //   name: 'Verificacion',
+        //   path: 'resetear-clave',
+        //   meta:{
+        //     auth: false,
+        //   },
+        //   component: () => import(
+        //     /* webpackChunkName: "views-[request]" */
+        //     '@/views/Auth/VerificationCode'
+        //   ),
+        // },
+      ],
     },
     {
       name: 'Error',

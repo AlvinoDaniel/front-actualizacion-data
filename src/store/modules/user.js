@@ -23,7 +23,7 @@ const actions = {
     commit('info', data.data.user);
   },
   async login ({ commit }, credentials) {
-    const response = await api.post('auth/login/a', credentials)
+    const response = await api.post('auth/login', credentials)
 
     cookies.SET_TOKEN(response.data.data.token)
     commit('token', response.data.data.token)
@@ -31,8 +31,12 @@ const actions = {
   },
   async logout ({ commit, dispatch }) {
     dispatch('app/setOverlay', true, { root: true});
-    await api.get('auth/logout');
-    cookies.REMOVE_USER();
+    try {
+      await api.get('auth/logout');
+      cookies.REMOVE_USER();
+    } catch (error) {
+      cookies.REMOVE_USER();
+    }
     resetRouter();
     commit('RESET_INFO');
     // dispatch('app/setMenuApp', [], { root: true});
@@ -57,12 +61,19 @@ const getters = {
     return state.token !== null
   },
   infoBasic (state) {
+    const {unidades = [] } = state.info.personal;
+    const data = state.info.id ? {
+      uni_admin: unidades.length > 0 ? unidades.map(item => item?.codigo_unidad_admin).join(', ') : 'S/R',
+      uni_ejec: unidades.length > 0 ? unidades.map(item => item?.codigo_unidad_ejec).join(', ') : 'S/R',
+      nucleo: state.info?.personal?.nucleo?.nombre,
+      cedula: state.info?.personal?.cedula_identidad,
+      nombres_apellidos: state.info?.personal?.nombres_apellidos,
+      cargo_jefe: state.info?.personal?.cargo_jefe ?? 'S/R',
+      cargo_opsu: state.info?.personal?.cargo_opsu ?? 'S/R',
+      personal: state.info?.personal,
+    } : null
+    return data;
 
-    const { usuario: username, email, fullName, departamento } = state.info
-
-    return state.info.id
-      ? { username, email, fullName, departamento: departamento.nombre }
-      : ''
   },
   departamento (state) {
     const { departamento } = state.info
