@@ -70,10 +70,10 @@ const getters = {
       nombres_apellidos: state.info?.personal?.nombres_apellidos,
       cargo_jefe: state.info?.personal?.cargo_jefe ?? 'S/R',
       cargo_opsu: state.info?.personal?.cargo_opsu ?? 'S/R',
+      has_update: state.info?.pesonal?.has_update ?? false,
       personal: state.info?.personal,
     } : null
     return data;
-
   },
   departamento (state) {
     const { departamento } = state.info

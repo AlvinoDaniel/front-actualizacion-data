@@ -174,6 +174,163 @@
                   </validation-provider>
                 </v-col>
               </v-row>
+              <v-row>
+                <v-col cols="12">
+                  <h2>Uniforme</h2>
+                </v-col>
+              </v-row>
+              <v-row>
+                <v-col cols="12" sm="6" md="4">
+                  <label class="font-weight-medium button black--text text-h6 mb-2">Area de trabajo</label>
+                  <validation-provider name="Área de Trabajo" vid="area_trabajo" rules="required" v-slot="{ errors }">
+                    <v-select
+                      v-model="info.area_trabajo"
+                      :items="[]"
+                      :loading="false"
+                      item-text="descripcion"
+                      item-value="id"
+                      outlined
+                      class="input-redactar"
+                      :error-messages="errors[0]"
+                    >
+                      <!-- <template v-slot:item="data">
+                        <span class="text-uppercase" v-text="data.item.descripcion" />
+                      </template> -->
+                    </v-select>
+                  </validation-provider>
+                </v-col>
+                <v-col cols="12" sm="6" md="4">
+                  <label class="font-weight-medium button black--text text-h6 mb-2">Talla Pantalon</label>
+                  <validation-provider name="Talla Pantalon" vid="pantalon" rules="required" v-slot="{ errors }">
+                    <v-text-field
+                      v-model="info.pantalon"
+                      outlined
+                      clearable
+                      :error-messages="errors[0]"
+                      color="label"
+                      class="mt-2"
+                      persistent-hint
+                      >
+                      <template slot="prepend-inner">
+                        <v-icon color="label">mdi-account</v-icon>
+                      </template>
+                    </v-text-field>
+                  </validation-provider>
+                </v-col>
+                <v-col cols="12" sm="6" md="4">
+                  <label class="font-weight-medium button black--text text-h6 mb-2">Talla Camisa</label>
+                  <validation-provider name="Talla Camisa" vid="camisa" rules="required" v-slot="{ errors }">
+                    <v-text-field
+                      v-model="info.camisa"
+                      outlined
+                      clearable
+                      :error-messages="errors[0]"
+                      color="label"
+                      class="mt-2"
+                      persistent-hint
+                      >
+                      <template slot="prepend-inner">
+                        <v-icon color="label">mdi-account</v-icon>
+                      </template>
+                    </v-text-field>
+                  </validation-provider>
+                </v-col>
+                <v-col cols="12" sm="6" md="4">
+                  <label class="font-weight-medium button black--text text-h6 mb-2">Tipo Calzado</label>
+                  <validation-provider name="Tipo Calzado" vid="tipo_calzado" rules="required" v-slot="{ errors }">
+                    <v-select
+                      v-model="info.tipo_calzado"
+                      :items="[]"
+                      :loading="false"
+                      item-text="descripcion"
+                      item-value="id"
+                      outlined
+                      class="input-redactar"
+                      :error-messages="errors[0]"
+                    >
+                      <!-- <template v-slot:item="data">
+                        <span class="text-uppercase" v-text="data.item.descripcion" />
+                      </template> -->
+                    </v-select>
+                  </validation-provider>
+                </v-col>
+                <v-col cols="12" sm="6" md="4">
+                  <label class="font-weight-medium button black--text text-h6 mb-2">Talla de Zapatos</label>
+                  <validation-provider name="Talla de Zapatos" vid="zapato" rules="required" v-slot="{ errors }">
+                    <v-text-field
+                      v-model="info.zapato"
+                      outlined
+                      clearable
+                      :error-messages="errors[0]"
+                      color="label"
+                      class="mt-2"
+                      persistent-hint
+                      >
+                      <template slot="prepend-inner">
+                        <v-icon color="label">mdi-account</v-icon>
+                      </template>
+                    </v-text-field>
+                  </validation-provider>
+                </v-col>
+                <v-col cols="12" sm="6" md="4">
+                  <label class="font-weight-medium button black--text text-h6 mb-2">Prenda Extra</label>
+                  <validation-provider name="Prenda Extra" vid="prenda_extra" rules="required" v-slot="{ errors }">
+                    <v-select
+                      v-model="info.prenda_extra"
+                      :items="[]"
+                      :loading="false"
+                      item-text="descripcion"
+                      item-value="id"
+                      outlined
+                      class="input-redactar"
+                      :error-messages="errors[0]"
+                    >
+                      <!-- <template v-slot:item="data">
+                        <span class="text-uppercase" v-text="data.item.descripcion" />
+                      </template> -->
+                    </v-select>
+                  </validation-provider>
+                </v-col>
+              </v-row>
+              <v-row align="center">
+                <v-col cols="12" md="8" class="d-flex justify-between mt-2">
+                  <v-alert
+                    v-if="user.has_update"
+                    dense
+                    text
+                    icon="mdi-shield-check"
+                    type="success"
+                    class="mb-0"
+                  >
+                   <strong> Datos Actualizados </strong>
+                  </v-alert>
+                  <v-alert
+                    v-else
+                    dense
+                    text
+                    icon="mdi-shield-check"
+                    type="error"
+                    class="mb-0"
+                  >
+                    <span class="d-block">
+                      <strong> Debe actualizar sus datos </strong>
+                    </span>
+                    <small>Es necesario actualizar todos los datos requeridos.</small>
+                  </v-alert>
+                </v-col>
+                <v-col cols="12" md="4" class="d-flex justify-end mt-2">
+                  <v-btn
+                    color="secondary"
+                    depressed
+                    class="px-12"
+                  >
+                    Actualizar
+                    <v-icon right>
+                      mdi-arrow-right
+                    </v-icon>
+                  </v-btn>
+                </v-col>
+              </v-row>
             </v-card-text>
           </v-card>
         </v-col>
@@ -194,6 +351,12 @@
       info: {
         email: null,
         telefono: null,
+        area_trabajo: null,
+        camisa: null,
+        pantalon: null,
+        zapato: null,
+        tipo_calzado: null,
+        prenda_extra: null,
       },
       load: false,
       dataDashboard: '',
