@@ -3,8 +3,8 @@
     <v-overlay :value="overlay" :opacity="1" :z-index="10" color="grey lighten-5" class="text-center">
       <v-img
         contain
-        max-width="180"
-        :src="require('@/assets/Logos/IDENTIDAD_2.png')"
+        max-width="100"
+        :src="require('@/assets/Logos/udo.png')"
       ></v-img>        
       <v-progress-linear
           color="blue-grey lighten-2"

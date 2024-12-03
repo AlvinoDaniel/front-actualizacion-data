@@ -440,8 +440,9 @@
       if(valid) {
         this.saving = true;
         try {
+          console.log('UPDATE')
           const personal = await updateAuthUser({datos: this.info})
-          this.$store.dispatch('user/updateStatusDataUser', personal?.has_update)
+          this.$store.dispatch('user/getInfo');
           this.$root.$showAlert('Datos Actualizados exitosamente.', 'success');
         } catch (e) {
           this.$root.$showAlert( e.response ? e.response?.data?.errors?.message : 'Lo sentimos, hubo un error al intentar conectar con el Servidor.', 'error');

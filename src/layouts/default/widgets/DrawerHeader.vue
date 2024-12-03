@@ -4,7 +4,7 @@
       <v-expand-x-transition>
         <v-img
           :src="
-            require('@/assets/Logos/ICONO_IDENTIDAD_192X192.png')"
+            require('@/assets/Logos/Logo_UDO.png')"
           width="120"
         />
       </v-expand-x-transition>
@@ -14,10 +14,10 @@
       v-else
       class="pl-2 pb-0"
     >
-      <v-list-item-title class="text-h4">
+      <v-list-item-title class="text-h4 d-flex justify-center mb-3">
         <v-img
-          :src="require('@/assets/Logos/IDENTIDAD_1.png')"
-          max-width="180"
+          :src="require('@/assets/Logos/Logo_UDO.png')"
+          max-width="100"
         />
 
 

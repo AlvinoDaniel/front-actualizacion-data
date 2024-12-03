@@ -41,3 +41,12 @@ export const searchPersonal = async ({cedula}) => {
     return Promise.reject(error)
   }
 }
+
+export const updateAuthUser = async ({datos}) => {
+  try {
+    const { data } = await api.post('user/actualizar', datos)
+    return data.data
+  } catch (error) {
+    return Promise.reject(error)
+  }
+}

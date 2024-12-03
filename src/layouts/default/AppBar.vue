@@ -27,7 +27,7 @@
     /> -->
     <div class="pt-1 hidden-md-and-up">
       <v-img
-        :src="require('@/assets/Logos/IDENTIDAD_1.png')"
+        :src="require('@/assets/Logos/udo.png')"
         max-width="120"
       />
     </div>

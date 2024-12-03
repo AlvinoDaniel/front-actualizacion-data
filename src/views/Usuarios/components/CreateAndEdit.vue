@@ -471,6 +471,7 @@ export default {
     cerrar() {
       this.show = false;
       this.stepper = 1;
+      this.workerExists = false;
       this.personal = dataDefault();
       this.$refs.STEP_UNIFORM_FORM.reset();
       this.$refs.STEP_BASIC_FORM.reset();

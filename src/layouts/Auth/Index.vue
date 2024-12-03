@@ -6,16 +6,6 @@
       color="white"
       elevation="1"
     >
-      <v-toolbar-title>
-        <v-img
-          :src="
-            require('@/assets/Logos/IDENTIDAD_1.png')"
-          width="250"
-        />
-      </v-toolbar-title>
-
-      <v-spacer></v-spacer>
-
      <v-toolbar-title>
         <v-img
           :src="

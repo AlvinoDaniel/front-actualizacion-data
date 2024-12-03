@@ -17,7 +17,7 @@
     name: 'App',
     metaInfo: {
       title: 'App',
-      titleTemplate: '%s | SISCOR-UDO',
+      titleTemplate: '%s | UDO',
       htmlAttrs: { lang: 'eS' },
       meta: [
         { charset: 'utf-8' },

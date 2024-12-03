@@ -144,6 +144,7 @@
                         :ripple="false"
                         color="secondary"
                         class="text-capitalize"
+                        :to="{name: 'Login'}"
                       >
                         Ingresar Aquí
                       </v-btn>
@@ -216,6 +217,7 @@ export default {
         this.credentials.correo = '';
         this.credentials.password = '';
         this.credentials.confirm_password = '';
+        this.workerExists = false;
         this.searching = true;
         try {
           const { personal = null } = await searchPersonal({cedula: this.credentials.cedula})
