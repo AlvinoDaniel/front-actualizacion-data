@@ -4,6 +4,7 @@
       <router-view />
     </v-fade-transition>
     <default-overlay />
+    <default-alert />
   </v-app>
 </template>
 
@@ -27,6 +28,10 @@
       DefaultOverlay: () => import(
         /* webpackChunkName: "default-overlay" */
         './layouts/default/AppOverlay'
+      ),
+      DefaultAlert: () => import(
+        /* webpackChunkName: "default-alert" */
+        './layouts/default/AppWarning'
       ),
     }
   }

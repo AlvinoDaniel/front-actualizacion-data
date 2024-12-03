@@ -15,7 +15,13 @@ router.beforeEach(async (to, from, next) => {
 
       const hasUser = Object.values(store.getters['user/info']).length > 0;
       if(hasUser) {
-        return next();
+        const hasUpdate = store.getters['user/hasUpdate']
+        if(hasUpdate || to.path === '/'){
+          return next();
+        } else {
+          store.dispatch('app/setAlert', true);
+          next({ path: '/' })
+        }
       }
       else {
         try {

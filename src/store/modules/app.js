@@ -8,38 +8,24 @@ const state = {
   mini: false,
   gutters: true,
   overlay: false,
+  alert: false,
   menuApp: [],
   items: [
     {
-      title: 'Usuarios',
-      icon: 'mdi-account-group-outline',
-      to: '/usuarios',
+      title: 'Principal',
+      icon: 'mdi-home-outline',
+      to: '/',
       meta: {
         badge: null,
       },
     },
     {
-      title: 'Departamentos',
-      icon: 'mdi-home-city-outline',
-      to: '/departamentos',
-    },
-    // {
-    //   title: 'Personal',
-    //   meta: {
-    //     badge: null,
-    //   },
-    //   icon: 'mdi-account-cog-outline',
-    //   to: '/por-corregir',
-    // },
-    {
-      title: 'Nucleos',
-      icon: 'mdi-home-assistant',
-      to: '/nucleos',
-    },
-     {
-      title: 'Gestión de Tablas',
-      icon: 'mdi-table-cog',
-      to: '/gestion-tablas',
+      title: 'Mi Personal',
+      icon: 'mdi-account-group-outline',
+      to: '/usuarios',
+      meta: {
+        badge: null,
+      },
     },
 
   ],
@@ -74,6 +60,9 @@ const actions = {
 const getters = {
   overlay(state){
     return state.overlay;
+  },
+  alert(state){
+    return state.alert;
   },
   items(state){
     return state.items;

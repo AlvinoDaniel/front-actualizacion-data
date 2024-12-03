@@ -1,8 +1,8 @@
 import api from '../util/request.js'
 
-export const getAllUsers = async () => {
+export const getAllPersonal = async () => {
   try {
-    const { data } = await api.get(`users`)
+    const { data } = await api.get(`personal`)
     return data.data
   } catch (error) {
     console.log({error})
@@ -10,63 +10,31 @@ export const getAllUsers = async () => {
   }
 }
 
-export const getUser = async ({id}) => {
+export const deletePersonal = async ({ id }) => {
   try {
-    const { data } = await api.get(`users/show/${id}`)
-    return data.data
-  } catch (error) {
-    console.log({error})
-    return Promise.reject(error)
-  }
-}
-
-export const saveUser = async ({ datos }) => {
-  try {
-    const { data } = await api.post('users', datos)
+    const { data } = await api.delete(`personal/${id}`)
     return data
   } catch (error) {
-    console.log({error})
     return Promise.reject(error)
   }
 }
 
-export const updateUser = async ({ datos, id, personal }) => {
-  try {
-    const { data } = await api.post(`users/${id}/personal/${personal}`, datos)
-    return data.data
-  } catch (error) {
-    console.log({error})
-    return Promise.reject(error)
-  }
-}
+export const savePersonal = async ({info, action, id}) => {
+  const url = action === 'crear'
+    ? 'personal'
+    : `personal/${id}`;
 
-export const getAllRoles = async () => {
   try {
-    const { data } = await api.get(`users/roles`)
-    return data.data
+    const { data } = await api.post(url, info)
+    return data
   } catch (error) {
-    console.log({error})
-    return Promise.reject(error)
-  }
-}
-
-export const getAllLevels = async () => {
-  try {
-    const { data } = await api.get(`users/niveles`)
-    return data.data
-  } catch (error) {
-    console.log({error})
     return Promise.reject(error)
   }
 }
 
 export const searchPersonal = async ({cedula}) => {
   try {
-    const { data } = await api.get(`personal/search`, {
-      params: {
-        cedula
-      }
-    })
+    const { data } = await api.get(`personal/search/${cedula}`)
     return data.data
   } catch (error) {
     console.log({error})

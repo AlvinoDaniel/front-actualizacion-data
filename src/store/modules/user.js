@@ -7,6 +7,7 @@ import { resetRouter } from '@/router'
 const state = {
   info:{},
   token: cookies.GET_TOKEN(),
+  hasUpdate: false,
 }
 
 const mutations = {
@@ -14,6 +15,7 @@ const mutations = {
   RESET_INFO (state) {
     state.info  = {};
     state.token = null;
+    state.hasUpdate = false;
   }
 }
 
@@ -21,6 +23,7 @@ const actions = {
   async getInfo ({commit}) {
     const { data } = await api.get('auth/me');
     commit('info', data.data.user);
+    commit('hasUpdate', data.data.user?.personal?.has_update ?? false)
   },
   async login ({ commit }, credentials) {
     const response = await api.post('auth/login', credentials)
@@ -52,6 +55,10 @@ const actions = {
   deleteInfo ({commit}) {
     commit('info', {});
     resetRouter();
+  },
+
+  updateStatusDataUser ({commit}, value) {
+    commit('hasUpdate', value);
   }
 }
 
@@ -71,23 +78,12 @@ const getters = {
       cargo_jefe: state.info?.personal?.cargo_jefe ?? 'S/R',
       cargo_opsu: state.info?.personal?.cargo_opsu ?? 'S/R',
       has_update: state.info?.pesonal?.has_update ?? false,
+      tipo_personal: state.info?.personal?.tipo_personal?.descripcion,
       personal: state.info?.personal,
+      unidades
     } : null
     return data;
-  },
-  departamento (state) {
-    const { departamento } = state.info
-
-    return state.info.id
-      ? {
-          id: departamento.id,
-          nombre: departamento.nombre,
-          siglas: departamento.siglas,
-          jefe: departamento.jefe ? departamento.jefe.nombres_apellidos : 'Jefe del Departamento',
-          cargo_jefe: departamento.jefe ? departamento.jefe.descripcion_cargo : '',
-        }
-      : ''
-  },
+  }
 }
 
 export default {
