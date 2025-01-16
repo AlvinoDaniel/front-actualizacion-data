@@ -165,6 +165,7 @@
                         <validation-provider name="Telefono" vid="telefono" rules="required" v-slot="{ errors }">
                           <v-text-field
                             v-model="personal.telefono"
+                             v-mask="'####-#######'"
                             outlined
                             clearable
                             :disabled="!workerExists"
