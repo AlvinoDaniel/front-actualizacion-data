@@ -70,8 +70,8 @@ const getters = {
   infoBasic (state) {
     const {unidades = [] } = state.info.personal;
     const data = state.info.id ? {
-      uni_admin: unidades.length > 0 ? unidades.map(item => item?.codigo_unidad_admin).join(', ') : 'S/R',
-      uni_ejec: unidades.length > 0 ? unidades.map(item => item?.codigo_unidad_ejec).join(', ') : 'S/R',
+      uni_admin: unidades.length > 0 ?  `${unidades[0]?.codigo_unidad_admin} - ${unidades[0]?.entidad?.descripcion_unidad_admin}` : 'S/R',
+      uni_ejec: unidades.length > 0 ?  `${unidades[0]?.codigo_unidad_ejec} - ${unidades[0]?.entidad?.descripcion_unidad_ejec}` : 'S/R',
       nucleo: state.info?.personal?.nucleo?.nombre,
       cedula: state.info?.personal?.cedula_identidad,
       nombres_apellidos: state.info?.personal?.nombres_apellidos,

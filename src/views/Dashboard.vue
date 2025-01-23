@@ -90,24 +90,24 @@
                     </v-list-item>
                     <v-divider />
                     <v-list-item class="pl-0">
-                      <v-list-item-icon class="ml-0 mr-1">
+                      <v-list-item-icon class="ml-0 mr-1 my-3">
                         <v-icon>mdi-ballot-outline</v-icon>
                       </v-list-item-icon>
                       <v-list-item-content>
-                        <v-list-item-title class="">
-                          <span class="text-muted" style="font-size: 1rem;">Unidad Administrativa: </span>
+                        <v-list-item-title class="d-flex flex-column">
+                          <span class="text-muted pb-2" style="font-size: 1rem;">Unidad Administrativa: </span>
                           <span class="font-weight-bold" style="font-size: 1rem;">{{ user.uni_admin }}</span>
                         </v-list-item-title>
                       </v-list-item-content>
                     </v-list-item>
                     <v-divider />
                     <v-list-item class="pl-0">
-                      <v-list-item-icon class="ml-0 mr-1">
+                      <v-list-item-icon class="ml-0 mr-1 my-3">
                         <v-icon>mdi-ballot-outline</v-icon>
                       </v-list-item-icon>
                       <v-list-item-content>
-                        <v-list-item-title class="">
-                          <span class="text-muted" style="font-size: 1rem;">Unidad Ejecutora: </span>
+                        <v-list-item-title class="d-flex flex-column">
+                          <span class="text-muted pb-2" style="font-size: 1rem;">Unidad Ejecutora: </span>
                           <span class="font-weight-bold" style="font-size: 1rem;">{{ user.uni_ejec }}</span>
                         </v-list-item-title>
                       </v-list-item-content>
