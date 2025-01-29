@@ -5,7 +5,7 @@
         <v-img
           :src="
             require('@/assets/Logos/Logo_UDO.png')"
-          width="120"
+          width="40"
         />
       </v-expand-x-transition>
     </v-list-item-avatar>

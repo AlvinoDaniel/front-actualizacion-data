@@ -1,8 +1,8 @@
 import api from '../util/request.js'
 
-export const getAllPersonal = async () => {
+export const getAllPersonal = async ({admin, ejec}) => {
   try {
-    const { data } = await api.get(`personal`)
+    const { data } = await api.get(`personal`, {params: {admin, ejec }})
     return data.data
   } catch (error) {
     console.log({error})

@@ -50,17 +50,6 @@ const createRouter = () => new Router({
           ),
         },
         {
-          name: 'Gestionar Usuario',
-          path: '/usuarios/gestionar/:id(\\d+)?',
-          meta:{
-            auth: true,
-          },
-          component: () => import(
-            /* webpackChunkName: "views-[request]" */
-            '@/views/Usuarios/createEdit'
-          ),
-        },
-        {
           name: 'Seguridad',
           path: '/seguridad/gestion-de-usuario',
           meta:{
@@ -69,39 +58,6 @@ const createRouter = () => new Router({
           component: () => import(
             /* webpackChunkName: "views-[request]" */
             '@/views/Auth/ResetPassword'
-          ),
-        },
-        {
-          name: 'Departamentos',
-          path: '/departamentos',
-          meta:{
-            auth: true,
-          },
-          component: () => import(
-            /* webpackChunkName: "views-[request]" */
-            '@/views/Departamentos/index'
-          ),
-        },
-        {
-          name: 'Núcleos',
-          path: '/nucleos',
-          meta:{
-            auth: true,
-          },
-          component: () => import(
-            /* webpackChunkName: "views-[request]" */
-            '@/views/Nucleos/index'
-          ),
-        },
-         {
-          name: 'Gestión de Tablas',
-          path: '/gestion-tablas',
-          meta:{
-            auth: true,
-          },
-          component: () => import(
-            /* webpackChunkName: "views-[request]" */
-            '@/views/Tablas/index'
           ),
         },
         {

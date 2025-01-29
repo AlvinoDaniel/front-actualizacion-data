@@ -38,6 +38,7 @@
                           :loading="searching"
                           append-icon="mdi-magnify"
                           @click:append="search()"
+                          @keyup.enter="search()"
                           @blur="search()"
                           color="label"
                           class="mt-2"

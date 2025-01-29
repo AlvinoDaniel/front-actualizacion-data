@@ -66,72 +66,96 @@
                   <h5>INFORMACIÓN LABORAL</h5>
                   <v-list>
                     <v-list-item class="pl-0">
-                      <v-list-item-icon class="ml-0 mr-1">
-                        <v-icon>mdi-account-circle-outline</v-icon>
+                      <v-list-item-icon class="ml-0 mr-2">
+                        <v-avatar rounded size="34" color="blue-grey lighten-5">
+                          <v-icon>mdi-account-circle-outline</v-icon>
+                        </v-avatar>
                       </v-list-item-icon>
                       <v-list-item-content>
+                        <v-list-item-subtitle class="">
+                          <span class="text-muted">Tipo Personal: </span>
+                        </v-list-item-subtitle>
                         <v-list-item-title class="">
-                          <span class="text-muted" style="font-size: 1rem;">Tipo Personal: </span>
                           <span class="font-weight-bold" style="font-size: 1rem;">{{ user.tipo_personal }}</span>
                         </v-list-item-title>
                       </v-list-item-content>
                     </v-list-item>
                     <v-divider />
                     <v-list-item class="pl-0">
-                      <v-list-item-icon class="ml-0 mr-1">
-                        <v-icon>mdi-bank</v-icon>
+                      <v-list-item-icon class="ml-0 mr-2">
+                        <v-avatar rounded size="34" color="blue-grey lighten-5">
+                          <v-icon>mdi-bank</v-icon>
+                        </v-avatar>
                       </v-list-item-icon>
                       <v-list-item-content>
+                        <v-list-item-subtitle class="">
+                          <span class="text-muted">Núcleo: </span>
+                        </v-list-item-subtitle>
                         <v-list-item-title class="">
-                          <span class="text-muted" style="font-size: 1rem;">Núcleo: </span>
                           <span class="font-weight-bold" style="font-size: 1rem;">{{ user.nucleo }}</span>
                         </v-list-item-title>
                       </v-list-item-content>
                     </v-list-item>
                     <v-divider />
                     <v-list-item class="pl-0">
-                      <v-list-item-icon class="ml-0 mr-1 my-3">
-                        <v-icon>mdi-ballot-outline</v-icon>
+                      <v-list-item-icon class="ml-0 mr-2">
+                        <v-avatar rounded size="34" color="blue-grey lighten-5">
+                          <v-icon>mdi-ballot-outline</v-icon>
+                        </v-avatar>
                       </v-list-item-icon>
                       <v-list-item-content>
+                        <v-list-item-subtitle class="d-flex flex-column">
+                          <span class="text-muted">Unidad Administrativa: </span>
+                        </v-list-item-subtitle>
                         <v-list-item-title class="d-flex flex-column">
-                          <span class="text-muted pb-2" style="font-size: 1rem;">Unidad Administrativa: </span>
-                          <span class="font-weight-bold" style="font-size: 1rem;">{{ user.uni_admin }}</span>
+                          <span class="font-weight-bold text-uppercase" style="font-size: 1rem;">{{ user.uni_admin }}</span>
                         </v-list-item-title>
                       </v-list-item-content>
                     </v-list-item>
                     <v-divider />
                     <v-list-item class="pl-0">
-                      <v-list-item-icon class="ml-0 mr-1 my-3">
-                        <v-icon>mdi-ballot-outline</v-icon>
+                      <v-list-item-icon class="ml-0 mr-2">
+                        <v-avatar rounded size="34" color="blue-grey lighten-5">
+                          <v-icon>mdi-ballot-outline</v-icon>
+                        </v-avatar>
                       </v-list-item-icon>
                       <v-list-item-content>
                         <v-list-item-title class="d-flex flex-column">
-                          <span class="text-muted pb-2" style="font-size: 1rem;">Unidad Ejecutora: </span>
-                          <span class="font-weight-bold" style="font-size: 1rem;">{{ user.uni_ejec }}</span>
+                          <span class="text-muted">Unidad Ejecutora: </span>
+                        </v-list-item-title>
+                        <v-list-item-title class="d-flex flex-column">
+                          <span class="font-weight-bold text-uppercase" style="font-size: 1rem;">{{ user.uni_ejec }}</span>
                         </v-list-item-title>
                       </v-list-item-content>
                     </v-list-item>
                     <v-divider />
                     <v-list-item class="pl-0">
-                      <v-list-item-icon class="ml-0 mr-1">
-                        <v-icon>mdi-account-tie</v-icon>
+                      <v-list-item-icon class="ml-0 mr-2">
+                        <v-avatar rounded size="34" color="blue-grey lighten-5">
+                          <v-icon>mdi-account-tie</v-icon>
+                        </v-avatar>
                       </v-list-item-icon>
                       <v-list-item-content>
+                        <v-list-item-subtitle class="">
+                          <span class="text-muted">Cargo Jefe: </span>
+                        </v-list-item-subtitle>
                         <v-list-item-title class="">
-                          <span class="text-muted" style="font-size: 1rem;">Cargo Jefe: </span>
                           <span class="font-weight-bold" style="font-size: 1rem;">{{ user.cargo_jefe }}</span>
                         </v-list-item-title>
                       </v-list-item-content>
                     </v-list-item>
                     <v-divider />
                     <v-list-item class="pl-0">
-                      <v-list-item-icon class="ml-0 mr-1">
-                        <v-icon>mdi-account-tie-outline</v-icon>
+                      <v-list-item-icon class="ml-0 mr-2">
+                        <v-avatar rounded size="34" color="blue-grey lighten-5">
+                          <v-icon>mdi-account-tie-outline</v-icon>
+                        </v-avatar>
                       </v-list-item-icon>
                       <v-list-item-content>
+                        <v-list-item-subtitle class="">
+                          <span class="text-muted">Cargo OPSU: </span>
+                        </v-list-item-subtitle>
                         <v-list-item-title class="">
-                          <span class="text-muted" style="font-size: 1rem;">Cargo OPSU: </span>
                           <span class="font-weight-bold" style="font-size: 1rem;">{{ user.cargo_opsu }}</span>
                         </v-list-item-title>
                       </v-list-item-content>
@@ -173,6 +197,7 @@
                     <validation-provider name="Telefono" vid="telefono" rules="required" v-slot="{ errors }">
                       <v-text-field
                         v-model="info.telefono"
+                        v-mask="'####-#######'"
                         outlined
                         clearable
                         :error-messages="errors[0]"
@@ -228,31 +253,29 @@
                   <v-col cols="12" sm="6" md="4">
                     <label class="font-weight-medium button black--text text-h6 mb-2">Talla Pantalon</label>
                     <validation-provider name="Talla Pantalon" vid="pantalon" rules="required" v-slot="{ errors }">
-                      <v-text-field
+                      <v-select
                         v-model="info.pantalon"
+                        :items="tallasBySex"
+                        item-text="talla"
+                        item-value="talla"
                         outlined
-                        clearable
-                        :error-messages="errors[0]"
-                        color="label"
                         class="mt-2"
-                        persistent-hint
-                        >
-                      </v-text-field>
+                        :error-messages="errors[0]"
+                      >
+                      </v-select>
                     </validation-provider>
                   </v-col>
                   <v-col cols="12" sm="6" md="4">
                     <label class="font-weight-medium button black--text text-h6 mb-2">Talla Camisa</label>
                     <validation-provider name="Talla Camisa" vid="camisa" rules="required" v-slot="{ errors }">
-                      <v-text-field
+                      <v-select
                         v-model="info.camisa"
+                        :items="tallasCamisa"
                         outlined
-                        clearable
-                        :error-messages="errors[0]"
-                        color="label"
                         class="mt-2"
-                        persistent-hint
-                        >
-                      </v-text-field>
+                        :error-messages="errors[0]"
+                      >
+                      </v-select>
                     </validation-provider>
                   </v-col>
                   <v-col cols="12" sm="6" md="4">
@@ -274,7 +297,7 @@
                   </v-col>
                   <v-col cols="12" sm="6" md="4">
                     <label class="font-weight-medium button black--text text-h6 mb-2">Talla de Zapatos</label>
-                    <validation-provider name="Talla de Zapatos" vid="zapato" rules="required" v-slot="{ errors }">
+                    <validation-provider name="Talla de Zapatos" vid="zapato" rules="required|numeric|digits:2|min_value:30|max_value:50" v-slot="{ errors }">
                       <v-text-field
                         v-model="info.zapato"
                         outlined
@@ -361,6 +384,7 @@
   import { get } from 'vuex-pathify'
   import { getCatalogue } from '@/services/catalogue'
   import { updateAuthUser } from '@/services/usuario'
+  import { TALLAS_PANTALON, TALLAS_CAMISA } from '@/services/datos'
 
   export default {
     name: 'DashboardView',
@@ -391,6 +415,12 @@
     computed: {
       user: get('user/infoBasic'),
       hasUpdate: get('user/hasUpdate'),
+      tallasBySex(){
+        return TALLAS_PANTALON.filter(item => item.sexo === this.info.sexo)
+      },
+      tallasCamisa(){
+        return TALLAS_CAMISA
+      }
     },
     created () {
       this.setData()

@@ -6,37 +6,28 @@
     class="pa-0"
   >
     <loader-app v-if="updating" />
-    <v-row class="ma-0">
+    <v-row class="ma-0 py-4 justify-space-between">
       <v-col cols="12"  md="5" class="pt-1 d-flex align-center">
-        <h3 class="blue-grey--text">
-          <v-icon color="blue-grey" left>mdi-account-group-outline</v-icon> Mi Personal
+        <h3 class="black-text">
+          Mi Personal
         </h3>
-        <!-- <v-tabs>
-          <v-tab :ripple="false" @click="assignFilter('')"><strong>Todos</strong>({{data.length}})</v-tab>
-          <v-tab :ripple="false" @click="assignFilter('oficio')">
-            <v-icon color="info">mdi-circle-medium</v-icon>
-           <strong>Oficio</strong>({{cantOficios}})
-          </v-tab>
-          <v-tab :ripple="false" @click="assignFilter('circular')">
-            <v-icon color="tertiary">mdi-circle-medium</v-icon>
-           <strong>Circular</strong>({{cantCopias}})
-          </v-tab>
-        </v-tabs> -->
       </v-col>
-      <v-col cols="12" md="7" class="pt-1 d-flex align-center justify-end">
+      <v-col cols="12" md="6" class="pt-1 d-flex align-center justify-end">
         <search-expand v-model="filterData" />
         <v-tooltip bottom>
           <template v-slot:activator="{ on, attrs }">
             <v-btn
-              icon
               depressed
+              small
+              dark
               color="blue-grey"
+              class="mx-2"
               v-bind="attrs"
               v-on="on"
               @click="modalShow = true"
               >
-              <!-- @click="getBandejaRecibidos(true)" -->
-              <v-icon>mdi-plus</v-icon>
+              <v-icon left>mdi-plus</v-icon>
+              Agregar
             </v-btn>
           </template>
           <span>Agregar</span>
@@ -44,46 +35,53 @@
         <v-tooltip bottom>
           <template v-slot:activator="{ on, attrs }">
             <v-btn
-              icon
+              fab
+              x-small
               depressed
-              color="blue-grey"
+              color="blue-grey lighten-5"
               v-bind="attrs"
               v-on="on"
-              @click="getBandejaRecibidos(true)"
+              @click="updateData()"
             >
               <v-icon>mdi-refresh</v-icon>
             </v-btn>
           </template>
           <span>Actualizar</span>
         </v-tooltip>
-        <v-pagination
+        <!-- <v-pagination
           class="header-pagination"
           v-model="page"
           :length="pageCount"
           circle
           total-visible="0"
-        ></v-pagination>
-        <span class="text-pagination" v-text="paginationText" />
+        ></v-pagination> -->
+        <!-- <span class="text-pagination" v-text="paginationText" /> -->
       </v-col>
     </v-row>
     <v-row>
       <v-col cols="12" class="py-0">
-          <!--
-          :loading="loadingData" -->
+        <v-tabs v-model="selectUnidad">
+            <v-tab v-for="unidad in unidades"
+              :ripple="false"
+              :key="unidad.codigo_unidad_ejec"
+              @click="getPersonal(unidad)"
+            >
+              <v-icon color="info">mdi-circle-medium</v-icon>
+             <strong>{{ unidad.descripcion_unidad_ejec }}</strong>
+            </v-tab>
+        </v-tabs>
+      </v-col>
+      <v-col cols="12" class="py-0">
         <v-data-table
-          sort-by="fecha_enviado"
+          sort-by="codigo_unidad_ejec"
           class="inbox"
-          hide-default-footer
           no-data-text="No hay Personal Registrado"
           :search="filterData"
           :headers="headers"
           :items="personal"
           :loading="loading"
           :sort-desc="true"
-          :page.sync="page"
-          @page-count="pageCount = $event"
-          @pagination="infoPagination = $event"
-        >
+          >
           <template v-slot:item.iconos="{ item }">
             <div class="d-flex justify-center align-center ml-3">
               <v-tooltip bottom>
@@ -114,13 +112,21 @@
               </v-tooltip>
             </div>
           </template>
-           <template v-slot:item.nombres_apellidos="{ item }">
-            <span
-              v-if="item.nombres_apellidos"
-              class="font-weight-bold"
-               v-text="item.nombres_apellidos"
-            />
-           </template>
+          <template v-slot:item.nombres_apellidos="{ item }">
+          <span
+            v-if="item.nombres_apellidos"
+            class="font-weight-bold"
+              v-text="item.nombres_apellidos"
+          />
+          </template>
+          <template v-slot:item.cedula_identidad="{ item }">
+          <span
+            v-if="item.cedula_identidad"
+            class=""
+          >
+            {{ item.cedula_identidad | FormatCurrency }}
+          </span>
+          </template>
         </v-data-table>
       </v-col>
       <v-col cols="12" class="pt-0">
@@ -132,14 +138,15 @@
       :action="isCreate ? 'crear' : 'edit'"
       :data="dataSelect"
       :departments="[]"
-      @procesado="getPersonal"
+      @procesado="getPersonal($event)"
+      @tab="selectUnidad = $event"
       />
   </v-container>
 </template>
 <script>
 
 import { getAllPersonal, deletePersonal } from '@/services/usuario'
-import { Base64 } from 'js-base64';
+import { get } from 'vuex-pathify'
 export default {
   name: 'Personal',
   components: {
@@ -154,14 +161,16 @@ export default {
     modalShow: false,
     isCreate: true,
     dataSelect: null,
+    unidades: [],
+    selectUnidad: 0,
     headers: [
-      { text: 'Cédula Identidad', value: 'cedula_identidad' },
-      { text: 'Nombres y Apellidos', value: 'nombres_apellidos' },
-      { text: 'Tipo Personal', value: 'tipo_personal_descripcion' },
-      { text: 'Núcleo', value: 'nucleo_nombre'},
-      { text: 'Unidad Administrativa', value: 'codigo_unidad_admin'},
-      { text: 'Unidad Ejecutora', value: 'codigo_unidad_ejec'},
-      { text: 'Acciones', value: 'iconos', align: ' px-0', width: '100px' },
+      { text: 'Cédula Identidad', value: 'cedula_identidad', class: 'blue-grey lighten-5 blue-grey--text' },
+      { text: 'Nombres y Apellidos', value: 'nombres_apellidos',  class: 'blue-grey lighten-5 blue-grey--text' },
+      { text: 'Tipo Personal', value: 'tipo_personal_descripcion',  class: 'blue-grey lighten-5 blue-grey--text' },
+      { text: 'Cargo', value: 'cargo_opsu',  class: 'blue-grey lighten-5 blue-grey--text'},
+      // { text: 'Unidad Administrativa', value: 'codigo_unidad_admin',  class: 'blue-grey lighten-5 blue-grey--text'},
+      // { text: 'Unidad Ejecutora', value: 'codigo_unidad_ejec',  class: 'blue-grey lighten-5 blue-grey--text'},
+      { text: 'Acciones', value: 'iconos', align: ' px-0', width: '100px',  class: 'blue-grey lighten-5 blue-grey--text' },
     ],
     personal: [],
     colorTipo: {
@@ -178,30 +187,40 @@ export default {
     }
   }),
   computed: {
-    paginationText () {
-
-      return this.infoPagination
-        ? `${this.infoPagination.pageStart + 1} - ${this.infoPagination.pageStop} de ${this.infoPagination.itemsLength}`
-        : ''
-
+    user: get('user/infoBasic'),
+    showTabs(){
+      return this.unidades.length > 1;
     }
   },
   created () {
-    this.getPersonal()
+    this.setUnidades()
   },
   methods: {
+    setUnidades(){
+      const {unidades = [] } = this.user
+      this.unidades = unidades.map(item => {
+        return {
+          codigo_unidad_admin: item?.codigo_unidad_admin,
+          codigo_unidad_ejec: item?.codigo_unidad_ejec,
+          descripcion_unidad_ejec: item?.entidad?.descripcion_unidad_ejec,
+        }
+      });
 
-    async getPersonal (actualizar=false) {
-      if(actualizar) this.updating = true
+      this.getPersonal(this.unidades[0])
+    },
+    async getPersonal ({codigo_unidad_admin, codigo_unidad_ejec}) {
       this.loading = true
+      this.personal = []
       try {
-        const { personal = [] } = await getAllPersonal()
+        const { personal = [] } = await getAllPersonal({
+          admin: codigo_unidad_admin,
+          ejec: codigo_unidad_ejec
+        })
         this.personal = personal
       } catch (error) {
         console.log(error)
       } finally {
         this.loading = false
-        if(actualizar) this.updating = false
       }
     },
     editRow(row){
@@ -231,6 +250,11 @@ export default {
           this.updating = false
         }
       }
+    },
+    updateData(){
+      if(!this.unidades[this.selectUnidad]) return;
+
+      this.getPersonal(this.unidades[this.selectUnidad]);
     }
   },
 }

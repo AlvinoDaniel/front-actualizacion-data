@@ -28,7 +28,7 @@
     <div class="pt-1 hidden-md-and-up">
       <v-img
         :src="require('@/assets/Logos/udo.png')"
-        max-width="120"
+        max-width="30"
       />
     </div>
 

@@ -2,7 +2,7 @@
   <v-dialog
     v-model="show"
     persistent
-    max-width="50%"
+    :max-width=" $vuetify.breakpoint.xsOnly ? '100%': '70%'"
     scrollable
     content-class="content-scroll"
   >
@@ -30,7 +30,7 @@
           color="primary"
         ></v-progress-circular>
       </v-overlay>
-      <v-card-text>
+      <v-card-text class="px-0">
         <v-stepper v-model="stepper" alt-labels class="elevation-0">
           <v-stepper-header class="elevation-0">
               <v-stepper-step
@@ -64,6 +64,7 @@
                             :loading="searching"
                             append-icon="mdi-magnify"
                             @click:append="search()"
+                            @keyup.enter="search()"
                             @blur="search()"
                             color="label"
                             class="mt-2"
@@ -112,7 +113,7 @@
                           </v-select>
                         </validation-provider>
                       </v-col>
-                      <v-col cols="12" sm="6" md="4">
+                      <v-col cols="12" sm="6" :md="showUnid ? 4 : 8">
                         <label class="font-weight-medium button black--text text-h6 mb-2">Cargo OPSU</label>
                         <validation-provider name="Cargo OPSU" vid="cargo_opsu" rules="required" v-slot="{ errors }">
                           <v-text-field
@@ -127,13 +128,13 @@
                           </v-text-field>
                         </validation-provider>
                       </v-col>
-                      <v-col cols="12" sm="6" md="4">
+                      <v-col v-if="showUnid" cols="12" sm="6" md="4">
                         <label class="font-weight-medium button black--text text-h6 mb-2">Unidad Ejecutora</label>
                         <validation-provider name="Unidad" vid="unidad" rules="required" v-slot="{ errors }">
                           <v-select
                             v-model="personal.unidad"
                             :items="catalogue.unidades"
-                            item-text="codigo_unidad_ejec"
+                            item-text="descripcion_unidad_ejec"
                             item-value="id"
                             outlined
                             class="mt-2"
@@ -226,31 +227,29 @@
                       <v-col cols="12" sm="6" md="4">
                         <label class="font-weight-medium button black--text text-h6 mb-2">Talla Pantalon</label>
                         <validation-provider name="Talla Pantalon" vid="pantalon" rules="required" v-slot="{ errors }">
-                          <v-text-field
+                          <v-select
                             v-model="personal.pantalon"
+                            :items="tallasBySex"
+                            item-text="talla"
+                            item-value="talla"
                             outlined
-                            clearable
-                            :error-messages="errors[0]"
-                            color="label"
                             class="mt-2"
-                            persistent-hint
-                            >
-                          </v-text-field>
+                            :error-messages="errors[0]"
+                          >
+                          </v-select>
                         </validation-provider>
                       </v-col>
                       <v-col cols="12" sm="6" md="4">
                         <label class="font-weight-medium button black--text text-h6 mb-2">Talla Camisa</label>
                         <validation-provider name="Talla Camisa" vid="camisa" rules="required" v-slot="{ errors }">
-                          <v-text-field
+                          <v-select
                             v-model="personal.camisa"
+                            :items="tallasCamisa"
                             outlined
-                            clearable
-                            :error-messages="errors[0]"
-                            color="label"
                             class="mt-2"
-                            persistent-hint
-                            >
-                          </v-text-field>
+                            :error-messages="errors[0]"
+                          >
+                          </v-select>
                         </validation-provider>
                       </v-col>
                       <v-col cols="12" sm="6" md="4">
@@ -272,7 +271,7 @@
                       </v-col>
                       <v-col cols="12" sm="6" md="4">
                         <label class="font-weight-medium button black--text text-h6 mb-2">Talla de Zapatos</label>
-                        <validation-provider name="Talla de Zapatos" vid="zapato" rules="required" v-slot="{ errors }">
+                        <validation-provider name="Talla de Zapatos" vid="zapato" rules="required|numeric|digits:2|min_value:30|max_value:50" v-slot="{ errors }">
                           <v-text-field
                             v-model="personal.zapato"
                             outlined
@@ -368,6 +367,7 @@
 import { searchPersonal, savePersonal } from '@/services/usuario'
 import { getCatalogue } from '@/services/catalogue'
 import { get } from 'vuex-pathify'
+import { TALLAS_PANTALON, TALLAS_CAMISA } from '@/services/datos'
 
 const dataDefault = () => ({
   correo: null,
@@ -383,7 +383,7 @@ const dataDefault = () => ({
   nombres_apellidos: null,
   cargo_opsu: null,
   tipo_personal: null,
-  unidad: null,
+  unidad: 0,
   id: null,
 });
 export default {
@@ -428,6 +428,7 @@ export default {
         tipo_personal: [],
         unidades: []
       },
+      showUnid: true
     }
   },
   watch: {
@@ -451,24 +452,42 @@ export default {
         }
         this.workerExists = true
       }
-      else
+      else{
         this.personal = dataDefault();
+      }
     },
-  },
-  filters: {
-    fisrtLetter(val) {
-      return val !== null ? val.toUpperCase().charAt(0) : ''
-    }
   },
   computed:{
     user: get('user/infoBasic'),
+    tallasBySex(){
+      return TALLAS_PANTALON.filter(item => item.sexo === this.personal.sexo)
+    },
+    tallasCamisa(){
+      return TALLAS_CAMISA
+    }
   },
   created () {
+    this.setUnidades()
     this.getData()
-    const {unidades = [] } = this.user
-    this.catalogue.unidades = unidades;
   },
   methods: {
+    setUnidades(){
+      const {unidades = [] } = this.user
+      this.catalogue.unidades = unidades.map(item => {
+        return {
+          codigo_unidad_admin: item?.codigo_unidad_admin,
+          codigo_unidad_ejec: item?.codigo_unidad_ejec,
+          descripcion_unidad_admin: item?.entidad?.descripcion_unidad_admin,
+          descripcion_unidad_ejec: item?.entidad?.descripcion_unidad_ejec,
+          id: item?.id
+        }
+      });
+
+      if(unidades.length > 0 && unidades.length === 1){
+        this.personal.unidad = unidades[0]?.id;
+        this.showUnid = false;
+      }
+    },
     cerrar() {
       this.show = false;
       this.stepper = 1;
@@ -537,15 +556,20 @@ export default {
       const valid = await this.$refs.STEP_UNIFORM_FORM.validate();
       if(valid) {
         try {
+          if(this.catalogue.unidades.length > 0 && this.catalogue.unidades.length === 1){
+            this.personal.unidad = this.catalogue.unidades[0]?.id;
+          }
           this.loadingAction = true;
           const { message } = await savePersonal({
             info: this.personal,
             action: this.action,
             id: this.personal?.id ?? null
           })
-          this.$emit('procesado', true);
+          const unidSelect = this.catalogue.unidades.findIndex(item => item.id === this.personal.unidad)
+          this.$emit('procesado', this.catalogue.unidades[unidSelect]);
+          this.$emit('tab', unidSelect);
           this.cerrar();
-          this.$root.$showAlert(message, 'success');
+          this.$root.$showAlert(message);
         } catch (error) {
             const { response = null } = error
             if(response?.status === 422){
