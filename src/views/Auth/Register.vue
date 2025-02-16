@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-row justify="center">
+    <v-row justify="center" class="mt-3">
           <v-col cols="12" sm="6" md="4">
             <v-card
               style="z-index:10"
@@ -73,7 +73,7 @@
                       </validation-provider>
                     </v-col>
                     <v-col cols="12" class="mb-0 pb-0">
-                      <validation-provider name="Contraseña" vid="password" rules="required" v-slot="{ errors }">
+                      <validation-provider name="Contraseña" vid="password" rules="required|min:4" v-slot="{ errors }">
                         <label for="" class="font-weight-medium button black--text text-h6">Contraseña</label>
                         <v-text-field
                           v-model="credentials.password"

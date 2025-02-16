@@ -11,33 +11,33 @@ const defaultOptions = [
     value: "Muy Bajo",
     porcent: 25,
     minDiversity: 1,
-    minLength: 8
+    minLength: 4
   },
   {
     id: 2,
     value: "Bajo",
     porcent: 50,
     minDiversity: 2,
-    minLength: 8
+    minLength: 6
   },
   {
     id: 3,
     value: "Medio",
     minDiversity: 3,
     porcent: 75,
-    minLength: 8
+    minLength: 6
   },
   {
     id: 4,
     value: "Alta",
     minDiversity: 4,
     porcent: 100,
-    minLength: 10
+    minLength: 8
   }
 ]
 
 const passwordStrength = (password, options = defaultOptions, allowedSymbols="!@#$%^&*-.,+") => {
-  
+
   let passwordCopy = password || ''
 
   options[0].minDiversity = 0,

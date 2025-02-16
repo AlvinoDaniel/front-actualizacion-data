@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="d-flex justify-center align-center full-height">
     <v-row justify="center">
       <v-col cols="12" sm="6" md="4">
         <v-card
@@ -8,7 +8,7 @@
           :color="$vuetify.breakpoint.xsOnly ? 'transparent' : ''"
           class="v-card--material"
         >
-          <v-card-title class="align-center flex-column mb-4">
+          <v-card-title class="align-center flex-column mb-3">
             <div class="d-flex justify-center">
               <v-img
                 :src="
@@ -16,8 +16,8 @@
                 width="90"
               />
             </div>
-            <div class="text-h2 font-weight-black text-center primary--text pa-7 v-card--material__title">
-              SISTEMA DE REGISTRO
+            <div class="text-h2 font-weight-black text-center primary--text px-7 pb-7 pt-3 v-card--material__title">
+              SISTEMA DE ACTUALIZACIÓN
               <div class="text-subtitle-1 text-center mb-n4 font-weight-medium">
                 Funcionarios Activos
               </div>
@@ -45,7 +45,7 @@
                   </validation-provider>
                 </v-col>
                 <v-col cols="12" class="mb-0 py-0">
-                  <validation-provider name="Contraseña" vid="password" rules="required" v-slot="{ errors }">
+                  <validation-provider name="Contraseña" vid="password" rules="required|min:4" v-slot="{ errors }">
                     <label for="" class="font-weight-medium button black--text text-h6">Contraseña</label>
                     <v-text-field
                       v-model="credentials.password"
@@ -74,6 +74,7 @@
                     text
                     small
                     :ripple="false"
+                    :to="{name: 'Recuperar'}"
                     color="black"
                     class="font-weight-bold"
                   >
@@ -172,5 +173,5 @@ export default {
         flex: 1 1 auto
         word-break: break-word
   .full-height
-    height: 100vh
+    height: calc(100vh - 84px)
 </style>

@@ -106,17 +106,28 @@ const createRouter = () => new Router({
             '@/views/Auth/Register'
           ),
         },
-        // {
-        //   name: 'Verificacion',
-        //   path: 'resetear-clave',
-        //   meta:{
-        //     auth: false,
-        //   },
-        //   component: () => import(
-        //     /* webpackChunkName: "views-[request]" */
-        //     '@/views/Auth/VerificationCode'
-        //   ),
-        // },
+        {
+          name: 'Manual',
+          path: 'manual-usuario',
+          meta:{
+            auth: false,
+          },
+          component: () => import(
+            /* webpackChunkName: "views-[request]" */
+            '@/views/Auth/UserGuide'
+          ),
+        },
+        {
+          name: 'Recuperar',
+          path: 'recuperar-clave',
+          meta:{
+            auth: false,
+          },
+          component: () => import(
+            /* webpackChunkName: "views-[request]" */
+            '@/views/Auth/RecoveryPassword'
+          ),
+        },
       ],
     },
     {

@@ -4,8 +4,8 @@
       <v-img
         contain
         max-width="100"
-        :src="require('@/assets/Logos/udo.png')"
-      ></v-img>        
+        :src="require('@/assets/Logos/Logo_UDO.png')"
+      ></v-img>
       <v-progress-linear
           color="blue-grey lighten-2"
           indeterminate
@@ -14,7 +14,7 @@
           class="mt-2"
         ></v-progress-linear>
       <!-- <h5 class="blue-grey--text mt-2">Cerrando Sesión</h5> -->
-    </v-overlay>    
+    </v-overlay>
   </div>
 </template>
 <script>

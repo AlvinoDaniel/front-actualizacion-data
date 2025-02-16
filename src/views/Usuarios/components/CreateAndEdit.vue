@@ -212,7 +212,7 @@
                         <validation-provider name="Área de Trabajo" vid="area_trabajo" rules="required" v-slot="{ errors }">
                           <v-select
                             v-model="personal.area_trabajo"
-                            :items="catalogue.area_trabajo"
+                            :items="areasByPersonal"
                             :loading="load"
                             :disabled="load"
                             item-text="descripcion"
@@ -464,7 +464,12 @@ export default {
     },
     tallasCamisa(){
       return TALLAS_CAMISA
-    }
+    },
+    areasByPersonal(){
+        return this.catalogue.area_trabajo.length > 0
+          ? this.catalogue.area_trabajo.filter(item => item.tipo_personal === this.personal.tipo_personal)
+          : []
+      },
   },
   created () {
     this.setUnidades()

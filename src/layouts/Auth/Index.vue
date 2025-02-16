@@ -13,8 +13,26 @@
           width="50"
         />
       </v-toolbar-title>
+      <v-spacer></v-spacer>
+      <v-toolbar-title>
+        <v-btn
+          link
+          text
+          small
+          :ripple="false"
+          @click="redirectGuide"
+          class="font-weight-bold py-5"
+        >
+        <v-avatar color="info" size="25" class="mr-2">
+          <v-icon dark size="20">
+            mdi-account
+          </v-icon>
+        </v-avatar>
+          <span class="font-weight-bold black--text">Guía de Usuario</span>
+        </v-btn>
+      </v-toolbar-title>
     </v-app-bar>
-    <v-main class="d-flex justify-center align-center blue-grey lighten-5 full-height">
+    <v-main class="d-flex justify-center blue-grey lighten-5">
       <v-container
         fluid
       >
@@ -30,6 +48,11 @@ export default {
   mounted() {
       this.$root.$showAlert = this.$refs.alertAuth.show;
     },
+  methods:{
+    redirectGuide(){
+      window.open(`${process.env.VUE_APP_URL}Manual/Manual_de_Usuario.pdf`, '_blank');
+    }
+  }
 }
 </script>
 <style lang="sass">

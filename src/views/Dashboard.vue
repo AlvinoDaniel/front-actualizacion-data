@@ -27,20 +27,38 @@
     </v-overlay>
     <header>
       <v-row class="py-3">
-        <v-col cols="12" class="d-flex flex-row align-center">
-          <div class="d-flex flex-column">
-            <span
-              class="font-weight-medium primary--text h1"
-              :class="{'text-h3': $vuetify.breakpoint.smAndUp, 'text-h5': $vuetify.breakpoint.xsOnly }"
-            >
-              Bienvenido
-            </span>
-            <!-- <span
-              class="blue-grey--text subtitle-2"
-              v-text="now"
-            /> -->
+        <v-col cols="12" class="d-flex flex-column">
+          <span
+            class="font-weight-bold primary--text h1 py-3"
+            :class="{'text-h3': $vuetify.breakpoint.smAndUp, 'text-h5': $vuetify.breakpoint.xsOnly }"
+          >
+            Bienvenido
+          </span>
+          <div class="d-flex flex-column flex-md-row flex-lg-row flex-xl-row pa-4 info lighten-5 rounded-lg" style="position: relative;">
+            <div class="order-2 order-md-1 order-lg-1 order-xl-1" :style="{width: $vuetify.breakpoint.lgAndUp ? '60%' : $vuetify.breakpoint.mdAndUp ? '50%' : '100%'}">
+              <p class="mt-3 primary--text">En función de mantener la información actualizada de los trabajadores activos y pasivos de la Universidad de Oriente se desarrolló un módulo de actualización de datos que permitirá registrar información de gran importancia y serán un insumo vital para los sistemas administrativos de la Institución y por ende para la presentación de la información ante los entes gubernamentales que la solicitan. Para conocer el funcionamiento de nuestro sistema puede consultar la guía de usuario</p>
+              <v-btn
+                color="primary"
+                depressed
+                class=""
+                @click="redirectGuide()"
+              >
+              <v-icon left>
+                mdi-account
+              </v-icon>
+                Guía de Usuario
+              </v-btn>
+            </div>
+            <v-img
+              contain
+              class="order-1 order-md-2 order-lg-2 order-xl-2 mx-auto"
+              :style="$vuetify.breakpoint.mdAndUp ? 'position: absolute; right: 0; bottom: 0;' : ''"
+              :width="$vuetify.breakpoint.mdAndUp ? 500 : 300"
+              :src="require('@/assets/icon_dashboard.png')"
+            ></v-img>
           </div>
         </v-col>
+
       </v-row>
     </header>
     <section>
@@ -92,7 +110,7 @@
                           <span class="text-muted">Núcleo: </span>
                         </v-list-item-subtitle>
                         <v-list-item-title class="">
-                          <span class="font-weight-bold" style="font-size: 1rem;">{{ user.nucleo }}</span>
+                          <span class="font-weight-bold" style="font-size: 1rem; white-space: normal;">{{ user.nucleo }}</span>
                         </v-list-item-title>
                       </v-list-item-content>
                     </v-list-item>
@@ -108,7 +126,7 @@
                           <span class="text-muted">Unidad Administrativa: </span>
                         </v-list-item-subtitle>
                         <v-list-item-title class="d-flex flex-column">
-                          <span class="font-weight-bold text-uppercase" style="font-size: 1rem;">{{ user.uni_admin }}</span>
+                          <span class="font-weight-bold text-uppercase" style="font-size: 1rem; white-space: normal;">{{ user.uni_admin }}</span>
                         </v-list-item-title>
                       </v-list-item-content>
                     </v-list-item>
@@ -124,7 +142,7 @@
                           <span class="text-muted">Unidad Ejecutora: </span>
                         </v-list-item-title>
                         <v-list-item-title class="d-flex flex-column">
-                          <span class="font-weight-bold text-uppercase" style="font-size: 1rem;">{{ user.uni_ejec }}</span>
+                          <span class="font-weight-bold text-uppercase" style="font-size: 1rem; white-space: normal;">{{ user.uni_ejec }}</span>
                         </v-list-item-title>
                       </v-list-item-content>
                     </v-list-item>
@@ -140,7 +158,7 @@
                           <span class="text-muted">Cargo Jefe: </span>
                         </v-list-item-subtitle>
                         <v-list-item-title class="">
-                          <span class="font-weight-bold" style="font-size: 1rem;">{{ user.cargo_jefe }}</span>
+                          <span class="font-weight-bold" style="font-size: 1rem; white-space: normal;">{{ user.cargo_jefe }}</span>
                         </v-list-item-title>
                       </v-list-item-content>
                     </v-list-item>
@@ -156,7 +174,7 @@
                           <span class="text-muted">Cargo OPSU: </span>
                         </v-list-item-subtitle>
                         <v-list-item-title class="">
-                          <span class="font-weight-bold" style="font-size: 1rem;">{{ user.cargo_opsu }}</span>
+                          <span class="font-weight-bold" style="font-size: 1rem; white-space: normal;">{{ user.cargo_opsu }}</span>
                         </v-list-item-title>
                       </v-list-item-content>
                     </v-list-item>
@@ -238,7 +256,7 @@
                     <validation-provider name="Área de Trabajo" vid="area_trabajo" rules="required" v-slot="{ errors }">
                       <v-select
                         v-model="info.area_trabajo"
-                        :items="catalogue.area_trabajo"
+                        :items="areasByPersonal"
                         :loading="load"
                         :disabled="load"
                         item-text="descripcion"
@@ -418,6 +436,11 @@
       tallasBySex(){
         return TALLAS_PANTALON.filter(item => item.sexo === this.info.sexo)
       },
+      areasByPersonal(){
+        return this.catalogue.area_trabajo.length > 0
+          ? this.catalogue.area_trabajo.filter(item => item.tipo_personal === this.user?.personal?.tipo_personal?.id)
+          : []
+      },
       tallasCamisa(){
         return TALLAS_CAMISA
       }
@@ -466,21 +489,24 @@
         this.info.tipo_calzado = personal?.tipo_calzado;
       },
       async update () {
-      const valid = await this.$refs.UPDATE_FORM.validate();
-      if(valid) {
-        this.saving = true;
-        try {
-          console.log('UPDATE')
-          const personal = await updateAuthUser({datos: this.info})
-          this.$store.dispatch('user/getInfo');
-          this.$root.$showAlert('Datos Actualizados exitosamente.', 'success');
-        } catch (e) {
-          this.$root.$showAlert( e.response ? e.response?.data?.errors?.message : 'Lo sentimos, hubo un error al intentar conectar con el Servidor.', 'error');
-        }  finally {
-          this.saving = false;
+        const valid = await this.$refs.UPDATE_FORM.validate();
+        if(valid) {
+          this.saving = true;
+          try {
+            console.log('UPDATE')
+            const personal = await updateAuthUser({datos: this.info})
+            this.$store.dispatch('user/getInfo');
+            this.$root.$showAlert('Datos Actualizados exitosamente.', 'success');
+          } catch (e) {
+            this.$root.$showAlert( e.response ? e.response?.data?.errors?.message : 'Lo sentimos, hubo un error al intentar conectar con el Servidor.', 'error');
+          }  finally {
+            this.saving = false;
+          }
         }
+      },
+      redirectGuide(){
+        window.open(`${process.env.VUE_APP_URL}Manual/Manual_de_Usuario.pdf`, '_blank');
       }
-		},
     }
   }
 </script>

@@ -42,7 +42,7 @@
               <v-row>
                 <v-col cols="6" class="mb-0">
                   <label-form text="Contraseña Nueva" required />
-                  <validation-provider name="Nueva Contraseña" vid="datos.newpassword" rules="required|min:8" v-slot="{ errors }">
+                  <validation-provider name="Nueva Contraseña" vid="datos.newpassword" rules="required|min:4" v-slot="{ errors }">
                     <v-text-field
                     v-model="datos.newpassword"
                       dense
@@ -72,7 +72,7 @@
                 </v-col>
                 <v-col cols="6" class="mb-0">
                   <label-form text="Repetir Contraseña" required />
-                  <validation-provider name="Repetir Contraseña" vid="datos.repassword" rules="required|confirmed:datos.newpassword|min:8" v-slot="{ errors }">
+                  <validation-provider name="Repetir Contraseña" vid="datos.repassword" rules="required|confirmed:datos.newpassword|min:4" v-slot="{ errors }">
                     <v-text-field
                       v-model="datos.repassword"
                       dense
