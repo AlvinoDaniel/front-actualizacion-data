@@ -12,7 +12,7 @@
           Mi Personal
         </h3>
       </v-col>
-      <v-col cols="12" md="6" class="pt-1 d-flex align-center justify-end">
+      <v-col cols="12" md="6" class="pt-1 d-flex align-center justify-end" style="gap: 8px ">
         <search-expand v-model="filterData" />
         <v-tooltip bottom>
           <template v-slot:activator="{ on, attrs }">
@@ -20,8 +20,8 @@
               depressed
               small
               dark
-              color="blue-grey"
-              class="mx-2"
+              color="info"
+              class=""
               v-bind="attrs"
               v-on="on"
               @click="modalShow = true"
@@ -31,6 +31,25 @@
             </v-btn>
           </template>
           <span>Agregar</span>
+        </v-tooltip>
+        <v-tooltip bottom>
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn
+              depressed
+              small
+              dark
+              color="blue-grey"
+              class=""
+              v-bind="attrs"
+              v-on="on"
+              @click="generatePDF"
+              :loading="downloading"
+              >
+              <v-icon left>mdi-download</v-icon>
+              Descargar
+            </v-btn>
+          </template>
+          <span>Descargar</span>
         </v-tooltip>
         <v-tooltip bottom>
           <template v-slot:activator="{ on, attrs }">
@@ -145,8 +164,9 @@
 </template>
 <script>
 
-import { getAllPersonal, deletePersonal } from '@/services/usuario'
+import { getAllPersonal, deletePersonal, downloadListPersonal } from '@/services/usuario'
 import { get } from 'vuex-pathify'
+import moment from 'moment'
 export default {
   name: 'Personal',
   components: {
@@ -159,6 +179,7 @@ export default {
     loading: false,
     updating: false,
     modalShow: false,
+    downloading: false,
     isCreate: true,
     dataSelect: null,
     unidades: [],
@@ -255,7 +276,51 @@ export default {
       if(!this.unidades[this.selectUnidad]) return;
 
       this.getPersonal(this.unidades[this.selectUnidad]);
-    }
+    },
+
+    async generatePDF () {
+      if(!this.unidades[this.selectUnidad]) {
+        this.$root.$showAlert(
+          'Seleccione una Unidad Administrativa',
+          'error'
+        );
+        return;
+      };
+
+      if(this.personal.length === 0){
+        this.$root.$showAlert(
+          'No hay personal registrado para mostrar',
+          'error'
+        );
+        return;
+      }
+      const {codigo_unidad_admin, codigo_unidad_ejec} = this.unidades[this.selectUnidad];
+      const date = moment().valueOf()
+      const fileName = `${codigo_unidad_admin}_${date}.pdf`
+      this.downloading = true;
+      try {
+        const file = await downloadListPersonal({
+          admin: codigo_unidad_admin,
+          ejec: codigo_unidad_ejec
+        })
+        var pdfURL = window.URL.createObjectURL(new Blob([file]));
+        var pdfLink = document.createElement('a');
+
+        pdfLink.href = pdfURL;
+        pdfLink.setAttribute('download',fileName);
+        document.body.appendChild(pdfLink);
+        pdfLink.click();
+        pdfLink.remove();
+      } catch (error) {
+        this.$root.$showAlert(
+          'Lo siento, hubo un error al intentar obtener la Lista del Personal Registrado.',
+          'error'
+        )
+      }
+      finally {
+        this.downloading = false;
+      }
+    },
   },
 }
 </script>

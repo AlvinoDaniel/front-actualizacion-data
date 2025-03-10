@@ -50,3 +50,13 @@ export const updateAuthUser = async ({datos}) => {
     return Promise.reject(error)
   }
 }
+
+export const downloadListPersonal= async ({ admin, ejec }) => {
+  try {
+    const { data } = await api.get(`personal/donwload/list?admin=${admin}&ejec=${ejec}`, { responseType: 'blob'})
+    return data
+  } catch (error) {
+    console.log({error})
+    return Promise.reject(error)
+  }
+}
