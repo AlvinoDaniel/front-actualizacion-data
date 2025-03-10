@@ -1,6 +1,6 @@
 <template>
-  <div class="d-flex justify-center align-center full-height">
-    <v-row justify="center">
+  <div>
+    <v-row justify="center" class="mt-3">
       <v-col cols="12" sm="6" md="4">
         <v-card
           style="z-index:10"
