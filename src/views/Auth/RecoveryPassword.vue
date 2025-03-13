@@ -16,7 +16,7 @@
                 width="90"
               />
             </div>
-            <div class="text-h2 font-weight-black text-center primary--text px-7 pt-3 v-card--material__title">
+            <div class="text-h3 font-weight-black text-center primary--text px-7 pt-3 v-card--material__title">
               RECUPERAR CONTRASEÑA
             </div>
           </v-card-title>

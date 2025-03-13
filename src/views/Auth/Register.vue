@@ -16,7 +16,7 @@
                     width="90"
                   />
                 </div>
-                <div class="text-h2 font-weight-black text-center primary--text pa-7 v-card--material__title">
+                <div class="text-h3 font-weight-black text-center primary--text pa-7 v-card--material__title">
                   REGISTRAR NUEVA CUENTA
                   <div class="text-subtitle-1 text-center mb-n4 font-weight-bold">
                     Ingrese los datos solicitados para acceder a nuestro sistema

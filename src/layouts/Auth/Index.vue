@@ -35,6 +35,7 @@
     <v-main class="d-flex justify-center blue-grey lighten-5">
       <v-container
         fluid
+        style="min-height: calc(100vh - 84px);"
       >
           <router-view :key="$route.path" />
       </v-container>

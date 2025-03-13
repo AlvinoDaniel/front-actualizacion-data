@@ -1,7 +1,7 @@
 <template>
-  <div>
-    <v-row justify="center" class="mt-3">
-      <v-col cols="12" sm="6" md="4">
+  <div class="d-flex justify-center align-center" style="min-height: calc(100vh - 84px);">
+    <v-row justify="center" align="center" class="mt-3">
+      <v-col cols="12" sm="8" md="5" lg="4">
         <v-card
           style="z-index:10"
           :flat="$vuetify.breakpoint.xsOnly"
@@ -16,7 +16,7 @@
                 width="90"
               />
             </div>
-            <div class="text-h2 font-weight-black text-center primary--text px-7 pb-7 pt-3 v-card--material__title">
+            <div class="text-h3 font-weight-black text-center primary--text px-7 pb-7 pt-3 v-card--material__title">
               SISTEMA DE ACTUALIZACIÓN
               <div class="text-subtitle-1 text-center mb-n4 font-weight-medium">
                 Funcionarios Activos
