@@ -574,7 +574,7 @@ export default {
           this.$emit('procesado', this.catalogue.unidades[unidSelect]);
           this.$emit('tab', unidSelect);
           this.cerrar();
-          this.$root.$showAlert(message);
+          this.$root.$showAlert(message, 'success');
         } catch (error) {
             const { response = null } = error
             if(response?.status === 422){

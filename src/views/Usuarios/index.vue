@@ -259,7 +259,7 @@ export default {
         this.updating = true
         try {
           const { message } = await deletePersonal({id: row?.id})
-          this.getPersonal()
+          this.getPersonal(this.unidades[this.selectUnidad] ?? {})
           this.$root.$showAlert(message, 'success');
         } catch (error) {
           console.log(error)
