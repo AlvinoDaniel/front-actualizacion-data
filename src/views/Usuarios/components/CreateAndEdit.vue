@@ -324,7 +324,7 @@
           Cancelar
         </v-btn>
         <div>
-          <v-template v-if="stepper === 2">
+          <div v-if="stepper === 2">
             <v-btn
               tile
               depressed
@@ -346,7 +346,7 @@
             >
               {{action === 'edit' ? 'Actualizar' : 'Finalizar'}}
             </v-btn>
-          </v-template>
+          </div>
           <v-btn
             v-else
             tile
@@ -460,7 +460,7 @@ export default {
   computed:{
     user: get('user/infoBasic'),
     tallasBySex(){
-      return TALLAS_PANTALON.filter(item => item.sexo === this.personal.sexo)
+      return TALLAS_PANTALON;
     },
     tallasCamisa(){
       return TALLAS_CAMISA

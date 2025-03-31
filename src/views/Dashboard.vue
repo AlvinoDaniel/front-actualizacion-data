@@ -434,7 +434,7 @@
       user: get('user/infoBasic'),
       hasUpdate: get('user/hasUpdate'),
       tallasBySex(){
-        return TALLAS_PANTALON.filter(item => item.sexo === this.info.sexo)
+        return TALLAS_PANTALON
       },
       areasByPersonal(){
         return this.catalogue.area_trabajo.length > 0

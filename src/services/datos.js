@@ -41,49 +41,9 @@ export const TALLAS_PANTALON = [
     sexo: 'M'
   },
   {
-    talla: '8',
+    talla: '46',
     sexo: 'F'
-  },
-  {
-    talla: '10',
-    sexo: 'F'
-  },
-  {
-    talla: '12',
-    sexo: 'F'
-  },
-  {
-    talla: '14',
-    sexo: 'F'
-  },
-  {
-    talla: '16',
-    sexo: 'F'
-  },
-  {
-    talla: '18',
-    sexo: 'F'
-  },
-  {
-    talla: '20',
-    sexo: 'F'
-  },
-  {
-    talla: '22',
-    sexo: 'F'
-  },
-  {
-    talla: '24',
-    sexo: 'F'
-  },
-  {
-    talla: '26',
-    sexo: 'F'
-  },
-  {
-    talla: '28',
-    sexo: 'F'
-  },
+  }
 ]
 
 export const TALLAS_CAMISA = [
