@@ -61,6 +61,17 @@ const createRouter = () => new Router({
           ),
         },
         {
+          name: 'Reporte',
+          path: '/adminitrator/report/:nucleo?',
+          meta: {
+            auth: true,
+          },
+          component: () => import(
+            /* webpackChunkName: "views-[request]" */
+            '@/views/download'
+          ),
+        },
+        {
           name: 'Error-permission',
           path: '/403',
           meta:{

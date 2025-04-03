@@ -60,3 +60,14 @@ export const downloadListPersonal= async ({ admin, ejec }) => {
     return Promise.reject(error)
   }
 }
+
+export const downloadPersonal = async ({ nucleo = null }) => {
+  const URL_API = !nucleo ? 'personal/donwload-by-nucleo/list' : `personal/donwload-by-nucleo/list?nucleo=${nucleo}`
+  try {
+    const { data } = await api.get(URL_API, { responseType: 'blob' })
+    return data
+  } catch (error) {
+    console.log({error})
+    return Promise.reject(error)
+  }
+}
