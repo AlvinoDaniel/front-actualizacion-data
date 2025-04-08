@@ -5,9 +5,42 @@ import Router from 'vue-router'
 Vue.use(Router)
 
 // VARIABLE QUE CONTIENE TODAS LAS RUTAS DEL USUARIO LOGUEADO
-export const dynamicRoutes = []
+export const dynamicRoutes = [
+  {
+    name: 'Reporte',
+    path: '/report/:nucleo?',
+    meta: {
+      auth: true,
+    },
+    component: () => import(
+      /* webpackChunkName: "views-[request]" */
+      '@/views/download'
+    ),
+  },
+]
 
-export const CoreRoute = {}
+export const AdminRoute = {
+  name: 'Administrador',
+  path: '/administrator',
+  redirect: { name: 'Reporte' },
+    component: () => import(
+      /* webpackChunkName: "layout-[request]" */
+      '@/layouts/default/Index'
+    ),
+    children: [
+      {
+        name: 'Reporte',
+        path: 'report/:nucleo?',
+        meta: {
+          auth: true,
+        },
+        component: () => import(
+          /* webpackChunkName: "views-[request]" */
+          '@/views/download'
+        ),
+      },
+    ]
+}
 
 const createRouter = () => new Router({
   mode: 'history',
@@ -60,17 +93,17 @@ const createRouter = () => new Router({
             '@/views/Auth/ResetPassword'
           ),
         },
-        {
-          name: 'Reporte',
-          path: '/adminitrator/report/:nucleo?',
-          meta: {
-            auth: true,
-          },
-          component: () => import(
-            /* webpackChunkName: "views-[request]" */
-            '@/views/download'
-          ),
-        },
+        // {
+        //   name: 'Reporte',
+        //   path: '/adminitrator/report/:nucleo?',
+        //   meta: {
+        //     auth: true,
+        //   },
+        //   component: () => import(
+        //     /* webpackChunkName: "views-[request]" */
+        //     '@/views/download'
+        //   ),
+        // },
         {
           name: 'Error-permission',
           path: '/403',
@@ -149,7 +182,7 @@ const createRouter = () => new Router({
         '@/views/Error.vue'
       ),
     },
-    { path: '*', redirect: '/404' },
+    // { path: '*', redirect: '/404' },
   ],
 })
 

@@ -24,6 +24,7 @@ const actions = {
     const { data } = await api.get('auth/me');
     commit('info', data.data.user);
     commit('hasUpdate', data.data.user?.personal?.has_update ?? false)
+    return data.data.user;
   },
   async login ({ commit }, credentials) {
     const response = await api.post('auth/login', credentials)

@@ -14,7 +14,7 @@
 
       <v-divider class="mx-3 light divider-menu" />
 
-      <default-list :items="items" />
+      <default-list :items="menuApp" />
     </div>
 
     <template #append>
@@ -62,7 +62,7 @@
     },
     computed: {
       ...get('app', [
-        'items',
+        'menuApp',
         'version',
       ]),
       ...sync('app', [

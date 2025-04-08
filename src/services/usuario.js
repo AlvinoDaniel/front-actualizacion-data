@@ -61,10 +61,18 @@ export const downloadListPersonal= async ({ admin, ejec }) => {
   }
 }
 
-export const downloadPersonal = async ({ nucleo = null }) => {
-  const URL_API = !nucleo ? 'personal/donwload-by-nucleo/list' : `personal/donwload-by-nucleo/list?nucleo=${nucleo}`
+export const downloadPersonal = async ({ nucleo , download = null }) => {
+  let PARAMS_URL = new URLSearchParams()
+
+  if(nucleo !== null)
+      PARAMS_URL.append('nucleo', nucleo)
+  if(download !== null)
+      PARAMS_URL.append('download', download)
+
+
+  const URL_API = `personal/donwload-by-nucleo/list?${PARAMS_URL.toString()}`
   try {
-    const { data } = await api.get(URL_API, { responseType: 'blob' })
+    const { data } = await api.get(URL_API, { responseType: download ? 'blob' : 'application/json' })
     return data
   } catch (error) {
     console.log({error})

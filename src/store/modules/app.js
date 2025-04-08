@@ -16,7 +16,7 @@ const state = {
       icon: 'mdi-home-outline',
       to: '/',
       meta: {
-        badge: null,
+        is_admin: false
       },
     },
     {
@@ -24,10 +24,17 @@ const state = {
       icon: 'mdi-account-group-outline',
       to: '/usuarios',
       meta: {
-        badge: null,
+        is_admin: false
       },
     },
-
+    {
+      title: 'Reporte',
+      icon: 'mdi-note-text-outline',
+      to: '/administrator/report',
+      meta: {
+        is_admin: true
+      },
+    }
   ],
   statusClient:{
     rojo: '#FF353E',
@@ -38,16 +45,6 @@ const state = {
 
 const mutations = {
   ...make.mutations(state),
-  NEW_DOCUMENTS(state, news){
-    let { meta } = state.items[0]
-    meta.badge = news
-  },
-
-  NEW_DOCUMENTS_CORRECT(state, news){
-    let { meta } = state.items[2]
-    meta.badge = news
-  }
-
 }
 
 const actions = {
