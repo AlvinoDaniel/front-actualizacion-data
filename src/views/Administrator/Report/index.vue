@@ -43,10 +43,6 @@
               :headers="headers"
               :items="personal"
               :loading="loading"
-              :sort-desc="true"
-              :page.sync="page"
-              :items-per-page="itemsPerPage"
-              hide-default-footer
               @click:row="getDetails"
               >
               <template v-slot:item.iconos="{ item }">
@@ -73,7 +69,7 @@
                   v-text="item.descripcion_unidad_admin.toUpperCase()"
               />
               </template>
-              <template v-slot:footer="{ item }">
+              <!-- <template v-slot:footer="{ item }">
                 <v-row>
                   <v-col cols="12" class="pb-0">
                     <v-divider class="pb-1"></v-divider>
@@ -97,7 +93,7 @@
                     ></v-pagination>
                   </v-col>
                 </v-row>
-              </template>
+              </template> -->
             </v-data-table>
           </v-col>
           <v-col cols="12" class="">
@@ -168,8 +164,8 @@
             page: this.page,
             perPage: this.itemsPerPage
           })
-          this.personal = data?.data
-          this.pageCount = data?.last_page;
+          this.personal = data
+          // this.pageCount = data?.last_page;
         } catch (error) {
           console.log(error)
         } finally {
