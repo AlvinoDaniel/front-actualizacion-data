@@ -103,6 +103,7 @@
       </v-window-item>
       <v-window-item :value="2">
         <personal-table
+          v-if="steps_data === 2"
           :data="personal_by_unidad"
           :jefe="jefe_data"
           :unidad="unidad_selected"
