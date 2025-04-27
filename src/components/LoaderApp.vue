@@ -3,7 +3,7 @@
       :value="true"
       color="white"
       absolute
-      opacity="0.9"
+      opacity="1"
       style="z-index: 2 !important"
     >
       <div class="d-flex flex-column justify-center">

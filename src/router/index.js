@@ -36,7 +36,7 @@ export const AdminRoute = {
         },
         component: () => import(
           /* webpackChunkName: "views-[request]" */
-          '@/views/download'
+          '@/views/Administrator/Report/index'
         ),
       },
     ]
