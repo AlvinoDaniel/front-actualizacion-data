@@ -385,6 +385,7 @@ const dataDefault = () => ({
   tipo_personal: null,
   unidad: 0,
   id: null,
+  nucleo: null
 });
 export default {
   name:'ModalPersonal',
@@ -548,6 +549,7 @@ export default {
           this.personal.cargo_opsu = personal?.cargo_opsu;
           this.personal.tipo_personal = parseInt(personal?.tipo_personal);
           this.personal.unidad = null;
+          this.personal.nucleo = personal?.cod_nucleo;
 
           this.workerExists = true;
         } catch (e) {
