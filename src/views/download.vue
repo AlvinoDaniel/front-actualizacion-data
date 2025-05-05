@@ -4,80 +4,88 @@
       tag="section"
       class="pa-0"
     >
-      <v-row class="ma-0 py-4 justify-space-between">
-        <v-col cols="12"  md="5" class="pt-1 d-flex align-center">
-          <h3 class="black-text">
-            Reporte de Registro
-          </h3>
-        </v-col>
-        <v-col cols="12" md="6" class="pt-1 d-flex align-center justify-end" style="gap: 8px ">
-          <v-tooltip bottom>
-            <template v-slot:activator="{ on, attrs }">
-              <v-btn
-                depressed
-                small
-                dark
-                color="blue-grey"
-                class=""
-                v-bind="attrs"
-                v-on="on"
-                @click="generatePDF"
-                :loading="downloading"
-                >
-                <v-icon left>mdi-download</v-icon>
-                Descargar Reporte
-              </v-btn>
-            </template>
-            <span>Descargar</span>
-          </v-tooltip>
-        </v-col>
-      </v-row>
-      <v-row>
-        <v-col cols="12" class="py-0">
-          <v-data-table
-            sort-by="codigo_unidad_ejec"
-            class="inbox"
-            no-data-text="No hay Personal Registrado"
-            :headers="headers"
-            :items="personal"
-            :loading="loading"
-            :sort-desc="true"
-            >
-            <template v-slot:item.iconos="{ item }">
-              <div class="d-flex justify-center align-center ml-3">
-                <v-tooltip bottom>
-                  <template v-slot:activator="{ on, attrs }">
-                    <v-btn
-                      icon
-                      v-bind="attrs"
-                      v-on="on"
-                      @click="editRow(item)"
-                      >
-                      <v-icon size="19" class="mx-2" color="blue-grey">mdi-account-edit-outline</v-icon>
-                    </v-btn>
-                  </template>
-                  <span>Editar</span>
-                </v-tooltip>
-              </div>
-            </template>
-            <template v-slot:item.descripcion_unidad_admin="{ item }">
-            <span
-              v-if="item.descripcion_unidad_admin"
-              class="font-weight-bold"
-                v-text="item.descripcion_unidad_admin.toUpperCase()"
-            />
-            </template>
-          </v-data-table>
-        </v-col>
-        <v-col cols="12" class="pt-0">
-          <v-divider></v-divider>
-        </v-col>
-      </v-row>
+    <v-window v-model="steps_data">
+      <v-window-item :value="1">
+        <v-row class="ma-0 py-4 justify-space-between">
+          <v-col cols="12"  md="5" class="pt-1 d-flex align-center">
+            <h3 class="black-text">
+              Reporte de Registro
+            </h3>
+          </v-col>
+          <v-col cols="12" md="6" class="pt-1 d-flex align-center justify-end" style="gap: 8px ">
+            <v-tooltip bottom>
+              <template v-slot:activator="{ on, attrs }">
+                <v-btn
+                  depressed
+                  small
+                  dark
+                  color="blue-grey"
+                  class=""
+                  v-bind="attrs"
+                  v-on="on"
+                  @click="generatePDF"
+                  :loading="downloading"
+                  >
+                  <v-icon left>mdi-download</v-icon>
+                  Descargar Reporte
+                </v-btn>
+              </template>
+              <span>Descargar</span>
+            </v-tooltip>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col cols="12" class="py-0">
+            <v-data-table
+              sort-by="codigo_unidad_ejec"
+              class="inbox"
+              no-data-text="No hay Personal Registrado"
+              :headers="headers"
+              :items="personal"
+              :loading="loading"
+              :sort-desc="true"
+              @click:row="getDetails"
+              >
+              <template v-slot:item.iconos="{ item }">
+                <div class="d-flex justify-center align-center ml-3">
+                  <v-tooltip bottom>
+                    <template v-slot:activator="{ on, attrs }">
+                      <v-btn
+                        icon
+                        v-bind="attrs"
+                        v-on="on"
+                        @click="editRow(item)"
+                        >
+                        <v-icon size="19" class="mx-2" color="blue-grey">mdi-account-edit-outline</v-icon>
+                      </v-btn>
+                    </template>
+                    <span>Editar</span>
+                  </v-tooltip>
+                </div>
+              </template>
+              <template v-slot:item.descripcion_unidad_admin="{ item }">
+              <span
+                v-if="item.descripcion_unidad_admin"
+                class="font-weight-bold"
+                  v-text="item.descripcion_unidad_admin.toUpperCase()"
+              />
+              </template>
+            </v-data-table>
+          </v-col>
+          <v-col cols="12" class="pt-0">
+            <v-divider></v-divider>
+          </v-col>
+        </v-row>
+      </v-window-item>
+      <v-window-item :value="1">
+
+      </v-window-item>
+    </v-window>
     </v-container>
   </template>
   <script>
 
-  import { downloadPersonal } from '@/services/usuario'
+  import { downloadPersonal, getPersonalByUnid } from '@/services/usuario'
   import { get } from 'vuex-pathify'
   import moment from 'moment'
 
@@ -86,6 +94,8 @@
     data: () => ({
       downloading: false,
       loading: false,
+      loading_personal: false,
+      steps_data: 1,
       headers: [
         { text: 'Núcleo', value: 'nombre', width: '20%',  class: 'blue-grey lighten-5 blue-grey--text' },
         { text: 'Unidad Administrativa', value: 'descripcion_unidad_admin', class: 'blue-grey lighten-5 blue-grey--text' },
@@ -93,6 +103,7 @@
         // { text: 'Acciones', value: 'iconos', align: ' px-0', width: '100px',  class: 'blue-grey lighten-5 blue-grey--text' },
       ],
       personal: [],
+      personal_by_unidad: [],
     }),
     computed: {
       user: get('user/infoBasic'),
@@ -144,6 +155,23 @@
           this.downloading = false;
         }
       },
+      async getDetails({codigo_unidad_admin, codigo_unidad_ejec, cod_nucleo}){
+        this.loading_personal = true
+        this.personal_by_unidad = []
+        try {
+          const { personal = [], jefe = [] } = await getPersonalByUnid({
+            admin: codigo_unidad_admin,
+            ejec: codigo_unidad_ejec,
+            nucleo: cod_nucleo
+          })
+          this.personal_by_unidad = personal
+        } catch (error) {
+          console.log(error)
+        } finally {
+          this.loading_personal = false
+        }
+
+      }
     },
   }
   </script>

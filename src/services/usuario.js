@@ -84,6 +84,18 @@ export const downloadPersonal = async ({ nucleo , download = null, page = 1, per
   }
 }
 
+export const exportReportPersonal = async () => {
+
+  const URL_API = `personal/export/list`
+  try {
+    const { data } = await api.get(URL_API, { responseType: 'blob' })
+    return data
+  } catch (error) {
+    console.log({error})
+    return Promise.reject(error)
+  }
+}
+
 export const getPersonalByUnid = async ({admin, ejec, nucleo}) => {
   try {
     const { data } = await api.get(`personal/all-by-unidad`, {params: {admin, ejec, nucleo}})

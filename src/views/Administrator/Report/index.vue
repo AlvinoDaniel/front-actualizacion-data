@@ -13,8 +13,11 @@
             </h3>
           </v-col>
           <v-col cols="12" md="6" class="pt-1 d-flex align-center justify-end" style="gap: 8px ">
-            <v-tooltip bottom>
-              <template v-slot:activator="{ on, attrs }">
+            <v-menu
+              rounded
+              offset-y
+            >
+              <template v-slot:activator="{ attrs, on }">
                 <v-btn
                   depressed
                   small
@@ -23,15 +26,36 @@
                   class=""
                   v-bind="attrs"
                   v-on="on"
-                  @click="generatePDF"
                   :loading="downloading"
                   >
                   <v-icon left>mdi-download</v-icon>
                   Descargar Reporte
                 </v-btn>
               </template>
-              <span>Descargar</span>
-            </v-tooltip>
+              <v-list>
+                <v-list-item link @click="generatePDF">
+                  <v-list-item-icon class="mr-1">
+                    <v-icon color="red">mdi-file-pdf</v-icon>
+                  </v-list-item-icon>
+                  <v-list-item-content>
+                    <v-list-item-title>
+                       Reporte PDF
+                    </v-list-item-title>
+                  </v-list-item-content>
+                </v-list-item>
+                <v-divider/>
+                <v-list-item link @click="generateExcel">
+                  <v-list-item-icon class="mr-1">
+                    <v-icon color="green darken-1">mdi-file-excel</v-icon>
+                  </v-list-item-icon>
+                  <v-list-item-content>
+                    <v-list-item-title>
+                       Reporte Excel
+                    </v-list-item-title>
+                  </v-list-item-content>
+                </v-list-item>
+              </v-list>
+            </v-menu>
           </v-col>
         </v-row>
         <v-row>
@@ -116,7 +140,7 @@
   </template>
   <script>
 
-  import { downloadPersonal, getPersonalByUnid } from '@/services/usuario'
+  import { downloadPersonal, getPersonalByUnid, exportReportPersonal } from '@/services/usuario'
   import { get } from 'vuex-pathify'
   import moment from 'moment'
 
@@ -190,6 +214,31 @@
           document.body.appendChild(pdfLink);
           pdfLink.click();
           pdfLink.remove();
+          this.downloading = false;
+        } catch (error) {
+          this.$root.$showAlert(
+            'Lo siento, hubo un error al intentar obtener la Lista del Personal Registrado.',
+            'error'
+          )
+        }
+        finally {
+          this.downloading = false;
+        }
+      },
+      async generateExcel () {
+        const date = moment().valueOf()
+        const fileName = `REPORTE_PERSONAL_${date}.xlsx`
+        this.downloading = true;
+        try {
+          const file = await exportReportPersonal()
+          var excelURL = window.URL.createObjectURL(new Blob([file]));
+          var excelLink = document.createElement('a');
+
+          excelLink.href = excelURL;
+          excelLink.setAttribute('download',fileName);
+          document.body.appendChild(excelLink);
+          excelLink.click();
+          excelLink.remove();
           this.downloading = false;
         } catch (error) {
           this.$root.$showAlert(
