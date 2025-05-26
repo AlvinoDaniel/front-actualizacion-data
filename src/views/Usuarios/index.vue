@@ -245,7 +245,7 @@ export default {
       }
     },
     editRow(row){
-      this.dataSelect = row;
+      this.dataSelect = {...row};
       this.modalShow = true;
       this.isCreate = false;
     },
