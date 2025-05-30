@@ -24,9 +24,8 @@
           <div class="d-flex flex-column justify-center align-start mx-2">
             <span
               class="font-weight-bold"
-              v-text="basic.username"
+              v-text="basic.personal.nombres_apellidos"
             />
-            <small v-text="basic.departamento" />
           </div>
           <v-icon size="18">mdi-chevron-down</v-icon>
         </template>
@@ -36,8 +35,7 @@
     <v-list class="py-0" color="secondary">
       <v-list-item class="py-2">
         <v-list-item-content>
-          <v-list-item-title class="font-weight-bold white--text" v-text="basic.fullName" />
-          <v-list-item-subtitle class="white--text" v-text="basic.email" />
+          <v-list-item-title class="font-weight-bold white--text" v-text="basic.personal.cargo_jefe" />
         </v-list-item-content>
       </v-list-item>
       <v-divider />

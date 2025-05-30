@@ -4,6 +4,7 @@
       <router-view />
     </v-fade-transition>
     <default-overlay />
+    <default-alert />
   </v-app>
 </template>
 
@@ -16,7 +17,7 @@
     name: 'App',
     metaInfo: {
       title: 'App',
-      titleTemplate: '%s | SISCOR-UDO',
+      titleTemplate: '%s | UDO',
       htmlAttrs: { lang: 'eS' },
       meta: [
         { charset: 'utf-8' },
@@ -27,6 +28,10 @@
       DefaultOverlay: () => import(
         /* webpackChunkName: "default-overlay" */
         './layouts/default/AppOverlay'
+      ),
+      DefaultAlert: () => import(
+        /* webpackChunkName: "default-alert" */
+        './layouts/default/AppWarning'
       ),
     }
   }

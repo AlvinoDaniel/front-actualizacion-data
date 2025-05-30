@@ -1,4 +1,4 @@
-import router from '../router'
+import router, {AdminRoute} from '../router'
 import store from '../store'
 import { trailingSlash } from '@/util/helpers'
 import api from '../util/request'
@@ -15,12 +15,23 @@ router.beforeEach(async (to, from, next) => {
 
       const hasUser = Object.values(store.getters['user/info']).length > 0;
       if(hasUser) {
-        return next();
+        const hasUpdate = store.getters['user/hasUpdate']
+        if(hasUpdate || to.path === '/'){
+          return next();
+        } else {
+          store.dispatch('app/setAlert', true);
+          next({ path: '/' })
+        }
       }
       else {
         try {
           store.dispatch('app/setOverlay', true);
-          await store.dispatch('user/getInfo');
+          const { is_admin = false } = await store.dispatch('user/getInfo');
+          if(is_admin){
+            router.addRoute(AdminRoute)
+          }
+          router.addRoute({ path: '*', redirect: '/404' })
+          store.dispatch('permissions/generateRoutes', is_admin)
           return  next({...to, replace: true})
         } catch (e) {
           console.log('error', e)

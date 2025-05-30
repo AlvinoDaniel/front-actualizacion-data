@@ -8,35 +8,33 @@ const state = {
   mini: false,
   gutters: true,
   overlay: false,
+  alert: false,
   menuApp: [],
   items: [
     {
-      title: 'Usuarios',
+      title: 'Principal',
+      icon: 'mdi-home-outline',
+      to: '/',
+      meta: {
+        is_admin: false
+      },
+    },
+    {
+      title: 'Mi Personal',
       icon: 'mdi-account-group-outline',
       to: '/usuarios',
       meta: {
-        badge: null,
+        is_admin: false
       },
     },
     {
-      title: 'Departamentos',
-      icon: 'mdi-home-city-outline',
-      to: '/enviados',
-    },
-    {
-      title: 'Personal',
+      title: 'Reporte',
+      icon: 'mdi-note-text-outline',
+      to: '/administrator/report',
       meta: {
-        badge: null,
+        is_admin: true
       },
-      icon: 'mdi-account-cog-outline',
-      to: '/por-corregir',
-    },
-    {
-      title: 'Nucleos',
-      icon: 'mdi-home-assistant',
-      to: '/borradores',
-    },
-
+    }
   ],
   statusClient:{
     rojo: '#FF353E',
@@ -47,16 +45,6 @@ const state = {
 
 const mutations = {
   ...make.mutations(state),
-  NEW_DOCUMENTS(state, news){
-    let { meta } = state.items[0]
-    meta.badge = news
-  },
-
-  NEW_DOCUMENTS_CORRECT(state, news){
-    let { meta } = state.items[2]
-    meta.badge = news
-  }
-
 }
 
 const actions = {
@@ -69,6 +57,9 @@ const actions = {
 const getters = {
   overlay(state){
     return state.overlay;
+  },
+  alert(state){
+    return state.alert;
   },
   items(state){
     return state.items;
