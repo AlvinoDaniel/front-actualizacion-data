@@ -471,7 +471,7 @@
           )
         } catch (error) {
           this.$root.$showAlert(
-            'Lo siento, hubo un error al intentar obtener los Pagos.',
+            'Lo siento, hubo un error al intentar obtener la información.',
             'error',
           )
         } finally {
