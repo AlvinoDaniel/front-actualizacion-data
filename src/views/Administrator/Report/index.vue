@@ -12,7 +12,21 @@
               Reporte de Registro
             </h3>
           </v-col>
-          <v-col cols="12" md="6" class="pt-1 d-flex align-center justify-end" style="gap: 8px ">
+          <v-col cols="12" md="4" class="pt-1 d-flex align-center justify-end" style="gap: 8px ">
+            <v-select
+              v-model="nucleoSelected"
+              :items="catalogue.nucleo"
+              label="Núcleo"
+              :loading="load"
+              :disabled="load"
+              item-text="nombre"
+              item-value="codigo_1"
+              dense
+              outlined
+              hide-details
+              prepend-inner-icon="mdi-home-city-outline"
+              @change="getPersonal"
+            ></v-select>
             <v-menu
               rounded
               offset-y
@@ -20,7 +34,6 @@
               <template v-slot:activator="{ attrs, on }">
                 <v-btn
                   depressed
-                  small
                   dark
                   color="blue-grey"
                   class=""
@@ -143,6 +156,7 @@
   import { downloadPersonal, getPersonalByUnid, exportReportPersonal } from '@/services/usuario'
   import { get } from 'vuex-pathify'
   import moment from 'moment'
+  import { getCatalogue } from '@/services/catalogue'
 
   export default {
     name: 'Download',
@@ -171,12 +185,18 @@
       page: 1,
       pageCount: 0,
       itemsPerPage: 10,
+      nucleoSelected: '1',
+      catalogue:{
+        nucleo: [],
+      },
+      load: false
     }),
     computed: {
       user: get('user/infoBasic'),
       nucleo: get('route/params@nucleo'),
     },
     created () {
+      this.getData();
       this.getPersonal();
     },
     methods: {
@@ -185,7 +205,7 @@
         this.personal = []
         try {
           const { data = [] } = await downloadPersonal({
-            nucleo: this.nucleo ?? null,
+            nucleo: this.nucleoSelected ?? null,
             page: this.page,
             perPage: this.itemsPerPage
           })
@@ -230,7 +250,7 @@
         const fileName = `REPORTE_PERSONAL_${date}.xlsx`
         this.downloading = true;
         try {
-          const file = await exportReportPersonal()
+          const file = await exportReportPersonal({nucleo: this.nucleoSelected ?? null,})
           var excelURL = window.URL.createObjectURL(new Blob([file]));
           var excelLink = document.createElement('a');
 
@@ -273,6 +293,30 @@
           this.loading_personal = false
         }
 
+      },
+      async getData () {
+        this.load = true;
+        const catalogues = [
+          {name: 'nucleo', value: 'nucleo'},
+        ]
+        try {
+          await Promise.all(
+            catalogues.map(async res => {
+              await getCatalogue({table: res.name}).then(response => {
+                if(response){
+                  this.catalogue[res.value] = response
+                }
+              })
+            })
+          )
+        } catch (error) {
+          this.$root.$showAlert(
+            'Lo siento, hubo un error al intentar obtener los Pagos.',
+            'error',
+          )
+        } finally {
+          this.load = false
+        }
       },
       goBack(){
         this.steps_data = 1;

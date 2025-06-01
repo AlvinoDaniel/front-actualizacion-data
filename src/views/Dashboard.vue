@@ -212,7 +212,7 @@
                   </v-col>
                   <v-col cols="12" sm="6" md="4">
                     <label class="font-weight-medium button black--text text-h6 mb-2">Teléfono Móvil</label>
-                    <validation-provider name="Telefono" vid="telefono" rules="required" v-slot="{ errors }">
+                    <validation-provider name="Telefono" vid="telefono" rules="required|length:12" v-slot="{ errors }">
                       <v-text-field
                         v-model="info.telefono"
                         v-mask="'####-#######'"
@@ -221,7 +221,9 @@
                         :error-messages="errors[0]"
                         color="label"
                         class="mt-2"
-                        hint="Ingrese su Teléfono actualizado"
+                        placeholder="04XX-XXXXXXX"
+                        persistent-placeholder
+                        hint="Ingrese su Teléfono actualizado. Ej. 04XX-XXXXXXX"
                         persistent-hint
                         >
                       </v-text-field>
