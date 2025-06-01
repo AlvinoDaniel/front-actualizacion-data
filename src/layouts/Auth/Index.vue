@@ -6,31 +6,31 @@
       color="white"
       elevation="1"
     >
-     <v-toolbar-title>
-        <v-img
-          :src="
-            require('@/assets/Logos/Logo_UDO.png')"
-          width="50"
-        />
-      </v-toolbar-title>
-      <v-spacer></v-spacer>
-      <v-toolbar-title>
-        <v-btn
-          link
-          text
-          small
-          :ripple="false"
-          @click="redirectGuide"
-          class="font-weight-bold py-5"
-        >
-        <v-avatar color="info" size="25" class="mr-2">
-          <v-icon dark size="20">
-            mdi-account
-          </v-icon>
-        </v-avatar>
-          <span class="font-weight-bold black--text">Guía de Usuario</span>
-        </v-btn>
-      </v-toolbar-title>
+    <v-toolbar-title>
+      <v-btn
+        link
+        text
+        small
+        :ripple="false"
+        @click="redirectGuide"
+        class="font-weight-bold py-5"
+      >
+      <v-avatar color="info" size="25" class="mr-2">
+        <v-icon dark size="20">
+          mdi-account
+        </v-icon>
+      </v-avatar>
+        <span class="font-weight-bold black--text">Guía de Usuario</span>
+      </v-btn>
+    </v-toolbar-title>
+    <v-spacer></v-spacer>
+    <v-toolbar-title>
+      <v-img
+        :src="
+          require('@/assets/Logos/Logo_UDO.png')"
+        width="50"
+      />
+    </v-toolbar-title>
     </v-app-bar>
     <v-main class="d-flex justify-center blue-grey lighten-5">
       <v-container

@@ -15,7 +15,7 @@
         plain
         :ripple="false"
         :small="$vuetify.breakpoint.mobile"
-        :class="{'mr-2': !$vuetify.breakpoint.mobile, 'btn-navbar': true }"
+        :class="{'pr-0': true, 'btn-navbar': true }"
         v-bind="attrs"
         v-on="on"
       >

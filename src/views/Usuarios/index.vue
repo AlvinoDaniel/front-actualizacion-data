@@ -159,6 +159,7 @@
       :departments="[]"
       @procesado="getPersonal($event)"
       @tab="selectUnidad = $event"
+      @close="isCreate = $event"
       />
   </v-container>
 </template>

@@ -84,9 +84,9 @@ export const downloadPersonal = async ({ nucleo , download = null, page = 1, per
   }
 }
 
-export const exportReportPersonal = async () => {
+export const exportReportPersonal = async ({nucleo}) => {
 
-  const URL_API = `personal/export/list`
+  const URL_API = `personal/export/list?nucleo=${nucleo}`
   try {
     const { data } = await api.get(URL_API, { responseType: 'blob' })
     return data
