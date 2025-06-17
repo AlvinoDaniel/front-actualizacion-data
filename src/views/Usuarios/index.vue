@@ -86,7 +86,7 @@
               @click="getPersonal(unidad)"
             >
               <v-icon color="info">mdi-circle-medium</v-icon>
-             <strong>{{ unidad.descripcion_unidad_ejec }}</strong>
+             <strong>{{ unidad.descripcion_unidad_admin }}</strong>
             </v-tab>
         </v-tabs>
       </v-col>
@@ -224,7 +224,7 @@ export default {
         return {
           codigo_unidad_admin: item?.codigo_unidad_admin,
           codigo_unidad_ejec: item?.codigo_unidad_ejec,
-          descripcion_unidad_ejec: item?.entidad?.descripcion_unidad_ejec,
+          descripcion_unidad_admin: item?.entidad?.descripcion_unidad_admin,
         }
       });
 
