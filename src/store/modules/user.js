@@ -73,6 +73,8 @@ const getters = {
     const data = state.info.id ? {
       uni_admin: unidades.length > 0 ?  `${unidades[0]?.entidad?.descripcion_unidad_admin}` : 'S/R',
       uni_ejec: unidades.length > 0 ?  `${unidades[0]?.entidad?.descripcion_unidad_ejec}` : 'S/R',
+      escuela: unidades.length > 0 ?  unidades[0]?.entidad?.descripcion_escuela : 'S/R',
+      correo_dependencia: unidades.length > 0 ?  unidades[0]?.entidad?.correo_dependencia ?? '' : 'S/R',
       nucleo: state.info?.personal?.nucleo?.nombre,
       cedula: state.info?.personal?.cedula_identidad,
       nombres_apellidos: state.info?.personal?.nombres_apellidos,

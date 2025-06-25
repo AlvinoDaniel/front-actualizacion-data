@@ -114,6 +114,24 @@
                         </v-list-item-title>
                       </v-list-item-content>
                     </v-list-item>
+                    <v-template v-if="user.escuela !== null">
+                      <v-divider />
+                      <v-list-item class="pl-0">
+                        <v-list-item-icon class="ml-0 mr-2">
+                          <v-avatar rounded size="34" color="blue-grey lighten-5">
+                            <v-icon>mdi-school</v-icon>
+                          </v-avatar>
+                        </v-list-item-icon>
+                        <v-list-item-content>
+                          <v-list-item-subtitle class="">
+                            <span class="text-muted">Escuela: </span>
+                          </v-list-item-subtitle>
+                          <v-list-item-title class="">
+                            <span class="font-weight-bold" style="font-size: 1rem; white-space: normal;">{{ user.nucleo }}</span>
+                          </v-list-item-title>
+                        </v-list-item-content>
+                      </v-list-item>
+                    </v-template>
                     <v-divider />
                     <v-list-item class="pl-0">
                       <v-list-item-icon class="ml-0 mr-2">
@@ -195,7 +213,7 @@
                 </v-row>
                 <v-row>
                   <v-col cols="12" sm="6" md="4">
-                    <label class="font-weight-medium button black--text text-h6 mb-2">Corre Electronico</label>
+                    <label class="font-weight-medium button black--text text-h6 mb-2">Correo Electronico</label>
                     <validation-provider name="Correo Electronico" vid="correo" rules="required|email" v-slot="{ errors }">
                       <v-text-field
                         v-model="info.correo"
@@ -348,6 +366,30 @@
                     </validation-provider>
                   </v-col>
                 </v-row>
+                <v-row>
+                  <v-col cols="12">
+                    <h2>Datos de la Dependencia</h2>
+                  </v-col>
+                </v-row>
+                <v-row>
+                  <v-col cols="12" sm="6">
+                    <label class="font-weight-medium button black--text text-h6 mb-2">Nombre de Correo Electronico</label>
+                    <validation-provider name="Correo Electronico" vid="correo_dependencia" rules="alpha_dash" v-slot="{ errors }">
+                      <v-text-field
+                        v-model="info.correo_dependencia"
+                        outlined
+                        clearable
+                        :error-messages="errors[0] ? 'Nombré Inválido. No puede contener espacios ni caracteres especiales' : ''"
+                        color="label"
+                        class="mt-2"
+                        hint="Ingrese el nombre para el Correo Electrónico de la dependencia"
+                        persistent-hint
+                        >
+                        <!-- suffix=".sucre@udo.edu.ve" -->
+                      </v-text-field>
+                    </validation-provider>
+                  </v-col>
+                </v-row>
                 <v-row align="center">
                   <v-col cols="12" md="8" class="d-flex justify-between mt-2">
                     <v-alert
@@ -411,6 +453,7 @@
     data: () => ({
       info: {
         correo: null,
+        correo_dependencia:null,
         telefono: null,
         area_trabajo: null,
         camisa: null,
@@ -479,8 +522,9 @@
         }
       },
       setData(){
-        const { personal } = this.user;
+        const { personal, correo_dependencia } = this.user;
         this.info.correo = personal?.correo;
+        this.info.correo_dependencia = correo_dependencia;
         this.info.telefono = personal?.telefono;
         this.info.camisa = personal?.camisa;
         this.info.pantalon = personal?.pantalon;

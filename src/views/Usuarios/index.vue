@@ -82,7 +82,7 @@
         <v-tabs v-model="selectUnidad">
             <v-tab v-for="unidad in unidades"
               :ripple="false"
-              :key="unidad.codigo_unidad_ejec"
+              :key="unidad.codigo_unidad_admin"
               @click="getPersonal(unidad)"
             >
               <v-icon color="info">mdi-circle-medium</v-icon>
@@ -92,7 +92,7 @@
       </v-col>
       <v-col cols="12" class="py-0">
         <v-data-table
-          sort-by="codigo_unidad_ejec"
+          sort-by="codigo_unidad_admin"
           class="inbox"
           no-data-text="No hay Personal Registrado"
           :search="filterData"
@@ -220,23 +220,23 @@ export default {
   methods: {
     setUnidades(){
       const {unidades = [] } = this.user
+      console.log({unidades})
       this.unidades = unidades.map(item => {
         return {
-          codigo_unidad_admin: item?.codigo_unidad_admin,
-          codigo_unidad_ejec: item?.codigo_unidad_ejec,
+          codigo_unidad_admin: item?.entidad?.codigo_unidad_admin,
+          unidad_admin: item?.id_unidad_admin,
           descripcion_unidad_admin: item?.entidad?.descripcion_unidad_admin,
         }
       });
 
       this.getPersonal(this.unidades[0])
     },
-    async getPersonal ({codigo_unidad_admin, codigo_unidad_ejec}) {
+    async getPersonal ({unidad_admin}) {
       this.loading = true
       this.personal = []
       try {
         const { personal = [] } = await getAllPersonal({
-          admin: codigo_unidad_admin,
-          ejec: codigo_unidad_ejec
+          admin: unidad_admin,
         })
         this.personal = personal
       } catch (error) {
@@ -295,14 +295,13 @@ export default {
         );
         return;
       }
-      const {codigo_unidad_admin, codigo_unidad_ejec} = this.unidades[this.selectUnidad];
+      const {codigo_unidad_admin, unidad_admin} = this.unidades[this.selectUnidad];
       const date = moment().valueOf()
       const fileName = `${codigo_unidad_admin}_${date}.pdf`
       this.downloading = true;
       try {
         const file = await downloadListPersonal({
-          admin: codigo_unidad_admin,
-          ejec: codigo_unidad_ejec
+          admin: unidad_admin,
         })
         var pdfURL = window.URL.createObjectURL(new Blob([file]));
         var pdfLink = document.createElement('a');

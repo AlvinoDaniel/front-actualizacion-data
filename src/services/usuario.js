@@ -1,8 +1,8 @@
 import api from '../util/request.js'
 
-export const getAllPersonal = async ({admin, ejec}) => {
+export const getAllPersonal = async ({admin}) => {
   try {
-    const { data } = await api.get(`personal`, {params: {admin, ejec }})
+    const { data } = await api.get(`personal`, {params: {admin}})
     return data.data
   } catch (error) {
     console.log({error})
@@ -51,9 +51,9 @@ export const updateAuthUser = async ({datos}) => {
   }
 }
 
-export const downloadListPersonal= async ({ admin, ejec }) => {
+export const downloadListPersonal= async ({ admin }) => {
   try {
-    const { data } = await api.get(`personal/donwload/list?admin=${admin}&ejec=${ejec}`, { responseType: 'blob'})
+    const { data } = await api.get(`personal/donwload/list?admin=${admin}`, { responseType: 'blob'})
     return data
   } catch (error) {
     console.log({error})

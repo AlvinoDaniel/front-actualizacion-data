@@ -451,7 +451,7 @@ export default {
         this.personal = {
           ...val,
           tipo_personal: parseInt(val?.tipo_personal),
-          unidad: unidades.find(item => item.codigo_unidad_ejec === val.codigo_unidad_ejec)?.id ?? null,
+          unidad: unidades.find(item => item.id_unidad_admin === val.id_unidad_admin)?.id ?? null,
           nucleo: val?.cod_nucleo.toString().at(0)
         }
         this.workerExists = true
@@ -488,7 +488,8 @@ export default {
           codigo_unidad_ejec: item?.codigo_unidad_ejec,
           descripcion_unidad_admin: item?.entidad?.descripcion_unidad_admin,
           descripcion_unidad_ejec: item?.entidad?.descripcion_unidad_ejec,
-          id: item?.id
+          id: item?.id,
+          unidad_admin: item?.id_unidad_admin,
         }
       });
 
