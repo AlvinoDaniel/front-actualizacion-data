@@ -76,6 +76,7 @@ const getters = {
       escuela: unidades.length > 0 ?  unidades[0]?.entidad?.descripcion_escuela : 'S/R',
       correo_dependencia: unidades.length > 0 ?  unidades[0]?.entidad?.correo_dependencia ?? '' : 'S/R',
       nucleo: state.info?.personal?.nucleo?.nombre,
+      cod_nucleo: state.info?.personal?.nucleo?.codigo_concatenado,
       cedula: state.info?.personal?.cedula_identidad,
       nombres_apellidos: state.info?.personal?.nombres_apellidos,
       cargo_jefe: state.info?.personal?.cargo_jefe ?? 'S/R',

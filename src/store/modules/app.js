@@ -22,7 +22,15 @@ const state = {
     {
       title: 'Mi Personal',
       icon: 'mdi-account-group-outline',
-      to: '/usuarios',
+      to: '/mi-personal',
+      meta: {
+        is_admin: false
+      },
+    },
+    {
+      title: 'Personal Rezagado',
+      icon: 'mdi-note-text-outline',
+      to: '/personal-rezagados',
       meta: {
         is_admin: false
       },

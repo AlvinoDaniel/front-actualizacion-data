@@ -10,6 +10,16 @@ export const getAllPersonal = async ({admin}) => {
   }
 }
 
+export const getAllPersonalLagging = async ({nucleo}) => {
+  try {
+    const { data } = await api.get(`personal/all-lagging`, {params: {nucleo}})
+    return data.data
+  } catch (error) {
+    console.log({error})
+    return Promise.reject(error)
+  }
+}
+
 export const deletePersonal = async ({ id }) => {
   try {
     const { data } = await api.delete(`personal/${id}`)
@@ -99,6 +109,16 @@ export const exportReportPersonal = async ({nucleo}) => {
 export const getPersonalByUnid = async ({admin, ejec, nucleo}) => {
   try {
     const { data } = await api.get(`personal/all-by-unidad`, {params: {admin, ejec, nucleo}})
+    return data.data
+  } catch (error) {
+    console.log({error})
+    return Promise.reject(error)
+  }
+}
+
+export const getUnidsWithoutLeadership = async () => {
+  try {
+    const { data } = await api.get(`personal/unids-without-leadership`)
     return data.data
   } catch (error) {
     console.log({error})

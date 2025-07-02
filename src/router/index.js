@@ -73,13 +73,24 @@ const createRouter = () => new Router({
         },
         {
           name: 'Usuarios',
-          path: '/usuarios',
+          path: '/mi-personal',
           meta:{
             auth: true,
           },
           component: () => import(
             /* webpackChunkName: "views-[request]" */
             '@/views/Usuarios/index'
+          ),
+        },
+        {
+          name: 'Personal rezagados',
+          path: '/personal-rezagados',
+          meta:{
+            auth: true,
+          },
+          component: () => import(
+            /* webpackChunkName: "views-[request]" */
+            '@/views/PersonalRezagado/index'
           ),
         },
         {

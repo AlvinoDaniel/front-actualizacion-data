@@ -129,17 +129,18 @@
                         </validation-provider>
                       </v-col>
                       <v-col v-if="showUnid" cols="12" sm="6" md="4">
-                        <label class="font-weight-medium button black--text text-h6 mb-2">Unidad Ejecutora</label>
+                        <label class="font-weight-medium button black--text text-h6 mb-2">Unidad</label>
                         <validation-provider name="Unidad" vid="unidad" rules="required" v-slot="{ errors }">
                           <v-select
                             v-model="personal.unidad"
                             :items="catalogue.unidades"
-                            item-text="descripcion_unidad_ejec"
-                            item-value="id"
+                            item-text="descripcion_unidad_admin"
+                            item-value="unidad_admin"
                             outlined
                             class="mt-2"
                             :disabled="!workerExists"
                             :error-messages="errors[0]"
+                            :loading="loadingUnids"
                             >
                           </v-select>
                         </validation-provider>
@@ -366,7 +367,7 @@
   </v-dialog>
 </template>
 <script>
-import { searchPersonal, savePersonal } from '@/services/usuario'
+import { searchPersonal, savePersonal, getUnidsWithoutLeadership } from '@/services/usuario'
 import { getCatalogue } from '@/services/catalogue'
 import { get } from 'vuex-pathify'
 import { TALLAS_PANTALON, TALLAS_CAMISA } from '@/services/datos'
@@ -405,6 +406,10 @@ export default {
       type: Boolean,
       default: false
     },
+    laggards:{
+      type: Boolean,
+      default: false
+    },
     action: {
       type: String,
       default: 'crear',
@@ -414,6 +419,7 @@ export default {
     return {
       show: this.value,
       loadingAction: false,
+      loadingUnids: false,
       personal: dataDefault(),
       nucleos: [],
       stepper: 1,
@@ -451,7 +457,7 @@ export default {
         this.personal = {
           ...val,
           tipo_personal: parseInt(val?.tipo_personal),
-          unidad: unidades.find(item => item.id_unidad_admin === val.id_unidad_admin)?.id ?? null,
+          unidad: val.id_unidad_admin ?? null,
           nucleo: val?.cod_nucleo.toString().at(0)
         }
         this.workerExists = true
@@ -476,7 +482,11 @@ export default {
       },
   },
   created () {
-    this.setUnidades()
+    if(this.laggards){
+      this.getUnids()
+    } else {
+      this.setUnidades()
+    }
     this.getData()
   },
   methods: {
@@ -494,7 +504,7 @@ export default {
       });
 
       if(unidades.length > 0 && unidades.length === 1){
-        this.personal.unidad = unidades[0]?.id;
+        this.personal.unidad = unidades[0]?.unidad_admin;
         this.showUnid = false;
       }
     },
@@ -534,6 +544,25 @@ export default {
         this.load = false
       }
     },
+    async getUnids () {
+      this.loadingUnids = true
+      this.catalogue.unidades = []
+      try {
+        const { unidades = [] } = await getUnidsWithoutLeadership()
+        this.catalogue.unidades = unidades.length > 0 ? unidades.map((item) => {
+          return {
+            descripcion_unidad_admin: item?.descripcion,
+            unidad_admin: item?.id,
+          }
+        }) : unidades;
+
+                console.log(this.catalogue.unidades)
+      } catch (error) {
+        console.log(error)
+      } finally {
+        this.loadingUnids = false
+      }
+    },
     async search () {
       const { valid } = await this.$refs.REGISTER_CEDULA_FORM.validate();
       if(valid) {
@@ -568,7 +597,7 @@ export default {
       const valid = await this.$refs.STEP_UNIFORM_FORM.validate();
       if(valid) {
         try {
-          if(this.catalogue.unidades.length > 0 && this.catalogue.unidades.length === 1){
+          if(this.catalogue.unidades.length > 0 && this.catalogue.unidades.length === 1 && !this.laggards){
             this.personal.unidad = this.catalogue.unidades[0]?.id;
           }
           this.loadingAction = true;
@@ -577,7 +606,7 @@ export default {
             action: this.action,
             id: this.personal?.id ?? null
           })
-          const unidSelect = this.catalogue.unidades.findIndex(item => item.id === this.personal.unidad)
+          const unidSelect = this.catalogue.unidades.findIndex(item => item.unidad_admin === this.personal.unidad)
           this.$emit('procesado', this.catalogue.unidades[unidSelect]);
           this.$emit('tab', unidSelect);
           this.cerrar();
