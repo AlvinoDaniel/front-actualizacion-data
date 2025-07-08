@@ -35,25 +35,6 @@
         <v-tooltip bottom>
           <template v-slot:activator="{ on, attrs }">
             <v-btn
-              depressed
-              small
-              dark
-              color="blue-grey"
-              class=""
-              v-bind="attrs"
-              v-on="on"
-              @click="generatePDF"
-              :loading="downloading"
-              >
-              <v-icon left>mdi-download</v-icon>
-              Descargar
-            </v-btn>
-          </template>
-          <span>Descargar</span>
-        </v-tooltip>
-        <v-tooltip bottom>
-          <template v-slot:activator="{ on, attrs }">
-            <v-btn
               fab
               x-small
               depressed

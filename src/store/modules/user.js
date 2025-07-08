@@ -84,9 +84,14 @@ const getters = {
       has_update: state.info?.pesonal?.has_update ?? false,
       tipo_personal: state.info?.personal?.tipo_personal?.descripcion,
       personal: state.info?.personal,
-      unidades
+      unidades,
+      permissions: state.info.permissions
     } : null
     return data;
+  },
+  permissions (state){
+     const {permissions = [] } = state.info;
+     return permissions
   }
 }
 

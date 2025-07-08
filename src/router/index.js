@@ -11,34 +11,48 @@ export const dynamicRoutes = [
     path: '/report/:nucleo?',
     meta: {
       auth: true,
+      default: false,
+      permission: 'reporte-general'
     },
     component: () => import(
       /* webpackChunkName: "views-[request]" */
-      '@/views/download'
+      '@/views/Administrator/Report/index'
+    ),
+  },
+  {
+    name: 'Personal rezagados',
+    path: '/personal-rezagados',
+    meta:{
+      auth: true,
+      default: false,
+      permission: 'registrar-personal-rezagado'
+    },
+    component: () => import(
+      /* webpackChunkName: "views-[request]" */
+      '@/views/PersonalRezagado/index'
     ),
   },
 ]
 
 export const AdminRoute = {
-  name: 'Administrador',
-  path: '/administrator',
+  path: '',
   redirect: { name: 'Reporte' },
     component: () => import(
       /* webpackChunkName: "layout-[request]" */
       '@/layouts/default/Index'
     ),
     children: [
-      {
-        name: 'Reporte',
-        path: 'report/:nucleo?',
-        meta: {
-          auth: true,
-        },
-        component: () => import(
-          /* webpackChunkName: "views-[request]" */
-          '@/views/Administrator/Report/index'
-        ),
-      },
+      // {
+      //   name: 'Reporte',
+      //   path: 'report/:nucleo?',
+      //   meta: {
+      //     auth: true,
+      //   },
+      //   component: () => import(
+      //     /* webpackChunkName: "views-[request]" */
+      //     '@/views/Administrator/Report/index'
+      //   ),
+      // },
     ]
 }
 

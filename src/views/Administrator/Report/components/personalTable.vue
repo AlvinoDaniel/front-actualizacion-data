@@ -13,9 +13,21 @@
             <v-icon class="mr-2">mdi-arrow-left</v-icon> Regresar al Listado
           </v-btn>
         </div>
-        <div class="ml-2 mt-2">
-          <h3 class="text-uppercase">{{ nombreUnidad }}</h3>
-          <small>Jefe de Unidad: <strong> {{ nombreJefe }} </strong> </small>
+        <div class="ml-2 mt-2 d-flex justify-space-between align-end">
+          <div>
+            <h3 class="text-uppercase">{{ nombreUnidad }}</h3>
+            <small>Jefe de Unidad: <strong> {{ nombreJefe }} </strong> </small>
+          </div>
+          <v-btn
+            depressed
+            dark
+            color="blue-grey"
+            class=""
+            @click="modalPermissions = true"
+          >
+            <v-icon left>mdi-account-cog-outline</v-icon>
+            Gestionar Permisos
+          </v-btn>
         </div>
       </v-col>
     </v-row>
@@ -51,6 +63,11 @@
         <v-divider></v-divider>
       </v-col>
     </v-row>
+    <create-and-edit-permissions
+      v-model="modalPermissions"
+      :jefe="jefe"
+      @reload="reloadPersonal"
+    />
   </v-container>
 </template>
 <script>
@@ -58,6 +75,12 @@
 
 export default {
   name: 'PersonalUnidad',
+  components: {
+    CreateAndEditPermissions: () => import(
+      /* webpackChunkName: "modal-create" */
+      './CreateAndEditPermissions.vue'
+    )
+  },
   props:{
     value: Boolean,
     data:{
@@ -86,6 +109,7 @@ export default {
         { text: 'Cargo', value: 'cargo_opsu',  class: 'blue-grey lighten-5 blue-grey--text'},
         { text: 'Nùcleo', value: 'nucleo_nombre',  class: 'blue-grey lighten-5 blue-grey--text'},
       ],
+      modalPermissions: false,
     }
   },
   computed: {
@@ -99,6 +123,9 @@ export default {
   methods: {
     goBack(){
       this.$emit('back', true);
+    },
+    reloadPersonal(){
+      this.$emit('update', true);
     }
   },
 }
