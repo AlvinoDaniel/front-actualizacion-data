@@ -163,19 +163,19 @@
                       </v-col>
                       <v-col cols="12" sm="6" md="4">
                         <label class="font-weight-medium button black--text text-h6 mb-2">Teléfono Móvil</label>
-                        <validation-provider name="Telefono" vid="telefono" rules="required|length:12" v-slot="{ errors }">
+                        <validation-provider name="Telefono" vid="telefono" rules="required|length:11" v-slot="{ errors }">
                           <v-text-field
                             v-model="personal.telefono"
-                             v-mask="'####-#######'"
+                             v-mask="'###########'"
                             outlined
                             clearable
                             :disabled="!workerExists"
                             :error-messages="errors[0]"
                             color="label"
                             class="mt-2"
-                            placeholder="04XX-XXXXXXX"
+                            placeholder="04XXXXXXXXX"
                             persistent-placeholder
-                            hint="Ingrese su Teléfono actualizado. Ej. 04XX-XXXXXXX"
+                            hint="Ingrese su Teléfono actualizado. Ej. 04XXXXXXXXX"
                             persistent-hint
                             >
                           </v-text-field>
