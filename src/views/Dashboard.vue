@@ -127,7 +127,7 @@
                             <span class="text-muted">Escuela: </span>
                           </v-list-item-subtitle>
                           <v-list-item-title class="">
-                            <span class="font-weight-bold" style="font-size: 1rem; white-space: normal;">{{ user.nucleo }}</span>
+                            <span class="font-weight-bold" style="font-size: 1rem; white-space: normal;">{{ user.escuela }}</span>
                           </v-list-item-title>
                         </v-list-item-content>
                       </v-list-item>
