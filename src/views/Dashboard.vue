@@ -371,12 +371,12 @@
                     <h2>Datos de la Dependencia</h2>
                   </v-col>
                 </v-row>
-                <v-row>
-                  <v-col cols="12" sm="6">
-                    <label class="font-weight-medium button black--text text-h6 mb-2">Nombre de Correo Electronico</label>
-                    <validation-provider name="Correo Electronico" vid="correo_dependencia" rules="alpha_dash" v-slot="{ errors }">
+                <v-row v-if="user.correos_dependencia.length > 0">
+                  <v-col cols="12" sm="6" v-for="(correo, i) in user.correos_dependencia">
+                    <label class="font-weight-medium button black--text text-h6 mb-2">Correo Electronico (<b>{{ correo.dependencia }}</b>)</label>
+                    <validation-provider name="Correo Electronico" :vid="'correo_dependencia_'+i" rules="email" v-slot="{ errors }">
                       <v-text-field
-                        v-model="info.correo_dependencia"
+                        v-model="info.correos_dependencia[i].value"
                         outlined
                         clearable
                         :error-messages="errors[0] ? 'Nombré Inválido. No puede contener espacios ni caracteres especiales' : ''"
@@ -453,7 +453,7 @@
     data: () => ({
       info: {
         correo: null,
-        correo_dependencia:null,
+        correos_dependencia:null,
         telefono: null,
         area_trabajo: null,
         camisa: null,
@@ -522,9 +522,9 @@
         }
       },
       setData(){
-        const { personal, correo_dependencia } = this.user;
+        const { personal, correos_dependencia } = this.user;
         this.info.correo = personal?.correo;
-        this.info.correo_dependencia = correo_dependencia;
+        // this.info.correo_dependencia = correo_dependencia;
         this.info.telefono = personal?.telefono;
         this.info.camisa = personal?.camisa;
         this.info.pantalon = personal?.pantalon;
@@ -533,6 +533,13 @@
         this.info.area_trabajo = personal?.area_trabajo;
         this.info.prenda_extra = personal?.prenda_extra;
         this.info.tipo_calzado = personal?.tipo_calzado;
+
+        this.info.correos_dependencia = correos_dependencia.length > 0 
+          ? correos_dependencia.map((item) => ({
+            id: item?.id,
+            value: item?.correo,
+          }))
+          : []
       },
       async update () {
         const valid = await this.$refs.UPDATE_FORM.validate();
