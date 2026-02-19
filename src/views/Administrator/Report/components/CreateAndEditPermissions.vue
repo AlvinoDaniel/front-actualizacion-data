@@ -163,7 +163,7 @@ export default {
       }
       const data = {
         permissions: this.permissions_selected,
-        jefe: this.jefe.id
+        jefe: this.jefe?.id
       }
 
       try {

@@ -19,6 +19,7 @@
             <small>Jefe de Unidad: <strong> {{ nombreJefe }} </strong> </small>
           </div>
           <v-btn
+            v-if="hasJefe"
             depressed
             dark
             color="blue-grey"
@@ -113,6 +114,9 @@ export default {
     }
   },
   computed: {
+    hasJefe(){
+      return this.jefe !== null
+    },
     nombreJefe(){
       return this.jefe !== null ? this.jefe?.nombres_apellidos : ''
     },
