@@ -270,14 +270,14 @@
           this.downloading = false;
         }
       },
-      async getDetails({codigo_unidad_admin, codigo_unidad_ejec, cod_nucleo, descripcion_unidad_admin, nombre:nucleo}){
+      async getDetails({codigo_unidad_admin, codigo_unidad_ejec, cod_nucleo, descripcion_unidad_admin, nombre:nucleo, id_unidad_admin}){
         this.loading_personal = true
         this.personal_by_unidad = []
         this.unidad_selected = null
         this.steps_data = 2;
         try {
           const { personal = [], jefe = [] } = await getPersonalByUnid({
-            admin: codigo_unidad_admin,
+            admin: id_unidad_admin,
             ejec: codigo_unidad_ejec,
             nucleo: cod_nucleo
           })

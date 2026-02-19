@@ -26,12 +26,12 @@ router.beforeEach(async (to, from, next) => {
       else {
         try {
           store.dispatch('app/setOverlay', true);
-          const { is_admin = false } = await store.dispatch('user/getInfo');
-          if(is_admin){
-            router.addRoute(AdminRoute)
-          }
+          const { is_admin = false, permissions = [] } = await store.dispatch('user/getInfo');
+          const addRoutes = await store.dispatch('permissions/generateRoutes', permissions)
+          AdminRoute.children = addRoutes
+          router.addRoute(AdminRoute)
           router.addRoute({ path: '*', redirect: '/404' })
-          store.dispatch('permissions/generateRoutes', is_admin)
+          // store.dispatch('permissions/generateRoutes', is_admin)
           return  next({...to, replace: true})
         } catch (e) {
           console.log('error', e)

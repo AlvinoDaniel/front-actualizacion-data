@@ -1,8 +1,18 @@
 import api from '../util/request.js'
 
-export const getAllPersonal = async ({admin, ejec}) => {
+export const getAllPersonal = async ({admin}) => {
   try {
-    const { data } = await api.get(`personal`, {params: {admin, ejec }})
+    const { data } = await api.get(`personal`, {params: {admin}})
+    return data.data
+  } catch (error) {
+    console.log({error})
+    return Promise.reject(error)
+  }
+}
+
+export const getAllPersonalLagging = async ({nucleo}) => {
+  try {
+    const { data } = await api.get(`personal/all-lagging`, {params: {nucleo}})
     return data.data
   } catch (error) {
     console.log({error})
@@ -51,9 +61,9 @@ export const updateAuthUser = async ({datos}) => {
   }
 }
 
-export const downloadListPersonal= async ({ admin, ejec }) => {
+export const downloadListPersonal= async ({ admin }) => {
   try {
-    const { data } = await api.get(`personal/donwload/list?admin=${admin}&ejec=${ejec}`, { responseType: 'blob'})
+    const { data } = await api.get(`personal/donwload/list?admin=${admin}`, { responseType: 'blob'})
     return data
   } catch (error) {
     console.log({error})
@@ -99,6 +109,16 @@ export const exportReportPersonal = async ({nucleo}) => {
 export const getPersonalByUnid = async ({admin, ejec, nucleo}) => {
   try {
     const { data } = await api.get(`personal/all-by-unidad`, {params: {admin, ejec, nucleo}})
+    return data.data
+  } catch (error) {
+    console.log({error})
+    return Promise.reject(error)
+  }
+}
+
+export const getUnidsWithoutLeadership = async () => {
+  try {
+    const { data } = await api.get(`personal/unids-without-leadership`)
     return data.data
   } catch (error) {
     console.log({error})

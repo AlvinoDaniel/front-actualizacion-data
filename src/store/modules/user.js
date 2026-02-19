@@ -73,17 +73,31 @@ const getters = {
     const data = state.info.id ? {
       uni_admin: unidades.length > 0 ?  `${unidades[0]?.entidad?.descripcion_unidad_admin}` : 'S/R',
       uni_ejec: unidades.length > 0 ?  `${unidades[0]?.entidad?.descripcion_unidad_ejec}` : 'S/R',
+      escuela: unidades.length > 0 ?  unidades[0]?.entidad?.descripcion_escuela : null,
+      correos_dependencia: unidades.length > 0 
+        ?  unidades.map((item) => ({
+          id: item?.id_unidad_admin,
+          correo: item?.entidad?.correo_dependencia,
+          dependencia: item?.entidad?.descripcion_unidad_admin
+        })) 
+        : [],
       nucleo: state.info?.personal?.nucleo?.nombre,
+      cod_nucleo: state.info?.personal?.nucleo?.codigo_concatenado,
       cedula: state.info?.personal?.cedula_identidad,
       nombres_apellidos: state.info?.personal?.nombres_apellidos,
-      cargo_jefe: state.info?.personal?.cargo_jefe ?? 'S/R',
+      cargo_jefe: state.info?.personal?.cargo_personla_jefe !== null ? state.info?.personal?.cargo_personla_jefe?.descripcion ?? 'S/R' : state.info?.personal?.cargo_jefe ?? 'S/R',
       cargo_opsu: state.info?.personal?.cargo_opsu ?? 'S/R',
       has_update: state.info?.pesonal?.has_update ?? false,
       tipo_personal: state.info?.personal?.tipo_personal?.descripcion,
       personal: state.info?.personal,
-      unidades
+      unidades,
+      permissions: state.info.permissions
     } : null
     return data;
+  },
+  permissions (state){
+     const {permissions = [] } = state.info;
+     return permissions
   }
 }
 

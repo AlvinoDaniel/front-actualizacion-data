@@ -7,9 +7,9 @@ import { dispatch } from 'vuex-pathify'
  * @param permisos
  * @param route
  */
-function hasPermission(is_admin, route) {
-  if (route.meta && route.meta.is_admin) {
-    return is_admin
+function hasPermission(permisos, route) {
+  if (route.meta && !route.meta.default) {
+    return permisos.some((item) => item === route.meta?.permission)
   } else {
     return true
   }
@@ -20,12 +20,12 @@ function hasPermission(is_admin, route) {
  * @param routes asyncRoutes
  * @param permisos
  */
-export function filterAsyncRoutes(routes, is_admin) {
+export function filterAsyncRoutes(routes, permisos) {
   const res = []
 
   routes.forEach(route => {
     const tmp = { ...route }
-    if (hasPermission(is_admin, tmp)) {
+    if (hasPermission(permisos, tmp)) {
       if (tmp.children) {
         tmp.children = filterAsyncRoutes(tmp.children, permisos)
       }
@@ -47,9 +47,13 @@ const mutations = {
 }
 
 const actions = {
-  generateRoutes({ commit, rootGetters }, is_admin) {
-    const menuGenerated = filterAsyncRoutes(rootGetters['app/items'], is_admin)
-    dispatch('app/setMenuApp', menuGenerated)
+  generateRoutes({ commit, rootGetters }, permissions) {
+    return new Promise(resolve => {
+      let accessedRoutes = filterAsyncRoutes(dynamicRoutes, permissions)
+      const menuGenerated = filterAsyncRoutes(rootGetters['app/items'], permissions)
+      dispatch('app/setMenuApp', menuGenerated)
+      resolve(accessedRoutes)
+    })
   },
 }
 

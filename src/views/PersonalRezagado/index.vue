@@ -9,7 +9,7 @@
     <v-row class="ma-0 py-4 justify-space-between">
       <v-col cols="12"  md="5" class="pt-1 d-flex align-center">
         <h3 class="black-text">
-          Mi Personal
+          Personal Rezagado
         </h3>
       </v-col>
       <v-col cols="12" md="6" class="pt-1 d-flex align-center justify-end" style="gap: 8px ">
@@ -35,32 +35,13 @@
         <v-tooltip bottom>
           <template v-slot:activator="{ on, attrs }">
             <v-btn
-              depressed
-              small
-              dark
-              color="blue-grey"
-              class=""
-              v-bind="attrs"
-              v-on="on"
-              @click="generatePDF"
-              :loading="downloading"
-              >
-              <v-icon left>mdi-download</v-icon>
-              Descargar
-            </v-btn>
-          </template>
-          <span>Descargar</span>
-        </v-tooltip>
-        <v-tooltip bottom>
-          <template v-slot:activator="{ on, attrs }">
-            <v-btn
               fab
               x-small
               depressed
               color="blue-grey lighten-5"
               v-bind="attrs"
               v-on="on"
-              @click="updateData()"
+              @click="getPersonal()"
             >
               <v-icon>mdi-refresh</v-icon>
             </v-btn>
@@ -78,18 +59,6 @@
       </v-col>
     </v-row>
     <v-row>
-      <v-col cols="12" class="py-0">
-        <v-tabs v-model="selectUnidad">
-            <v-tab v-for="unidad in unidades"
-              :ripple="false"
-              :key="unidad.codigo_unidad_admin"
-              @click="getPersonal(unidad)"
-            >
-              <v-icon color="info">mdi-circle-medium</v-icon>
-             <strong>{{ unidad.descripcion_unidad_admin }}</strong>
-            </v-tab>
-        </v-tabs>
-      </v-col>
       <v-col cols="12" class="py-0">
         <v-data-table
           sort-by="codigo_unidad_admin"
@@ -157,15 +126,15 @@
       :action="isCreate ? 'crear' : 'edit'"
       :data="dataSelect"
       :departments="[]"
-      @procesado="getPersonal($event)"
-      @tab="selectUnidad = $event"
+      @procesado="getPersonal()"
       @close="isCreate = $event"
-      />
+      laggards
+    />
   </v-container>
 </template>
 <script>
 
-import { getAllPersonal, deletePersonal, downloadListPersonal } from '@/services/usuario'
+import { getAllPersonalLagging, deletePersonal, downloadListPersonal } from '@/services/usuario'
 import { get } from 'vuex-pathify'
 import moment from 'moment'
 export default {
@@ -173,7 +142,7 @@ export default {
   components: {
     CreateAndEdit: () => import(
       /* webpackChunkName: "modal-create" */
-      './components/CreateAndEdit.vue'
+      '../Usuarios/components/CreateAndEdit.vue'
     )
   },
   data: () => ({
@@ -190,7 +159,7 @@ export default {
       { text: 'Nombres y Apellidos', value: 'nombres_apellidos',  class: 'blue-grey lighten-5 blue-grey--text' },
       { text: 'Tipo Personal', value: 'tipo_personal_descripcion',  class: 'blue-grey lighten-5 blue-grey--text' },
       { text: 'Cargo', value: 'cargo_opsu',  class: 'blue-grey lighten-5 blue-grey--text'},
-      // { text: 'Unidad Administrativa', value: 'codigo_unidad_admin',  class: 'blue-grey lighten-5 blue-grey--text'},
+      { text: 'Unidad Administrativa', value: 'descripcion_unidad',  class: 'blue-grey lighten-5 blue-grey--text'},
       // { text: 'Unidad Ejecutora', value: 'codigo_unidad_ejec',  class: 'blue-grey lighten-5 blue-grey--text'},
       { text: 'Acciones', value: 'iconos', align: ' px-0', width: '100px',  class: 'blue-grey lighten-5 blue-grey--text' },
     ],
@@ -215,7 +184,7 @@ export default {
     }
   },
   created () {
-    this.setUnidades()
+    this.getPersonal()
   },
   methods: {
     setUnidades(){
@@ -231,13 +200,11 @@ export default {
 
       this.getPersonal(this.unidades[0])
     },
-    async getPersonal ({unidad_admin}) {
+    async getPersonal () {
       this.loading = true
       this.personal = []
       try {
-        const { personal = [] } = await getAllPersonal({
-          admin: unidad_admin,
-        })
+        const { personal = [] } = await getAllPersonalLagging({nucleo: this.user?.cod_nucleo})
         this.personal = personal
       } catch (error) {
         console.log(error)
