@@ -18,3 +18,22 @@ export const registerPermissions = async ({info}) => {
     return Promise.reject(error)
   }
 }
+
+export const getBossAll = async ({nucleo}) => {
+  try {
+     const { data } = await api.get(`personal/boss-all`, {params: {nucleo}})
+    return data.data
+  } catch (error) {
+    console.log({error})
+    return Promise.reject(error)
+  }
+}
+
+export const updateBoss = async ({info}) => {
+  try {
+    const { data } = await api.post('personal/update/boss', info)
+    return data
+  } catch (error) {
+    return Promise.reject(error)
+  }
+}

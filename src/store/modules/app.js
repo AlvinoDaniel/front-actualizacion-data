@@ -48,6 +48,16 @@ const state = {
         default: false,
         permission: 'reporte-general'
       },
+    },
+    {
+      title: 'Gestion de Jefes',
+      icon: 'mdi-account-tie-outline',
+      to: '/adminitrator/gestion-jefes',
+      meta: {
+        is_admin: true,
+        default: false,
+        permission: 'gestion-jefes'
+      },
     }
   ],
   statusClient:{

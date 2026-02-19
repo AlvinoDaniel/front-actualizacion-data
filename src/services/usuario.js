@@ -42,9 +42,9 @@ export const savePersonal = async ({info, action, id}) => {
   }
 }
 
-export const searchPersonal = async ({cedula}) => {
+export const searchPersonal = async ({cedula, registered = true}) => {
   try {
-    const { data } = await api.get(`personal/search/${cedula}`)
+    const { data } = await api.get(`personal/search/${cedula}`, {params: {registered}})
     return data.data
   } catch (error) {
     console.log({error})

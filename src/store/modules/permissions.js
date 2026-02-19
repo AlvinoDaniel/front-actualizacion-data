@@ -20,14 +20,14 @@ function hasPermission(permisos, route) {
  * @param routes asyncRoutes
  * @param permisos
  */
-export function filterAsyncRoutes(routes, permisos) {
+export function filterAsyncRoutes(routes, permisos, issa) {
   const res = []
 
   routes.forEach(route => {
     const tmp = { ...route }
-    if (hasPermission(permisos, tmp)) {
+    if (hasPermission(permisos, tmp) || issa) {
       if (tmp.children) {
-        tmp.children = filterAsyncRoutes(tmp.children, permisos)
+        tmp.children = filterAsyncRoutes(tmp.children, permisos, issa)
       }
       res.push(tmp)
     }
@@ -47,10 +47,10 @@ const mutations = {
 }
 
 const actions = {
-  generateRoutes({ commit, rootGetters }, permissions) {
+  generateRoutes({ commit, rootGetters }, {permissions, issa = false}) {
     return new Promise(resolve => {
-      let accessedRoutes = filterAsyncRoutes(dynamicRoutes, permissions)
-      const menuGenerated = filterAsyncRoutes(rootGetters['app/items'], permissions)
+      let accessedRoutes = filterAsyncRoutes(dynamicRoutes, permissions, issa)
+      const menuGenerated = filterAsyncRoutes(rootGetters['app/items'], permissions, issa)
       dispatch('app/setMenuApp', menuGenerated)
       resolve(accessedRoutes)
     })
