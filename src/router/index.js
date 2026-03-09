@@ -37,10 +37,45 @@ export const dynamicRoutes = [
     path: '/adminitrator/gestion-jefes',
     meta: {
       auth: true,
+      default: false,
+      permission: 'gestionar-jefe'
     },
     component: () => import(
       /* webpackChunkName: "views-[request]" */
       '@/views/Administrator/Boss/index'
+    ),
+  },
+  {
+    name: 'Núcleos',
+    path: '/adminitrator/nucleos',
+    meta:{
+      auth: true,
+    },
+    component: () => import(
+      /* webpackChunkName: "views-[request]" */
+      '@/views/Nucleos/index'
+    ),
+  },
+  {
+    name: 'Unidades Ejecutora',
+    path: '/adminitrator/unidad-ejecutora',
+    meta:{
+      auth: true,
+    },
+    component: () => import(
+      /* webpackChunkName: "views-[request]" */
+      '@/views/UnidadEjecutora/index'
+    ),
+  },
+  {
+    name: 'Unidades Ejecutora',
+    path: '/adminitrator/unidad-administrativa',
+    meta:{
+      auth: true,
+    },
+    component: () => import(
+      /* webpackChunkName: "views-[request]" */
+      '@/views/UnidadAdmin/index'
     ),
   },
 ]

@@ -58,6 +58,36 @@ const state = {
         default: false,
         permission: 'gestion-jefes'
       },
+    },
+    {
+      title: 'Gestion de Núcleos',
+      icon: 'mdi-home-assistant',
+      to: '/adminitrator/nucleos',
+      meta: {
+        is_admin: true,
+        default: false,
+        permission: 'gestion-nucleos'
+      },
+    },
+    {
+      title: 'Unidad Ejecutora',
+      icon: 'mdi-home-export-outline',
+      to: '/adminitrator/unidad-ejecutora',
+      meta: {
+        is_admin: true,
+        default: false,
+        permission: 'gestion-unidad-ejecutora'
+      },
+    },
+    {
+      title: 'Unidad Administrativa',
+      icon: 'mdi-home-city-outline',
+      to: '/adminitrator/unidad-administrativa',
+      meta: {
+        is_admin: true,
+        default: false,
+        permission: 'gestion-unidad-administrativa'
+      },
     }
   ],
   statusClient:{

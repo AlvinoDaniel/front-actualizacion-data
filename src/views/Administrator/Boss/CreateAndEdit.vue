@@ -110,14 +110,14 @@
                 </v-col>
               </v-row>
               <v-row>
-                <v-col cols="12">
+                <v-col cols="12" class="pb-0">
                   <label class="font-weight-medium button black--text text-h6 mb-2">Cargo</label>
                   <validation-provider name="Cargo" vid="id_cargo" rules="required" v-slot="{ errors }">
                     <v-autocomplete
                       v-model="personal.id_cargo"
                       :items="catalogue.cargos"
                       item-text="descripcion"
-                      item-value="codigo"
+                      item-value="id"
                       outlined
                       class="mt-2"
                       :error-messages="errors[0]"
@@ -126,15 +126,13 @@
                     </v-autocomplete>
                   </validation-provider>
                 </v-col>
-              </v-row>
-              <v-row v-if="addBossOption">
-                <v-col cols="12">
+                <v-col cols="12" class="pt-0">
                   <validation-provider v-slot="{ errors }">
                     <v-checkbox
-                      v-model="personal.agregar_jefatura"
-                      label="Agregar Nueva Jefatura"
+                      v-model="personal.eliminar_jefe"
+                      label="Eliminar Jefe actual"
                       color="info"
-                      value="true"
+                      class="mt-0"
                       hide-details
                     ></v-checkbox>
                   </validation-provider>
@@ -189,6 +187,7 @@ const dataDefault = () => ({
   cedula_identidad: null,
   descripcion_unidad_admin: null,
   agregar_jefatura: null,
+  eliminar_jefe: false,
 });
 export default {
   name:'ModalPersonal',
@@ -331,8 +330,9 @@ export default {
       if(valid) {
         try {
           this.loadingAction = true;
+          console.log(this.personal)
           const { message } = await updateBoss({
-            info: this.personal,
+            info: {...this.personal, eliminar_jefe: Number(this.personal.eliminar_jefe)}
           })
           this.$emit('procesado', true);
           this.cerrar();

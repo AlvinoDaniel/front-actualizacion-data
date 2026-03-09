@@ -12,7 +12,8 @@
               Gestión de Jefes
             </h3>
           </v-col>
-          <v-col cols="12" md="4" class="pt-1 d-flex align-center justify-end" style="gap: 8px ">
+          <v-col cols="12" md="7" class="pt-1 d-flex align-center justify-end" style="gap: 8px ">
+            <search-expand v-model="filterData" placeholder="Buscar" />
             <v-select
               v-model="nucleoSelected"
               :items="catalogue.nucleo"
@@ -53,9 +54,11 @@
             <v-data-table
               class="inbox"
               no-data-text="No hay Personal Registrado"
+              :search="filterData"
               :headers="headers"
               :items="personal"
               :loading="loading"
+              item-key="codigo_unidad_admin"
               >
               <template v-slot:item.iconos="{ item }">
                 <div class="d-flex justify-center align-center ml-3">
@@ -134,7 +137,7 @@
         { text: 'Unidad Administrativa', value: 'descripcion_unidad_admin', class: 'blue-grey lighten-5 blue-grey--text' },
         { text: 'Cédula Identidad', value: 'cedula_identidad', width: '20%',  class: 'blue-grey lighten-5 blue-grey--text' },
         { text: 'Nombre Jefe', value: 'nombres_apellidos', width: '20%',  class: 'blue-grey lighten-5 blue-grey--text' },
-        { text: 'Cargo', value: 'cargo_jefe',  class: 'blue-grey lighten-5 blue-grey--text px-1 text-center' },
+        { text: 'Cargo', value: 'cargo_personal',  class: 'blue-grey lighten-5 blue-grey--text px-1 text-center' },
         { text: 'Acciones', value: 'iconos', align: ' px-0', width: '100px',  class: 'blue-grey lighten-5 blue-grey--text' },
       ],
       personal: [],
@@ -148,7 +151,8 @@
       catalogue:{
         nucleo: [],
       },
-      load: false
+      load: false,
+      filterData: ''
     }),
     computed: {
       user: get('user/infoBasic'),
@@ -179,7 +183,6 @@
             page: this.page,
             perPage: this.itemsPerPage
           })
-          console.log({data})
           this.personal = data
         } catch (error) {
           console.log(error)

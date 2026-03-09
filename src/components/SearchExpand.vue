@@ -10,7 +10,7 @@
     clearable
     v-bind="$attrs"
     class="theme-custom rounded-lg expand-search"
-    placeholder="Buscar personal"
+    :placeholder="placeholder"
     :class="{'closed' : expand && searchClose && !search}"
   >
     <template v-slot:prepend-inner>
@@ -31,6 +31,10 @@ export default {
     expand: {
       type: Boolean,
       default: false
+    },
+    placeholder: {
+      type: String,
+      default: 'Buscar personal'
     }
   },
   data() {

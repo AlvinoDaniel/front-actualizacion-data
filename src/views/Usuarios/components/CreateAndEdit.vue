@@ -504,7 +504,7 @@ export default {
       });
 
       if(unidades.length > 0 && unidades.length === 1){
-        this.personal.unidad = unidades[0]?.unidad_admin;
+        this.personal.unidad = unidades[0]?.id;
         this.showUnid = false;
       }
     },
@@ -570,8 +570,6 @@ export default {
         try {
           const personal  = await searchPersonal({cedula: this.personal.cedula_identidad})
 
-          this.personal.correo = personal?.correo;
-          this.personal.telefono = personal?.telefono;
           this.personal.area_trabajo = null;
           this.personal.camisa = null;
           this.personal.pantalon = null;
