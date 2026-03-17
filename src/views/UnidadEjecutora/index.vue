@@ -214,10 +214,15 @@ export default {
           this.$root.$showAlert(message, 'success');
         } catch (error) {
           console.log(error)
-            this.$root.$showAlert(
-              'Lo sentimos, hubo un error al intentar realizar esta acción en el Servidor.',
-              'error'
-            );
+          const { response = null } = error
+          if(response?.status === 422){
+            this.$root.$showAlert(response?.data?.errors?.message, 'error');
+            return;
+          }
+          this.$root.$showAlert(
+            'Lo sentimos, hubo un error al intentar realizar esta acción en el Servidor.',
+            'error'
+          );
         } finally {
           this.updating = false
         }

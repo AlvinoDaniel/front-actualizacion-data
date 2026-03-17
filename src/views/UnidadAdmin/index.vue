@@ -249,17 +249,22 @@ export default {
     async deleteUnid(row){
       const result = await this.$root.$confirm(
         '¿Está Seguro?',
-        `Desea eliminar la unidad ejecutora ${row?.descripcion}`
+        `Desea eliminar la unidad administrativa ${row?.descripcion}`
       );
 
       if(result){
         this.updating = true
         try {
-          const { message } = await deleteUnidad({id: row?.id, type: 'ejecutora'})
+          const { message } = await deleteUnidad({id: row?.id, type: 'administrativa'})
           this.getUnidades()
           this.$root.$showAlert(message, 'success');
         } catch (error) {
           console.log(error)
+          const { response = null } = error
+          if(response?.status === 422){
+            this.$root.$showAlert(response?.data?.errors?.message, 'error');
+            return;
+          }
             this.$root.$showAlert(
               'Lo sentimos, hubo un error al intentar realizar esta acción en el Servidor.',
               'error'
