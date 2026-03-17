@@ -200,7 +200,11 @@
             catalogues.map(async res => {
               await getCatalogue({table: res.name}).then(response => {
                 if(response){
-                  this.catalogue[res.value] = response
+                  this.catalogue[res.value] = response.filter(item => {
+                    if(this.user.issa) return true;
+
+                    return item?.codigo_concatenado === this.user.cod_nucleo;
+                  })
                 }
               })
             })

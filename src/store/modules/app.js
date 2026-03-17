@@ -56,7 +56,7 @@ const state = {
       meta: {
         is_admin: true,
         default: false,
-        permission: 'gestion-jefes'
+        permission: 'gestionar-jefe'
       },
     },
     {

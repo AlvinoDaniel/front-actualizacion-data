@@ -74,12 +74,12 @@ const getters = {
       uni_admin: unidades.length > 0 ?  `${unidades[0]?.entidad?.descripcion_unidad_admin}` : 'S/R',
       uni_ejec: unidades.length > 0 ?  `${unidades[0]?.entidad?.descripcion_unidad_ejec}` : 'S/R',
       escuela: unidades.length > 0 ?  unidades[0]?.entidad?.descripcion_escuela : null,
-      correos_dependencia: unidades.length > 0 
+      correos_dependencia: unidades.length > 0
         ?  unidades.map((item) => ({
           id: item?.id_unidad_admin,
           correo: item?.entidad?.correo_dependencia,
           dependencia: item?.entidad?.descripcion_unidad_admin
-        })) 
+        }))
         : [],
       nucleo: state.info?.personal?.nucleo?.nombre,
       cod_nucleo: state.info?.personal?.nucleo?.codigo_concatenado,
@@ -91,7 +91,8 @@ const getters = {
       tipo_personal: state.info?.personal?.tipo_personal?.descripcion,
       personal: state.info?.personal,
       unidades,
-      permissions: state.info.permissions
+      permissions: state.info.permissions,
+      issa: state.info?.issa ?? false
     } : null
     return data;
   },
