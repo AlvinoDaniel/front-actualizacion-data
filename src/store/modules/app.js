@@ -88,7 +88,27 @@ const state = {
         default: false,
         permission: 'gestion-unidad-administrativa'
       },
-    }
+    },
+    {
+      title: 'Cargos de Personal',
+      icon: 'mdi-briefcase-account-outline',
+      to: '/adminitrator/cargos-personal',
+      meta: {
+        is_admin: true,
+        default: false,
+        permission: 'gestion-cargos-personal'
+      },
+    },
+    {
+      title: 'Gestion de Personal',
+      icon: 'mdi-account-cog-outline',
+      to: '/adminitrator/gestion-personal',
+      meta: {
+        is_admin: true,
+        default: false,
+        permission: 'gestion-personal'
+      },
+    },
   ],
   statusClient:{
     rojo: '#FF353E',

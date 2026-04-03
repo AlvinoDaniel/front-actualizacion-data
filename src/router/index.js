@@ -33,6 +33,19 @@ export const dynamicRoutes = [
     ),
   },
   {
+    name: 'Gestión de Personal',
+    path: '/adminitrator/gestion-personal',
+    meta: {
+      auth: true,
+      default: false,
+      permission: 'gestionar-personal' // Ajustar permiso según sea necesario
+    },
+    component: () => import(
+      /* webpackChunkName: "views-[request]" */
+      '@/views/Personal/index'
+    ),
+  },
+  {
     name: 'Gestión de Jefes',
     path: '/adminitrator/gestion-jefes',
     meta: {
@@ -68,7 +81,7 @@ export const dynamicRoutes = [
     ),
   },
   {
-    name: 'Unidades Ejecutora',
+    name: 'Unidades Administrativa',
     path: '/adminitrator/unidad-administrativa',
     meta:{
       auth: true,
@@ -76,6 +89,17 @@ export const dynamicRoutes = [
     component: () => import(
       /* webpackChunkName: "views-[request]" */
       '@/views/UnidadAdmin/index'
+    ),
+  },
+  {
+    name: 'Cargos de Personal',
+    path: '/adminitrator/cargos-personal',
+    meta:{
+      auth: true,
+    },
+    component: () => import(
+      /* webpackChunkName: "views-[request]" */
+      '@/views/CargoPersonal/index'
     ),
   },
 ]
