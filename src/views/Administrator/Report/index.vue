@@ -20,7 +20,7 @@
               :loading="load"
               :disabled="load"
               item-text="nombre"
-              item-value="codigo_1"
+              item-value="codigo_concatenado"
               dense
               outlined
               hide-details
@@ -185,7 +185,7 @@
       page: 1,
       pageCount: 0,
       itemsPerPage: 10,
-      nucleoSelected: '1',
+      nucleoSelected: '11',
       catalogue:{
         nucleo: [],
       },
