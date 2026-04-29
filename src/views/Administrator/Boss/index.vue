@@ -203,8 +203,9 @@
                   this.catalogue[res.value] = response.filter(item => {
                     if(this.user.issa) return true;
 
-                    return item?.codigo_concatenado === this.user.cod_nucleo;
+                    return item?.codigo_concatenado[0] === this.user?.cod_nucleo[0];
                   })
+                  this.nucleoSelected = this.catalogue[res.value][0] ?? '11'
                 }
               })
             })
