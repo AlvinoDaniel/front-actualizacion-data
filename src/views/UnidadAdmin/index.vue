@@ -14,6 +14,21 @@
       </v-col>
       <v-col cols="12" sm="5" md="7" class="pt-1 d-flex align-center justify-end">
         <search-expand v-model="filterData" placeholder="Buscar unidad" />
+         <v-select
+          v-model="nucleoSelected"
+          :items="catalogue.nucleo"
+          label="Núcleo"
+          :loading="load"
+          :disabled="load"
+          item-text="nombre"
+          item-value="codigo_concatenado"
+          dense
+          outlined
+          hide-details
+          prepend-inner-icon="mdi-home-city-outline"
+          class="ml-3"
+          @change="getUnidades"
+        ></v-select>
         <v-tooltip bottom>
           <template v-slot:activator="{ on, attrs }">
             <v-btn
@@ -114,12 +129,12 @@
                v-text="item.unidad_padre.descripcion"
             />
            </template>
-           <template v-slot:item.nucleo="{ item }">
+           <!-- <template v-slot:item.nucleo="{ item }">
             <span
               v-if="item.nucleo"
                v-text="item.nucleo.nombre"
             />
-           </template>
+           </template> -->
            <template v-slot:item.unidad_ejecutora="{ item }">
             <span
               v-if="item.unidad_ejecutora"
@@ -167,6 +182,7 @@
 <script>
 
 import { getUnidadList, deleteUnidad } from '@/services/unidad'
+import { getCatalogue } from '@/services/catalogue'
 
 export default {
   name: 'unidades',
@@ -185,7 +201,7 @@ export default {
       { text: 'Unidad Padre', value: 'unidad_padre', align: '' },
       { text: 'Unidad Ejecutora', value: 'unidad_ejecutora', align: '' },
       { text: 'Escuela', value: 'escuela', align: '' },
-      { text: 'Núcleo', value: 'nucleo', align: '' },
+      // { text: 'Núcleo', value: 'nucleo', align: '' },
       { text: 'Correo', value: 'correo_dependencia', align: '' },
       { text: '¿Tiene Jefe?', value: 'jefe', align: '' },
       { text: 'Estatus', value: 'activo', align: '' },
@@ -202,7 +218,12 @@ export default {
     },
     modalShow: false,
     isCreate: true,
-    dataSelect: null
+    dataSelect: null,
+    nucleoSelected: null,
+    catalogue:{
+      nucleo: [],
+    },
+    load: false
   }),
   computed: {
     paginationText () {
@@ -224,14 +245,40 @@ export default {
 
   },
   created () {
-    this.getUnidades()
+    this.getData()
   },
   methods: {
-
+    async getData () {
+        this.load = true;
+        const catalogues = [
+          {name: 'nucleo', value: 'nucleo'},
+        ]
+        try {
+          await Promise.all(
+            catalogues.map(async res => {
+              await getCatalogue({table: res.name}).then(response => {
+                if(response){
+                  this.catalogue[res.value] = response
+                  this.nucleoSelected = response[0]?.codigo_concatenado ?? '11' 
+                  this.getUnidades()
+                }
+              })
+            })
+          )
+        } catch (error) {
+          this.$root.$showAlert(
+            'Lo siento, hubo un error al intentar obtener el listado de Nucleos.',
+            'error',
+          )
+        } finally {
+          this.load = false
+        }
+    },
     async getUnidades () {
       this.loading = true
       try {
-        const { unidades } = await getUnidadList({type: 'administrativa'})
+        console.log(this.nucleoSelected)
+        const { unidades } = await getUnidadList({type: 'administrativa', nucleo: this.nucleoSelected ?? null})
         this.unidades = unidades
       } catch (error) {
         console.log(error)

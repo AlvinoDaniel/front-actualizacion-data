@@ -1,8 +1,9 @@
 import api from '../util/request.js'
 
-export const getUnidadList = async ({type=''}) => {
+export const getUnidadList = async ({type='', nucleo = null}) => {
   try {
-    const { data } = await api.get(`unidad/${type}`)
+    const hasNucleo = nucleo ? `?nucleo=${nucleo}` : ''
+    const { data } = await api.get(`unidad/${type}${hasNucleo}`)
     return data.data
   } catch (error) {
     return Promise.reject(error)
