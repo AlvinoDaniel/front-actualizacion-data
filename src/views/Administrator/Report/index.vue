@@ -7,12 +7,13 @@
     <v-window v-model="steps_data">
       <v-window-item :value="1">
         <v-row class="ma-0 py-4 justify-space-between">
-          <v-col cols="12"  md="5" class="pt-1 d-flex align-center">
+          <v-col cols="12"  md="4" class="pt-1 d-flex align-center">
             <h3 class="black-text">
               Reporte de Registro
             </h3>
           </v-col>
-          <v-col cols="12" md="4" class="pt-1 d-flex align-center justify-end" style="gap: 8px ">
+          <v-col cols="12" md="8" class="pt-1 d-flex align-center justify-end" style="gap: 8px ">
+            <search-expand v-model="filterData" placeholder="Buscar" />
             <v-select
               v-model="nucleoSelected"
               :items="catalogue.nucleo"
@@ -77,6 +78,7 @@
               sort-by="codigo_unidad_ejec"
               class="inbox"
               no-data-text="No hay Personal Registrado"
+              :search="filterData"
               :headers="headers"
               :items="personal"
               :loading="loading"
@@ -189,7 +191,8 @@
       catalogue:{
         nucleo: [],
       },
-      load: false
+      load: false,
+      filterData: ''
     }),
     computed: {
       user: get('user/infoBasic'),
