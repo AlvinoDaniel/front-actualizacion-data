@@ -187,7 +187,7 @@
       page: 1,
       pageCount: 0,
       itemsPerPage: 10,
-      nucleoSelected: '11',
+      nucleoSelected: '',
       catalogue:{
         nucleo: [],
       },
@@ -200,7 +200,7 @@
     },
     created () {
       this.getData();
-      this.getPersonal();
+      // this.getPersonal();
     },
     methods: {
       async getPersonal () {
@@ -307,16 +307,19 @@
             catalogues.map(async res => {
               await getCatalogue({table: res.name}).then(response => {
                 if(response){
+                  console.log({response})
                   this.catalogue[res.value] = response.filter(item => {
-                    if(this.user.issa) return true;
-
+                    if(this.user?.issa) return true;
+                    console.log({item}, item?.codigo_concatenado[0], this.user)
                     return item?.codigo_concatenado[0] === this.user?.cod_nucleo[0];
                   })
-                  this.nucleoSelected = this.catalogue[res.value][0] ?? '11' 
+                  this.nucleoSelected = this.catalogue[res.value][0]?.codigo_concatenado ?? ''
                 }
               })
             })
-          )
+          ).then(() => {
+            this.getPersonal()
+          })
         } catch (error) {
           this.$root.$showAlert(
             'Lo siento, hubo un error al intentar obtener el listado de Personal registrado.',

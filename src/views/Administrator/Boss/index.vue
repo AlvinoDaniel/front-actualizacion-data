@@ -147,8 +147,8 @@
       page: 1,
       pageCount: 0,
       itemsPerPage: 10,
-      nucleoSelected: '11',
-      catalogue:{
+      nucleoSelected: '',
+      catalogue: {
         nucleo: [],
       },
       load: false,
@@ -171,7 +171,7 @@
     },
     created () {
       this.getData();
-      this.getPersonal();
+      // this.getPersonal();
     },
     methods: {
       async getPersonal () {
@@ -205,11 +205,13 @@
 
                     return item?.codigo_concatenado[0] === this.user?.cod_nucleo[0];
                   })
-                  this.nucleoSelected = this.catalogue[res.value][0] ?? '11'
+                  this.nucleoSelected = this.catalogue[res.value][0]?.codigo_concatenado ?? '11'
                 }
               })
             })
-          )
+          ).then(() => {
+            this.getPersonal()
+          })
         } catch (error) {
           this.$root.$showAlert(
             'Lo siento, hubo un error al intentar obtener el listado de Personal registrado.',
