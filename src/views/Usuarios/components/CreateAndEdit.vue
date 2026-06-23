@@ -388,7 +388,8 @@ const dataDefault = () => ({
   tipo_personal: null,
   unidad: 0,
   id: null,
-  nucleo: null
+  nucleo: null,
+  multiple: false,
 });
 export default {
   name:'ModalPersonal',
@@ -458,7 +459,8 @@ export default {
           ...val,
           tipo_personal: parseInt(val?.tipo_personal),
           unidad: val.id_unidad_admin ?? null,
-          nucleo: val?.cod_nucleo.toString().at(0)
+          nucleo: val?.cod_nucleo,
+          multiple: false
         }
         this.workerExists = true
       }
@@ -504,7 +506,7 @@ export default {
       });
 
       if(unidades.length > 0 && unidades.length === 1){
-        this.personal.unidad = unidades[0]?.unidad_admin;
+        this.personal.unidad = unidades[0]?.id;
         this.showUnid = false;
       }
     },
@@ -570,8 +572,6 @@ export default {
         try {
           const personal  = await searchPersonal({cedula: this.personal.cedula_identidad})
 
-          this.personal.correo = personal?.correo;
-          this.personal.telefono = personal?.telefono;
           this.personal.area_trabajo = null;
           this.personal.camisa = null;
           this.personal.pantalon = null;
@@ -599,6 +599,8 @@ export default {
         try {
           if(this.catalogue.unidades.length > 0 && this.catalogue.unidades.length === 1 && !this.laggards){
             this.personal.unidad = this.catalogue.unidades[0]?.id;
+          } else {
+            this.personal.multiple = true;
           }
           this.loadingAction = true;
           const { message } = await savePersonal({
@@ -607,7 +609,7 @@ export default {
             id: this.personal?.id ?? null
           })
           const unidSelect = this.catalogue.unidades.findIndex(item => item.unidad_admin === this.personal.unidad)
-          this.$emit('procesado', this.catalogue.unidades[unidSelect]);
+          this.$emit('procesado', this.personal.multiple ? this.catalogue.unidades[unidSelect] : this.catalogue.unidades[0]);
           this.$emit('tab', unidSelect);
           this.cerrar();
           this.$root.$showAlert(message, 'success');

@@ -48,7 +48,67 @@ const state = {
         default: false,
         permission: 'reporte-general'
       },
-    }
+    },
+    {
+      title: 'Gestion de Jefes',
+      icon: 'mdi-account-tie-outline',
+      to: '/adminitrator/gestion-jefes',
+      meta: {
+        is_admin: true,
+        default: false,
+        permission: 'gestionar-jefe'
+      },
+    },
+    {
+      title: 'Gestion de Núcleos',
+      icon: 'mdi-home-assistant',
+      to: '/adminitrator/nucleos',
+      meta: {
+        is_admin: true,
+        default: false,
+        permission: 'gestion-nucleos'
+      },
+    },
+    {
+      title: 'Unidad Ejecutora',
+      icon: 'mdi-home-export-outline',
+      to: '/adminitrator/unidad-ejecutora',
+      meta: {
+        is_admin: true,
+        default: false,
+        permission: 'gestion-unidad-ejecutora'
+      },
+    },
+    {
+      title: 'Unidad Administrativa',
+      icon: 'mdi-home-city-outline',
+      to: '/adminitrator/unidad-administrativa',
+      meta: {
+        is_admin: true,
+        default: false,
+        permission: 'gestion-unidad-administrativa'
+      },
+    },
+    {
+      title: 'Cargos de Personal',
+      icon: 'mdi-briefcase-account-outline',
+      to: '/adminitrator/cargos-personal',
+      meta: {
+        is_admin: true,
+        default: false,
+        permission: 'gestion-cargos-personal'
+      },
+    },
+    {
+      title: 'Gestion de Personal',
+      icon: 'mdi-account-cog-outline',
+      to: '/adminitrator/gestion-personal',
+      meta: {
+        is_admin: true,
+        default: false,
+        permission: 'gestion-personal'
+      },
+    },
   ],
   statusClient:{
     rojo: '#FF353E',

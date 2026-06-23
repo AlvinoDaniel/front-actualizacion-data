@@ -7,12 +7,13 @@
     <v-window v-model="steps_data">
       <v-window-item :value="1">
         <v-row class="ma-0 py-4 justify-space-between">
-          <v-col cols="12"  md="5" class="pt-1 d-flex align-center">
+          <v-col cols="12"  md="4" class="pt-1 d-flex align-center">
             <h3 class="black-text">
               Reporte de Registro
             </h3>
           </v-col>
-          <v-col cols="12" md="4" class="pt-1 d-flex align-center justify-end" style="gap: 8px ">
+          <v-col cols="12" md="8" class="pt-1 d-flex align-center justify-end" style="gap: 8px ">
+            <search-expand v-model="filterData" placeholder="Buscar" />
             <v-select
               v-model="nucleoSelected"
               :items="catalogue.nucleo"
@@ -20,7 +21,7 @@
               :loading="load"
               :disabled="load"
               item-text="nombre"
-              item-value="codigo_1"
+              item-value="codigo_concatenado"
               dense
               outlined
               hide-details
@@ -77,6 +78,7 @@
               sort-by="codigo_unidad_ejec"
               class="inbox"
               no-data-text="No hay Personal Registrado"
+              :search="filterData"
               :headers="headers"
               :items="personal"
               :loading="loading"
@@ -185,11 +187,12 @@
       page: 1,
       pageCount: 0,
       itemsPerPage: 10,
-      nucleoSelected: '1',
+      nucleoSelected: '',
       catalogue:{
         nucleo: [],
       },
-      load: false
+      load: false,
+      filterData: ''
     }),
     computed: {
       user: get('user/infoBasic'),
@@ -197,7 +200,7 @@
     },
     created () {
       this.getData();
-      this.getPersonal();
+      // this.getPersonal();
     },
     methods: {
       async getPersonal () {
@@ -304,11 +307,19 @@
             catalogues.map(async res => {
               await getCatalogue({table: res.name}).then(response => {
                 if(response){
-                  this.catalogue[res.value] = response
+                  console.log({response})
+                  this.catalogue[res.value] = response.filter(item => {
+                    if(this.user?.issa) return true;
+                    console.log({item}, item?.codigo_concatenado[0], this.user)
+                    return item?.codigo_concatenado[0] === this.user?.cod_nucleo[0];
+                  })
+                  this.nucleoSelected = this.catalogue[res.value][0]?.codigo_concatenado ?? ''
                 }
               })
             })
-          )
+          ).then(() => {
+            this.getPersonal()
+          })
         } catch (error) {
           this.$root.$showAlert(
             'Lo siento, hubo un error al intentar obtener el listado de Personal registrado.',

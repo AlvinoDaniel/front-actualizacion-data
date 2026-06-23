@@ -42,9 +42,9 @@ export const savePersonal = async ({info, action, id}) => {
   }
 }
 
-export const searchPersonal = async ({cedula}) => {
+export const searchPersonal = async ({cedula, registered = true}) => {
   try {
-    const { data } = await api.get(`personal/search/${cedula}`)
+    const { data } = await api.get(`personal/search/${cedula}`, {params: {registered}})
     return data.data
   } catch (error) {
     console.log({error})
@@ -125,3 +125,48 @@ export const getUnidsWithoutLeadership = async () => {
     return Promise.reject(error)
   }
 }
+
+export const getPersonalByCedula = async ({cedula}) => {
+  try {
+    const { data } = await api.get(`personal/by-cedula/${cedula}`)
+    return data.data
+  } catch (error) {
+    console.log({error})
+    return Promise.reject(error)
+  }
+}
+
+export const importarPersonalMasivo = async (archivo) => {
+  try {
+    const formData = new FormData()
+    formData.append('archivo', archivo)
+    const { data } = await api.post('personal/importar-masivo', formData, {
+      headers: { 'Content-Type': 'multipart/form-data' }
+    })
+    return data.data
+  } catch (error) {
+    console.log({error})
+    return Promise.reject(error)
+  }
+}
+
+export const exportarPlantillaImportacion = async () => {
+  try {
+    const { data } = await api.get('personal/export-plantilla', { responseType: 'blob' })
+    return data
+  } catch (error) {
+    console.log({error})
+    return Promise.reject(error)
+  }
+}
+
+export const actualizarUnidadesPersonal = async ({ personalUndId, unidad }) => {
+  try {
+    const { data } = await api.post(`personal/update-unidades/${personalUndId}`, { unidad_admin_id: unidad })
+    return data.data
+  } catch (error) {
+    console.log({error})
+    return Promise.reject(error)
+  }
+}
+

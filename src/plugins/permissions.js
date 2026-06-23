@@ -26,8 +26,8 @@ router.beforeEach(async (to, from, next) => {
       else {
         try {
           store.dispatch('app/setOverlay', true);
-          const { is_admin = false, permissions = [] } = await store.dispatch('user/getInfo');
-          const addRoutes = await store.dispatch('permissions/generateRoutes', permissions)
+          const { issa = false, permissions = [] } = await store.dispatch('user/getInfo');
+          const addRoutes = await store.dispatch('permissions/generateRoutes', {permissions, issa})
           AdminRoute.children = addRoutes
           router.addRoute(AdminRoute)
           router.addRoute({ path: '*', redirect: '/404' })

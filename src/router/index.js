@@ -32,6 +32,76 @@ export const dynamicRoutes = [
       '@/views/PersonalRezagado/index'
     ),
   },
+  {
+    name: 'Gestión de Personal',
+    path: '/adminitrator/gestion-personal',
+    meta: {
+      auth: true,
+      default: false,
+      permission: 'gestionar-personal' // Ajustar permiso según sea necesario
+    },
+    component: () => import(
+      /* webpackChunkName: "views-[request]" */
+      '@/views/Personal/index'
+    ),
+  },
+  {
+    name: 'Gestión de Jefes',
+    path: '/adminitrator/gestion-jefes',
+    meta: {
+      auth: true,
+      default: false,
+      permission: 'gestionar-jefe'
+    },
+    component: () => import(
+      /* webpackChunkName: "views-[request]" */
+      '@/views/Administrator/Boss/index'
+    ),
+  },
+  {
+    name: 'Núcleos',
+    path: '/adminitrator/nucleos',
+    meta:{
+      auth: true,
+    },
+    component: () => import(
+      /* webpackChunkName: "views-[request]" */
+      '@/views/Nucleos/index'
+    ),
+  },
+  {
+    name: 'Unidades Ejecutora',
+    path: '/adminitrator/unidad-ejecutora',
+    meta:{
+      auth: true,
+    },
+    component: () => import(
+      /* webpackChunkName: "views-[request]" */
+      '@/views/UnidadEjecutora/index'
+    ),
+  },
+  {
+    name: 'Unidades Administrativa',
+    path: '/adminitrator/unidad-administrativa',
+    meta:{
+      auth: true,
+    },
+    component: () => import(
+      /* webpackChunkName: "views-[request]" */
+      '@/views/UnidadAdmin/index'
+    ),
+  },
+  {
+    name: 'Cargos de Personal',
+    path: '/adminitrator/cargos-personal',
+    meta:{
+      auth: true,
+    },
+    component: () => import(
+      /* webpackChunkName: "views-[request]" */
+      '@/views/CargoPersonal/index'
+    ),
+  },
 ]
 
 export const AdminRoute = {
@@ -96,17 +166,17 @@ const createRouter = () => new Router({
             '@/views/Usuarios/index'
           ),
         },
-        {
-          name: 'Personal rezagados',
-          path: '/personal-rezagados',
-          meta:{
-            auth: true,
-          },
-          component: () => import(
-            /* webpackChunkName: "views-[request]" */
-            '@/views/PersonalRezagado/index'
-          ),
-        },
+        // {
+        //   name: 'Personal rezagados',
+        //   path: '/personal-rezagados',
+        //   meta:{
+        //     auth: true,
+        //   },
+        //   component: () => import(
+        //     /* webpackChunkName: "views-[request]" */
+        //     '@/views/PersonalRezagado/index'
+        //   ),
+        // },
         {
           name: 'Seguridad',
           path: '/seguridad/gestion-de-usuario',
@@ -119,14 +189,14 @@ const createRouter = () => new Router({
           ),
         },
         // {
-        //   name: 'Reporte',
-        //   path: '/adminitrator/report/:nucleo?',
+        //   name: 'Gestión de Jefes',
+        //   path: '/adminitrator/gestion-jefes',
         //   meta: {
         //     auth: true,
         //   },
         //   component: () => import(
         //     /* webpackChunkName: "views-[request]" */
-        //     '@/views/download'
+        //     '@/views/Administrator/Boss/index'
         //   ),
         // },
         {

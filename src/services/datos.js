@@ -43,7 +43,19 @@ export const TALLAS_PANTALON = [
   {
     talla: '46',
     sexo: 'F'
-  }
+  },
+  {
+    talla: '48',
+    sexo: 'F'
+  },
+  {
+    talla: '50',
+    sexo: 'F'
+  },
+  {
+    talla: '52',
+    sexo: 'F'
+  },
 ]
 
 export const TALLAS_CAMISA = [

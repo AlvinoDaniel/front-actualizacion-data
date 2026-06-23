@@ -19,7 +19,7 @@
             <small>Jefe de Unidad: <strong> {{ nombreJefe }} </strong> </small>
           </div>
           <v-btn
-            v-if="hasJefe"
+            v-if="hasJefe && isAdmin"
             depressed
             dark
             color="blue-grey"
@@ -73,6 +73,7 @@
 </template>
 <script>
 
+import { get } from 'vuex-pathify'
 
 export default {
   name: 'PersonalUnidad',
@@ -114,6 +115,10 @@ export default {
     }
   },
   computed: {
+    user: get('user/infoBasic'),
+    isAdmin(){
+      return this.user?.issa ?? false
+    },
     hasJefe(){
       return this.jefe !== null
     },
